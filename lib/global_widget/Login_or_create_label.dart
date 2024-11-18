@@ -15,7 +15,7 @@ class LoginOrCreateLabel extends StatelessWidget {
 
   TextStyle textStyle(){
     return  GoogleFonts.montserrat(
-      fontSize: 30
+      fontSize: 25
     );
   }
 }

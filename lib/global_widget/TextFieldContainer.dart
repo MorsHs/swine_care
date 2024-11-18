@@ -14,9 +14,9 @@ class _TextfieldcontainerState extends State<Textfieldcontainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 340,
+      width: 350,
       height: 75,
-      padding: const EdgeInsets.only(bottom: 25),
+      padding: const EdgeInsets.only(bottom: 25, left: 10, right: 10),
       child: TextField(
         decoration: decoration(),
         obscureText: widget.isHidden,
