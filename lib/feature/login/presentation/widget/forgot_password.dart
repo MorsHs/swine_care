@@ -8,21 +8,56 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  bool long_pressed = false;
+  late bool long_pressed;
+
   @override
-  Widget build(BuildContext context) {
-    //TODO fix the longpress
-    return GestureDetector(
-      onTap: () => print("Hello"),
-     onLongPressDown: (details) => long_pressed = true,
-      onLongPressCancel: () => long_pressed = false,
-      child: Text("Forgot Password?",style: textStyle(),),);
+  void initState() {
+    long_pressed = false;
+    super.initState();
   }
 
-  TextStyle textStyle(){
-     if(long_pressed == false){
-      return TextStyle(color: Colors.black);
-    }
-     else return TextStyle(color: Colors.green);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 225, bottom: 30),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            long_pressed = true;
+            Future.delayed(
+              const Duration(seconds: 3),
+              () {
+                setState(() {
+                  long_pressed = false;
+                });
+              },
+            );
+          });
+        },
+        onLongPressDown: (details) {
+          setState(() {
+            long_pressed = true;
+          });
+        },
+        onLongPressUp: () {
+          setState(() {
+            long_pressed = false;
+          });
+        },
+        onLongPressCancel: () {
+          setState(() {
+            long_pressed = false;
+          });
+        },
+        child: Text(
+          "Forgot Password?",
+          style: TextStyle(
+              color: long_pressed ? Colors.blue : Colors.black,
+              decoration:
+                  long_pressed ? TextDecoration.underline : TextDecoration.none,
+              decorationColor: long_pressed ? Colors.blue : Colors.black),
+        ),
+      ),
+    );
   }
 }
