@@ -15,7 +15,7 @@ class _TextfieldcontainerState extends State<Textfieldcontainer> {
   Widget build(BuildContext context) {
     return Container(
       width: 350,
-      height: 75,
+      height: 70,
       padding: const EdgeInsets.only(bottom: 25, left: 10, right: 10),
       child: TextField(
         decoration: decoration(),
