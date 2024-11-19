@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swine_care/feature/login/presentation/pages/Login.dart';
+import 'package:swine_care/feature/loadingscreen/presentation/pages/LoadingScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    home: Login(),
+    home: Loadingscreen(),
     );
   }
 }
