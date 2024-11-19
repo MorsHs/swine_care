@@ -6,10 +6,12 @@ class LoginOrCreateLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 25,right: 40),
-      child: Text(label,
-      style: textStyle(),),
+    return Align(alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 25,left: 30),
+        child: Text(label,
+        style: textStyle(),),
+      ),
     );
   }
 
