@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swine_care/feature/login/presentation/pages/Login.dart';
+import 'package:swine_care/feature/loadingscreen/presentation/pages/LoadingScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +11,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-    home: Login(),
+ argie_loadingscreens
+    return MaterialApp(
+    home: Loadingscreen(),
+
     );
   }
 }

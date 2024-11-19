@@ -39,6 +39,7 @@ dependencies:
   google_fonts: ^6.2.1
   draggable_home: ^1.0.5
   crop_your_image: ^1.1.0
+  smooth_page_indicator: ^1.2.0+3
 
 dev_dependencies:
   flutter_test:
