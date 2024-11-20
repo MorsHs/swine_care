@@ -13,10 +13,8 @@ class Textfieldcontainer extends StatefulWidget {
 class _TextfieldcontainerState extends State<Textfieldcontainer> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 350,
-      height: 70,
-      padding: const EdgeInsets.only(bottom: 25, left: 10, right: 10),
+    return Padding(
+      padding: const EdgeInsets.only(top: 8,bottom: 8,right: 20,left: 20),
       child: TextField(
         decoration: decoration(),
         obscureText: widget.isHidden,

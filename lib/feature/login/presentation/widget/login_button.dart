@@ -5,9 +5,12 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FilledButton(
-      onPressed: () {},
-      child: const Text("Login"),
+    return FractionallySizedBox(
+      widthFactor: 0.8,
+      child: FilledButton(
+        onPressed: () {},
+        child: const Text("Login"),
+      ),
     );
   }
 }
