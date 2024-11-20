@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class login_signup_theme extends StatelessWidget {
-  final Widget filledButton;
-  const login_signup_theme({super.key, required this.filledButton});
+  final Widget child;
+  const login_signup_theme({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     return Theme(
       data: themeData(),
-      child: filledButton,
+      child: child,
     );
   }
 
