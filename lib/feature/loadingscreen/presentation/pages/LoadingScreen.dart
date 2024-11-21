@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:swine_care/colors/colors.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/widget/IntroPage1.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/widget/IntroPage2.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/widget/IntroPage3.dart';
-import 'package:swine_care/feature/login/presentation/pages/Login.dart';
+import 'package:swine_care/feature/loadingscreen/presentation/widget/SkipDoneButton.dart';
 
 class Loadingscreen extends StatefulWidget {
   const Loadingscreen({super.key});
@@ -40,47 +38,10 @@ class _LoadingscreenState extends State<Loadingscreen> {
            ],
 
          ),
-         Container(
-           alignment: const Alignment(0, 0.75),
-             child: Row(
-               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-               children: [
-                 // SKIP BUTTON
-                 GestureDetector(
-                   onTap: (){
-                     _controller.jumpToPage(2);
-               },
-                     child: const Text("skip")
-                 ),
-
-                 SmoothPageIndicator(
-                     controller: _controller, count: 3
-                 ),
-
-                 onLastPage ?
-                 GestureDetector(
-                     onTap: (){
-                       Navigator.push(
-                           context, MaterialPageRoute(builder: (context) {
-                             return const Login();
-                       },),);
-                     },
-                     child: const Text("done")
-                 )
-
-                 // NEXT BUTTON
-                     : GestureDetector(
-                     onTap: (){
-                       _controller.nextPage(
-                           duration: const Duration(
-                               milliseconds: 300), curve: Curves.easeIn);
-                     },
-                     child: const Text("next")
-                 )
-
-               ],
-             )
-         )
+        SkipDoneButton(
+            controller: _controller,
+            onLastPage: onLastPage
+        ),
        ],
 
      )
