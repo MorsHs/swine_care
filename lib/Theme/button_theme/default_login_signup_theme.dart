@@ -16,6 +16,7 @@ class login_signup_theme extends StatelessWidget {
     return ThemeData(
         filledButtonTheme: const FilledButtonThemeData(
       style: ButtonStyle(
+        textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 18)),
         elevation: WidgetStatePropertyAll(7),
         shape: WidgetStatePropertyAll(RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)))),

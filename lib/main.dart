@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/pages/LoadingScreen.dart';
+import 'feature/login/presentation/pages/Login.dart';
+import 'feature/register/presentation/pages/Register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Loadingscreen(),
+      home: Register(),
     );
   }
 }
