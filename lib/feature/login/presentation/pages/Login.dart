@@ -15,25 +15,27 @@ class Login extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: const SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Logoimage(),
-                LoginOrCreateLabel(label: "Login"),
-                Textfieldcontainer(
-                  isHidden: false,
-                  label: "Email",
-                ),
-                Textfieldcontainer(
-                  isHidden: true,
-                  label: "Password",
-                ),
-                ForgotPassword(),
-                login_signup_theme(filledButton: LoginButton()),
-                RedirectToSignup()
-              ],
+        child: login_signup_theme(
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Logoimage(),
+                  LoginOrCreateLabel(label: "Login"),
+                  Textfieldcontainer(
+                    isHidden: false,
+                    label: "Email",
+                  ),
+                  Textfieldcontainer(
+                    isHidden: true,
+                    label: "Password",
+                  ),
+                  ForgotPassword(),
+                  LoginButton(),
+                  RedirectToSignup()
+                ],
+              ),
             ),
           ),
         ),
