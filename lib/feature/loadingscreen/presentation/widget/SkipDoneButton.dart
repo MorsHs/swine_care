@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:swine_care/Route/routes.dart';
 import 'package:swine_care/feature/login/presentation/pages/Login.dart';
 
 class SkipDoneButton extends StatelessWidget {
@@ -31,10 +33,7 @@ PageController controller = PageController();
             onLastPage ?
             GestureDetector(
                 onTap: (){
-                  Navigator.push(
-                    context, MaterialPageRoute(builder: (context) {
-                    return const Login();
-                  },),);
+                 context.go('/login');
                 },
                 child: const Text("done")
             )

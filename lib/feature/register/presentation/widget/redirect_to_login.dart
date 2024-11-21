@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class RedirectToLogin extends StatefulWidget {
   const RedirectToLogin({super.key});
@@ -36,16 +37,9 @@ class _RedirectToSignupState extends State<RedirectToLogin> {
   Widget gesture(Widget child) {
     return GestureDetector(
       onTap: () {
+        context.go('/login');
         setState(() {
           long_pressed = true;
-          Future.delayed(
-            const Duration(seconds: 3),
-                () {
-              setState(() {
-                long_pressed = false;
-              });
-            },
-          );
         });
       },
       onLongPressDown: (details) {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:swine_care/feature/loadingscreen/presentation/widget/SkipDoneButton.dart';
 
 class RedirectToSignup extends StatefulWidget {
   const RedirectToSignup({super.key});
@@ -36,16 +38,9 @@ class _RedirectToSignupState extends State<RedirectToSignup> {
   Widget gesture(Widget child) {
     return GestureDetector(
       onTap: () {
+        context.go('/signup');
         setState(() {
           long_pressed = true;
-          Future.delayed(
-            const Duration(seconds: 3),
-            () {
-              setState(() {
-                long_pressed = false;
-              });
-            },
-          );
         });
       },
       onLongPressDown: (details) {
