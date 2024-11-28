@@ -23,7 +23,7 @@ PageController controller = PageController();
                 onTap: (){
                   controller.jumpToPage(2);
                 },
-                child: const Text("skip")
+                child: const Text("Skip")
             ),
 
             SmoothPageIndicator(
@@ -35,7 +35,7 @@ PageController controller = PageController();
                 onTap: (){
                  context.go('/login');
                 },
-                child: const Text("done")
+                child: const Text("Get Started")
             )
 
             // NEXT BUTTON
@@ -45,7 +45,7 @@ PageController controller = PageController();
                       duration: const Duration(
                           milliseconds: 300), curve: Curves.easeIn);
                 },
-                child: const Text("next")
+                child: const Text("Next")
             )
 
           ],
