@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:swine_care/Route/routes.dart';
-import 'package:swine_care/feature/login/presentation/pages/Login.dart';
 
 class SkipDoneButton extends StatelessWidget {
   SkipDoneButton({super.key, required this.controller, required this.onLastPage});

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:swine_care/colors/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class IntroPage1 extends StatelessWidget {
