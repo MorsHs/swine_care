@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:swine_care/colors/colors.dart';
 
 class SkipDoneButton extends StatelessWidget {
-  SkipDoneButton({super.key, required this.controller, required this.onLastPage});
+   SkipDoneButton({super.key, required this.controller, required this.onLastPage});
 
 PageController controller = PageController();
   bool onLastPage = false;
-
 
   @override
   Widget build(BuildContext context) {
