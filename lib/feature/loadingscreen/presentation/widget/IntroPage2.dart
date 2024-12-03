@@ -8,28 +8,39 @@ class IntroPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHight = MediaQuery.of(context).size.height;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Keep your pigs safe",
+            const Text(" How It Works",
               style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                   color: appBlack
-              ),),
+              ),
+            ),
              SizedBox(
                width: screenWidth * 0.8,
-               height: screenHight * 0.4,
-               child:  Lottie.asset("assets/Animations/AnimationPigButterfly.json"),
+               height: screenHeight * 0.4,
+               child:  Lottie.asset("assets/Animations/AnimationCamera1.json"),
              ),
-
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
+              child: Text("Simply upload a photo or provide details about your pig's symptoms."
+                  " Our AI-powered system analyzes the information and offers "
+                  "tailored suggestions to identify potential "
+                  "ASF risks and ensure prompt care.",
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                    fontSize: 16
+               ),
+              ),
+            )
           ],
         ),
-
       ),
     );
   }
