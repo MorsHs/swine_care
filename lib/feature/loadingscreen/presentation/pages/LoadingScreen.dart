@@ -20,8 +20,6 @@ class _LoadingscreenState extends State<Loadingscreen> {
     return Scaffold(
      body: Stack(
        children: [
-
-         //page view
          PageView(
            // check of the page is onthelast
            onPageChanged: (index){
@@ -30,13 +28,11 @@ class _LoadingscreenState extends State<Loadingscreen> {
              });
            },
            controller: _controller,
-
            children: const [
             IntroPage1(),
              IntroPage2(),
              IntroPage3(),
            ],
-
          ),
         SkipDoneButton(
             controller: _controller,

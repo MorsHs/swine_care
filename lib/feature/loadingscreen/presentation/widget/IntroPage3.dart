@@ -8,24 +8,38 @@ class IntroPage3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screemHeight = MediaQuery.of(context).size.height;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("ratatowe",
+            const Text("Assurance and Support",
             style: TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
                 color: appBlack
-            ),),
+              ),
+            ),
             SizedBox(
               width: screenWidth * 0.8,
-              height: screemHeight * 0.4,
-              child: Lottie.asset("assets/Animations/AnimationWomen.json"),
+              height: screenHeight * 0.4,
+              child: Lottie.asset("assets/Animations/AnimationSupport1.json"),
             ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text("Rest easy knowing your pigs are in safe hands."
+                  " Our goal is to empower farmers with actionable"
+                  " insights for managing ASF effectively. "
+                  "Start now to protect your pigs and your livelihood!",
+              style: TextStyle(
+                height: 1.5,
+                fontStyle: FontStyle.italic,
+                fontSize: 16
+                ),
+              ),
+            )
           ],
         )
       ),
