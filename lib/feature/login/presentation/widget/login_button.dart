@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key});
@@ -8,7 +9,9 @@ class LoginButton extends StatelessWidget {
     return FractionallySizedBox(
       widthFactor: 0.8,
       child: FilledButton(
-        onPressed: () {},
+        onPressed: () {
+          context.go('/homepage');
+        },
         child: const Text("Login"),
       ),
     );

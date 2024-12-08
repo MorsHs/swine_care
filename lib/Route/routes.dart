@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:swine_care/feature/homepage/presentation/pages/HomePage.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/pages/LoadingScreen.dart';
 import 'package:swine_care/feature/login/presentation/pages/Login.dart';
 import 'package:swine_care/feature/register/presentation/pages/Register.dart';
@@ -20,6 +21,10 @@ class RouterConfiguration {
         GoRoute(
           path: '/signup',
           builder: (context, state) =>  const Register(),
+        ),
+        GoRoute(
+          path: '/homepage',
+          builder: (context, state) =>  const HomePage(),
         )
 
       ],
