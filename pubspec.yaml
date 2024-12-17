@@ -69,6 +69,7 @@ flutter:
   assets:
     - assets/Animations/
     - assets/Logo/swinecarelogo.png
+    - assets/images/
 
 
 
