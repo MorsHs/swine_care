@@ -16,8 +16,8 @@ class IntroPage1 extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Welcome to SwineCare",
-              style: GoogleFonts.ubuntu(
-                  fontSize: 26
+              style: GoogleFonts.modak(
+                  fontSize: 28
               ),
             ),
             SizedBox(
@@ -27,8 +27,8 @@ class IntroPage1 extends StatelessWidget {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.0),
-              child:  Text("Your smart assistant for swine health! With the power of AI,"
-                          " we help you make informed decisions for your pig's well-being. ",
+              child:  Text("AI-powered assistant for swine health,"
+                           " helping you make smart care decisions.",
                 style: TextStyle(
                   height: 1.5,
                   fontSize: 16,
