@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:swine_care/feature/loadingscreen/presentation/widget/SkipDoneButton.dart';
+import 'package:swine_care/feature/loadingscreen/presentation/widget/PageIndicator.dart';
 
 class RedirectToSignup extends StatefulWidget {
   const RedirectToSignup({super.key});
