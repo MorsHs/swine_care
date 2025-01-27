@@ -30,7 +30,7 @@ class IntroPage3 extends StatelessWidget {
                 SizedBox(
                   width: screenWidth * 0.8,
                   height: screenHeight * 0.4,
-                  child: Lottie.asset("assets/Animations/AnimationSupport1.json"),
+                  child: Lottie.asset("assets/Animations/AnimationAnalysis.json"),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
