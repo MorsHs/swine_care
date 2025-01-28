@@ -12,7 +12,7 @@ class SaveButton extends StatelessWidget {
 
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.teal,
+          backgroundColor: Colors.blueAccent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

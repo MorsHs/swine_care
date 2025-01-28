@@ -53,7 +53,7 @@ class CameraContainer extends StatelessWidget {
                 style: GoogleFonts.concertOne(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.teal,
+                  color: Colors.blueAccent,
                 ),
               ),
             ],

@@ -18,36 +18,37 @@ bool onLastPage = false;
 class _LoadingscreenState extends State<Loadingscreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          // PageView for the intro screens
-          PageView(
-            onPageChanged: (index) {
-              setState(() {
-                onLastPage = (index == 2); // Check if it's the last page
-              });
-            },
-            controller: _controller,
-            children: const [
-              IntroPage1(),
-              IntroPage2(),
-              IntroPage3(),
-            ],
-          ),
-          PageIndicator(
-            controller: _controller,
-          ),
-          Positioned(
-            bottom: 40,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: GetStarted(),
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            PageView(
+              onPageChanged: (index) {
+                setState(() {
+                  onLastPage = (index == 2);
+                });
+              },
+              controller: _controller,
+              children: const [
+                IntroPage1(),
+                IntroPage2(),
+                IntroPage3(),
+              ],
             ),
-          ),
-          SizedBox(height: 20),
-        ],
+            PageIndicator(
+              controller: _controller,
+            ),
+            const Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: GetStarted(),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }

@@ -10,7 +10,6 @@ class IntroPage1 extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-
       return
          Container(
           padding: EdgeInsets.only(top: 50,left: 20,right: 20),
@@ -18,9 +17,14 @@ class IntroPage1 extends StatelessWidget {
             child:  Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("Welcome to SwineCare",
+                Text("Welcome to",
                   style: GoogleFonts.modak(
-                      fontSize: 50,
+                      fontSize: 24,
+                  ),
+                ),
+                Text("SwineCare",
+                  style: GoogleFonts.modak(
+                    fontSize: 40,
                   ),
                 ),
                 SizedBox(
