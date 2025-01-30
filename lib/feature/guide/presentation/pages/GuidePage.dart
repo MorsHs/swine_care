@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/EmergencyMeasures.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/FarmManagement.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/StartingSwineFarm.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/DiseasePrevention.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/SwineCareGuidesLabel.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/SwineCareGuidesLabel2.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/EmergencyMeasures.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/FarmManagement.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/StartingSwineFarm.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/DiseasePrevention.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/SwineCareGuidesLabel.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/SwineCareGuidesLabel2.dart';
 
 class GuidePage extends StatelessWidget {
   const GuidePage({super.key});
@@ -14,13 +14,13 @@ class GuidePage extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
+          margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
           child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SwineCareGuidesLabel(),
               SwineCareGuidesLabel2(),
-              SizedBox(height: 10),
+              SizedBox(height: 4),
               StartingSwineFarm(),
               SizedBox(height: 10),
               FarmManagement(),

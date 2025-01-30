@@ -21,14 +21,14 @@ class IntroPage3 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                  Text("Assurance and",
-                style:GoogleFonts.modak(
-                    fontSize: 36,
+                style:GoogleFonts.concertOne(
+                    fontSize: 40,
                   color: appBlack
                   ),
                 ),
                 Text("Support",
-                  style:GoogleFonts.modak(
-                      fontSize: 36,
+                  style:GoogleFonts.concertOne(
+                      fontSize: 40,
                       color: appBlack
                   ),
                  ),

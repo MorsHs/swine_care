@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:swine_care/feature/guide/presentation/pages/GuidePage.dart';
+import 'package:swine_care/feature/guide/presentation/pages/SwineFarmingPage.dart';
 import 'package:swine_care/feature/homepage/presentation/pages/HomePage.dart';
 import 'package:swine_care/feature/intro/presentation/pages/IntroPage.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/pages/LoadingScreen.dart';
@@ -39,6 +40,9 @@ class RouterConfiguration {
         GoRoute(
           path: '/setting',
           builder: (context, state) =>  const Settings(),
+        ),
+        GoRoute(path: '/swine-farming',
+        builder: (context, state) => const SwineFarmingPage()
         )
 
       ],

@@ -18,13 +18,13 @@ class IntroPage1 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text("Welcome to",
-                  style: GoogleFonts.modak(
-                      fontSize: 24,
+                  style: GoogleFonts.concertOne(
+                      fontSize: 30,
                   ),
                 ),
                 Text("SwineCare",
-                  style: GoogleFonts.modak(
-                    fontSize: 40,
+                  style: GoogleFonts.concertOne(
+                    fontSize: 42,
                   ),
                 ),
                 SizedBox(
