@@ -11,8 +11,8 @@ class IntroPage1 extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
 
-      return Scaffold(
-        body: Container(
+      return
+         Container(
           padding: EdgeInsets.only(top: 50,left: 20,right: 20),
           child: Center(
             child:  Column(
@@ -20,8 +20,7 @@ class IntroPage1 extends StatelessWidget {
               children: [
                 Text("Welcome to SwineCare",
                   style: GoogleFonts.modak(
-                      fontSize: 40,
-                    color: Color(0xFFF35E7A),
+                      fontSize: 50,
                   ),
                 ),
                 SizedBox(
@@ -42,8 +41,8 @@ class IntroPage1 extends StatelessWidget {
               ],
             )
           ),
-        ),
-      );
+        );
+
 
   }
 }

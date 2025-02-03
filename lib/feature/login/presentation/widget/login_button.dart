@@ -10,7 +10,7 @@ class LoginButton extends StatelessWidget {
       widthFactor: 0.8,
       child: FilledButton(
         onPressed: () {
-          context.go('/homepage');
+          context.go('/guide');
         },
         child: const Text("Login"),
       ),
