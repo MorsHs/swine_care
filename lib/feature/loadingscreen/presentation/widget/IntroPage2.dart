@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:swine_care/colors/colors.dart';
 
 class IntroPage2 extends StatelessWidget {
   const IntroPage2({super.key});
@@ -11,34 +10,36 @@ class IntroPage2 extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(" How It Works",
-              style: GoogleFonts.modak(
-                  fontSize: 26
+
+      return Container(
+        padding: EdgeInsets.only(top: 50,left: 20,right: 20),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(" How It Works",
+                style: GoogleFonts.modak(
+                    fontSize: 40
+                ),
               ),
-            ),
-             SizedBox(
-               width: screenWidth * 0.8,
-               height: screenHeight * 0.4,
-               child:  Lottie.asset("assets/Animations/AnimationCamera1.json"),
-             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.0),
-              child: Text("AI-powered assistant for swine health,"
-                    " helping you make smart care decisions.",
-              style: TextStyle(
-                fontStyle: FontStyle.italic,
-                    fontSize: 16
+               SizedBox(
+                 width: screenWidth * 0.8,
+                 height: screenHeight * 0.4,
+                 child:  Lottie.asset("assets/Animations/AnimationHowItWorks.json"),
                ),
-              ),
-            )
-          ],
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0),
+                child: Text("AI-powered assistant for \n swine health helping you make\n smart care decisions.",
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                      fontSize: 24
+                 ),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+
   }
 }
