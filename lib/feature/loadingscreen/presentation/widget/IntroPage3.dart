@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:swine_care/colors/colors.dart';
 
@@ -15,11 +16,11 @@ class IntroPage3 extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Assurance and Support",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.normal,
-                color: appBlack
+             Text("Assurance and Support",
+            style:GoogleFonts.modak(
+                fontSize: 26,
+              color: appBlack
+
               ),
             ),
             SizedBox(
@@ -29,10 +30,8 @@ class IntroPage3 extends StatelessWidget {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text("Rest easy knowing your pigs are in safe hands."
-                  " Our goal is to empower farmers with actionable"
-                  " insights for managing ASF effectively. "
-                  "Start now to protect your pigs and your livelihood!",
+              child: Text("Keep your pigs safe with actionable "
+                  "AI insights to manage ASF effectively.",
               style: TextStyle(
                 height: 1.5,
                 fontStyle: FontStyle.italic,

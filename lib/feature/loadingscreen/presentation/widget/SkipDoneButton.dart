@@ -21,16 +21,24 @@ PageController controller = PageController();
                 controller.jumpToPage(2);
               },
               child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey), // Adjust color as needed
-                  borderRadius: BorderRadius.circular(10), // Optional: rounded corners
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), // Add padding inside the border
-                child: const Text(
-                  "Skip",
-                  style: TextStyle(color: Colors.black), // Adjust text style as needed
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Skip",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    SizedBox(width: 4), // Adds spacing between text and icon
+                    Icon(
+                      Icons.arrow_forward, // Skip icon
+                      color: Colors.black,
+                      size: 15, // Adjust size as needed
+                    ),
+                  ],
                 ),
               ),
+
             ),
 
             SmoothPageIndicator(
@@ -46,15 +54,17 @@ PageController controller = PageController();
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.blueAccent.shade100,
-                  border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: const Text(
                   "Get Started",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: Colors.black
+                  ),
                 ),
               ),
+
             )
             // NEXT BUTTON
                 : GestureDetector(
@@ -65,16 +75,24 @@ PageController controller = PageController();
                 );
               },
               child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(10),
-                ),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: const Text(
-                  "Next",
-                  style: TextStyle(color: Colors.black),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min, // Keep the row as compact as possible
+                  children: [
+                    Text(
+                      "Next",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    SizedBox(width: 4),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.black,
+                      size: 16, // Adjust icon size
+                    ),
+                  ],
                 ),
               ),
+
             ),
           ],
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:swine_care/colors/colors.dart';
 
@@ -15,11 +16,9 @@ class IntroPage2 extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(" How It Works",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal,
-                  color: appBlack
+            Text(" How It Works",
+              style: GoogleFonts.modak(
+                  fontSize: 26
               ),
             ),
              SizedBox(
@@ -29,10 +28,8 @@ class IntroPage2 extends StatelessWidget {
              ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30.0),
-              child: Text("Simply upload a photo or provide details about your pig's symptoms."
-                  " Our AI-powered system analyzes the information and offers "
-                  "tailored suggestions to identify potential "
-                  "ASF risks and ensure prompt care.",
+              child: Text("AI-powered assistant for swine health,"
+                    " helping you make smart care decisions.",
               style: TextStyle(
                 fontStyle: FontStyle.italic,
                     fontSize: 16
