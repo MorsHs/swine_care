@@ -34,7 +34,7 @@ class CameraGrid extends StatelessWidget {
           style: GoogleFonts.concertOne(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.teal,
+            color: Colors.blueAccent,
           ),
         ),
         const SizedBox(height: 16),

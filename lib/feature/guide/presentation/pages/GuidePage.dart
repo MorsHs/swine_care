@@ -3,6 +3,8 @@ import 'package:swine_care/feature/guide/presentation/widgets/EmergencyMeasures.
 import 'package:swine_care/feature/guide/presentation/widgets/FarmManagement.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/StartingSwineFarm.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/DiseasePrevention.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/SwineCareGuidesLabel.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/SwineCareGuidesLabel2.dart';
 
 class GuidePage extends StatelessWidget {
   const GuidePage({super.key});
@@ -12,24 +14,12 @@ class GuidePage extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 50, left: 20, right: 20),
-          child: Column(
+          margin: const EdgeInsets.only(top: 50, left: 20, right: 20),
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "SwineCare Guides",
-                style: TextStyle(
-                    color: Color(0xFFF35E7A),
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "Start now mga sers",
-                style: TextStyle(
-                    color: Colors.black38,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w300),
-              ),
+              SwineCareGuidesLabel(),
+              SwineCareGuidesLabel2(),
               SizedBox(height: 10),
               StartingSwineFarm(),
               SizedBox(height: 10),

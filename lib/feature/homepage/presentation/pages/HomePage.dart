@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/CameraGrid.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/CheckerButton.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/HomeLabel.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/SaveButton.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,34 +34,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            SizedBox(
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.dehaze),
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: Colors.teal,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              "Home",
-              style: GoogleFonts.concertOne(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+           const HomeLabel(),
             const SizedBox(height: 16),
 
-            // Main Container
             Container(
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.all(16),
@@ -104,14 +84,12 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            SizedBox(height: 15),
-            CheckerButton(),
-            SizedBox(height: 20),
-            SaveButton(),
-            SizedBox(height: 2),
+            const SizedBox(height: 15),
+            const CheckerButton(),
+            const SizedBox(height: 50),
+            const SaveButton(),
+            const SizedBox(height: 20),
           ],
-
-
         ),
       ),
     );

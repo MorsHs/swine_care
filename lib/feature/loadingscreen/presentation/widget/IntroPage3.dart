@@ -20,13 +20,18 @@ class IntroPage3 extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                 Text("Assurance and Support",
+                 Text("Assurance and",
                 style:GoogleFonts.modak(
-                    fontSize: 40,
+                    fontSize: 36,
                   color: appBlack
-
                   ),
                 ),
+                Text("Support",
+                  style:GoogleFonts.modak(
+                      fontSize: 36,
+                      color: appBlack
+                  ),
+                 ),
                 SizedBox(
                   width: screenWidth * 0.8,
                   height: screenHeight * 0.4,
