@@ -19,7 +19,7 @@ class IntroPage2 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(" How It Works",
-                  style: GoogleFonts.modak(
+                  style: GoogleFonts.concertOne(
                       fontSize: 40
                   ),
                 ),
