@@ -51,6 +51,7 @@ class DrawerMenu extends StatelessWidget {
             ),
 
             const Spacer(),
+
             _buildDrawerItem(
               context,
               icon: Icons.logout_outlined,
