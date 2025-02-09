@@ -13,7 +13,7 @@ class BackButtonToGuidePage extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(60),
-          color: Colors.black.withOpacity(0.1),
+          color: Colors.black38,
         ),
         padding: const EdgeInsets.all(8),
         child: const Icon(
