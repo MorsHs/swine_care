@@ -50,7 +50,7 @@ class CameraContainer extends StatelessWidget {
               Text(
                 text,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.concertOne(
+                style: GoogleFonts.saira(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: Colors.blueAccent,

@@ -21,11 +21,19 @@ class IntroPage3 extends StatelessWidget {
             children: [
               Text(
                 "Assurance and",
-                style: GoogleFonts.concertOne(fontSize: 40, color: appBlack),
+                style: GoogleFonts.saira(
+                    fontSize: 40,
+                    color: appBlack,
+                    fontWeight: FontWeight.bold
+                ),
               ),
               Text(
                 "Support",
-                style: GoogleFonts.concertOne(fontSize: 40, color: appBlack),
+                style: GoogleFonts.saira(
+                    fontSize: 40,
+                    color: appBlack,
+                    fontWeight: FontWeight.bold
+                ),
               ),
               SizedBox(
                 width: screenWidth * 0.8,

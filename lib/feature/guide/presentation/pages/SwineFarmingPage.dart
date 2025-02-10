@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/BackButton.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/HartButton.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/SwineFarmingWidgets/DescriptionText.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/SwineFarmingWidgets/GuideItem.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/SwineFarmingWidgets/ImageContainer.dart';
@@ -11,13 +12,23 @@ class SwineFarmingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BackButtonToGuidePage(),
+
+              Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BackButtonToGuidePage(),
+
+                  HeartButton(),
+                ],
+              ),
+
 
               const SectionHeader(title: "Keeping Your Pigs Healthy"),
               const ImageContainer(imagePath: "assets/images/swinefarmingimages/youngpigs.jpg"),

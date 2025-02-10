@@ -18,11 +18,17 @@ class IntroPage1 extends StatelessWidget {
           children: [
             Text(
               "Welcome to",
-              style: GoogleFonts.concertOne(fontSize: 30),
+              style: GoogleFonts.saira(
+                  fontSize: 30,
+                  // fontWeight: FontWeight.bold
+              ),
             ),
             Text(
               "SwineCare",
-              style: GoogleFonts.concertOne(fontSize: 42),
+              style: GoogleFonts.saira(
+                  fontSize: 50,
+                  fontWeight:FontWeight.bold
+              ),
             ),
             SizedBox(
               width: screenWidth * 0.8,

@@ -18,7 +18,9 @@ class IntroPage2 extends StatelessWidget {
           children: [
             Text(
               "How It Works",
-              style: GoogleFonts.concertOne(fontSize: 40),
+              style: GoogleFonts.saira(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold),
             ),
             SizedBox(
               width: screenWidth * 0.8,
