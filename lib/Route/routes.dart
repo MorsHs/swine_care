@@ -1,6 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:swine_care/feature/guide/presentation/pages/GuidePage.dart';
 import 'package:swine_care/feature/guide/presentation/pages/SwineFarmingPage.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/EmergencyTips.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/PreventingAfricanSwineFever.dart';
 import 'package:swine_care/feature/homepage/presentation/pages/HomePage.dart';
 import 'package:swine_care/feature/intro/presentation/pages/IntroPage.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/pages/LoadingScreen.dart';
@@ -43,7 +45,13 @@ class RouterConfiguration {
         ),
         GoRoute(path: '/swine-farming',
         builder: (context, state) => const SwineFarmingPage()
-        )
+        ),
+        GoRoute(path: '/emergency-tips',
+            builder: (context, state) => const EmergencyMeasuresForDiseaseOutbreaks()
+        ),
+        GoRoute(path: '/preventing_asf',
+            builder: (context, state) => const TipsToAvoidSickPigs()
+        ),
 
       ],
     );

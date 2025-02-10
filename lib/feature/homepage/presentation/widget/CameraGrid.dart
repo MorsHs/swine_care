@@ -31,7 +31,7 @@ class CameraGrid extends StatelessWidget {
       children: [
         Text(
           "Upload Images of Different Pig Parts",
-          style: GoogleFonts.concertOne(
+          style: GoogleFonts.saira(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.blueAccent,

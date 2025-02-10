@@ -8,7 +8,7 @@ class HomeLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       "Home",
-      style: GoogleFonts.concertOne(
+      style: GoogleFonts.saira(
         fontSize: 24,
         fontWeight: FontWeight.bold,
       ),

@@ -11,47 +11,52 @@ class IntroPage3 extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-
     return Scaffold(
       backgroundColor: Colors.white,
-     body: Container(
-        padding: EdgeInsets.only(top: 50,left: 20,right: 20),
+      body: Container(
+        padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
         child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                 Text("Assurance and",
-                style:GoogleFonts.concertOne(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                "Assurance and",
+                style: GoogleFonts.saira(
                     fontSize: 40,
-                  color: appBlack
-                  ),
+                    color: appBlack,
+                    fontWeight: FontWeight.bold
                 ),
-                Text("Support",
-                  style:GoogleFonts.concertOne(
-                      fontSize: 40,
-                      color: appBlack
-                  ),
-                 ),
-                SizedBox(
-                  width: screenWidth * 0.8,
-                  height: screenHeight * 0.4,
-                  child: Lottie.asset("assets/Animations/AnimationAnalysis.json"),
+              ),
+              Text(
+                "Support",
+                style: GoogleFonts.saira(
+                    fontSize: 40,
+                    color: appBlack,
+                    fontWeight: FontWeight.bold
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text("Keep your pigs safe with\n actionable AI insights to\n manage ASF effectively.",
+              ),
+              SizedBox(
+                width: screenWidth * 0.8,
+                height: screenHeight * 0.4,
+                child: Lottie.asset("assets/Animations/AnimationAnalysis.json"),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  "With SwineCare, you get real-time health insights and early alerts for ASF and other diseases. "
+                      "Our AI-driven support ensures your pigs receive the best care, preventing outbreaks and reducing risks for your farm.",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     height: 1.5,
                     fontStyle: FontStyle.italic,
-                    fontSize: 24
-                    ),
+                    fontSize: 18,
                   ),
-                )
-              ],
-            )
+                ),
+              ),
+            ],
           ),
+        ),
       ),
     );
-
   }
 }

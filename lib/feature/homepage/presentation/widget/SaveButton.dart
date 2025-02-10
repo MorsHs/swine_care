@@ -23,8 +23,9 @@ class SaveButton extends StatelessWidget {
         ),
         child: Text(
           "SAVE",
-          style: GoogleFonts.concertOne(
+          style: GoogleFonts.saira(
             color: Colors.white,
+            fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),
