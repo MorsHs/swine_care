@@ -19,7 +19,7 @@ class BackButtonToGuidePage extends StatelessWidget {
         child: const Icon(
           Icons.arrow_back_ios,
           size: 18,
-          color: Colors.black54,
+          color: Colors.black26,
         ),
       ),
     );
