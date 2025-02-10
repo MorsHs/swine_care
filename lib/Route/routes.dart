@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:swine_care/feature/guide/presentation/pages/BestPracticesPage.dart';
 import 'package:swine_care/feature/guide/presentation/pages/GuidePage.dart';
 import 'package:swine_care/feature/guide/presentation/pages/SwineFarmingPage.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/EmergencyTips.dart';
@@ -46,9 +45,6 @@ class RouterConfiguration {
         ),
         GoRoute(path: '/swine-farming',
         builder: (context, state) => const SwineFarmingPage()
-        ),
-        GoRoute(path: '/best-practices',
-        builder: (context, state) => const BestPracticesPage()
         ),
         GoRoute(path: '/emergency-tips',
             builder: (context, state) => const EmergencyMeasuresForDiseaseOutbreaks()

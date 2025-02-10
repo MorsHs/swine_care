@@ -83,7 +83,7 @@ class DrawerMenu extends StatelessWidget {
     );
   }
 
-  //profile info, wla nanako himog widgets kay gravity na payts nani
+  //profile info
   Widget _buildProfileSection() {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
