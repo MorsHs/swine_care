@@ -56,7 +56,7 @@ class DrawerMenu extends StatelessWidget {
               context,
               icon: Icons.logout_outlined,
               title: "Logout",
-              route: "  ",
+              route: "/login",
             ),
             const SizedBox(height: 10),
 
