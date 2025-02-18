@@ -12,7 +12,7 @@ class _IntroPageState extends State<IntroPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 600), () {
+    Future.delayed(const Duration(milliseconds: 800), () {
       context.go('/loading-screen');
     });
   }
@@ -24,8 +24,8 @@ class _IntroPageState extends State<IntroPage> {
         child: Image.asset(
           "Assets/Logo/swinecarelogo.png",
           fit: BoxFit.contain,
-          height: 150,
-          width: 150,
+          height: 160,
+          width: 160,
         ),
       ),
     );
