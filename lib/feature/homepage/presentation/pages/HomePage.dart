@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/CameraGrid.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/CheckerButton.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/HomeLabel.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/SaveButton.dart';
+import 'package:swine_care/global_widget/AdvanceDrawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,15 +33,18 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  final _drawerController = AdvancedDrawerController();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DrawerMenu(
+      drawerController: _drawerController,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-           const HomeLabel(),
+            const HomeLabel(),
             const SizedBox(height: 16),
 
             Container(
