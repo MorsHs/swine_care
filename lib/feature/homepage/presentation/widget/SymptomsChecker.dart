@@ -37,7 +37,7 @@ class _SymptomsCheckerState extends State<SymptomsChecker> {
                   question,
                   style: GoogleFonts.concertOne(
                     fontSize: 16,
-                    color: Colors.blueAccent,
+                    color: Colors.black,
                   ),
                 ),
               ),

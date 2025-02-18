@@ -56,7 +56,7 @@ class DrawerMenu extends StatelessWidget {
               context,
               icon: Icons.logout_outlined,
               title: "Logout",
-              route: "  ",
+              route: "/login",
             ),
             const SizedBox(height: 10),
 
@@ -72,7 +72,12 @@ class DrawerMenu extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Swine Care"),
+          // title: Text("Swine Care",
+          //   style: GoogleFonts.saira(
+          //     fontWeight: FontWeight.bold,
+          //         fontSize: 18
+          //   ),
+          // ),
           leading: IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () => drawerController.showDrawer(),

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class BackButtonToGuidePage extends StatelessWidget {
-  const BackButtonToGuidePage({super.key});
+class HeartButton extends StatelessWidget {
+  const HeartButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return   GestureDetector(
+    return GestureDetector(
       onTap: () {
-        context.go('/guide');
+        context.go('/');
       },
       child: Container(
         decoration: BoxDecoration(
@@ -17,9 +17,9 @@ class BackButtonToGuidePage extends StatelessWidget {
         ),
         padding: const EdgeInsets.all(8),
         child: const Icon(
-          Icons.arrow_back_ios,
+          Icons.library_add_check,
           size: 18,
-          color: Colors.black45,
+          color: Colors.blueAccent,
         ),
       ),
     );
