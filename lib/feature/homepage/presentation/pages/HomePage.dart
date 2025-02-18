@@ -7,6 +7,7 @@ import 'package:swine_care/feature/homepage/presentation/widget/CheckerButton.da
 import 'package:swine_care/feature/homepage/presentation/widget/HomeLabel.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/SaveButton.dart';
 import 'package:swine_care/global_widget/AdvanceDrawer.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/SymptomsChecker.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -41,60 +42,64 @@ class _HomePageState extends State<HomePage> {
       drawerController: _drawerController,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const HomeLabel(),
-            const SizedBox(height: 16),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const HomeLabel(),
+              const SizedBox(height: 16),
 
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(20),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: CameraGrid(
+                  selectedImageEars: selectedImageEars,
+                  selectedImageSkin: selectedImageSkin,
+                  selectedImageLegs: selectedImageLegs,
+                  selectedImageNose: selectedImageNose,
+                  onImageEarsSelected: () async {
+                    await getImage(ImageSource.gallery, (image) {
+                      setState(() {
+                        selectedImageEars = image;
+                      });
+                    });
+                  },
+                  onImageSkinSelected: () async {
+                    await getImage(ImageSource.gallery, (image) {
+                      setState(() {
+                        selectedImageSkin = image;
+                      });
+                    });
+                  },
+                  onImageLegsSelected: () async {
+                    await getImage(ImageSource.gallery, (image) {
+                      setState(() {
+                        selectedImageLegs = image;
+                      });
+                    });
+                  },
+                  onImageNoseSelected: () async {
+                    await getImage(ImageSource.gallery, (image) {
+                      setState(() {
+                        selectedImageNose = image;
+                      });
+                    });
+                  },
+                ),
               ),
-              child: CameraGrid(
-                selectedImageEars: selectedImageEars,
-                selectedImageSkin: selectedImageSkin,
-                selectedImageLegs: selectedImageLegs,
-                selectedImageNose: selectedImageNose,
-                onImageEarsSelected: () async {
-                  await getImage(ImageSource.gallery, (image) {
-                    setState(() {
-                      selectedImageEars = image;
-                    });
-                  });
-                },
-                onImageSkinSelected: () async {
-                  await getImage(ImageSource.gallery, (image) {
-                    setState(() {
-                      selectedImageSkin = image;
-                    });
-                  });
-                },
-                onImageLegsSelected: () async {
-                  await getImage(ImageSource.gallery, (image) {
-                    setState(() {
-                      selectedImageLegs = image;
-                    });
-                  });
-                },
-                onImageNoseSelected: () async {
-                  await getImage(ImageSource.gallery, (image) {
-                    setState(() {
-                      selectedImageNose = image;
-                    });
-                  });
-                },
-              ),
-            ),
-            const SizedBox(height: 15),
-            const CheckerButton(),
-            const SizedBox(height: 50),
-            const SaveButton(),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 15),
+              const CheckerButton(),
+              const SizedBox(height: 10),
+              const SymptomsChecker(),
+              const SizedBox(height: 50),
+              const SaveButton(),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
