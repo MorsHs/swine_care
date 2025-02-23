@@ -13,10 +13,16 @@ class _IntroPageState extends State<IntroPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 3000), () {
-      context.go('/loading-screen');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 2000), () {
+        if (mounted) {
+          context.go('/loading-screen');
+        }
+      }
+      );
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,7 @@ class _IntroPageState extends State<IntroPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              "Assets/Logo/swinecarelogo.png",
+              'assets/Logo/swinecarelogo.png',
               fit: BoxFit.contain,
               height: 180,
               width: 180,

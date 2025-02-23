@@ -6,12 +6,12 @@ class SwineCareGuidesLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Text(
-      "SwineCare Guides",
-      style: GoogleFonts.saira(
-      fontSize: 30,
-      fontWeight: FontWeight.bold,
-    ),
+    return Text(
+      "SwineCare Health & Farm Insights",
+      style: GoogleFonts.poppins(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }

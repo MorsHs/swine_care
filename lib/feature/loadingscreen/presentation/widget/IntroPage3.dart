@@ -12,14 +12,9 @@ class IntroPage3 extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(children: [
-        Positioned.fill(
-            child: Image.asset(
-                'assets/images/loadingscreenbackground/background6.jpg',
-            fit: BoxFit.cover,)
-        ),
+      body:
         Container(
-          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 90, left: 20, right: 20),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -29,27 +24,25 @@ class IntroPage3 extends StatelessWidget {
                   width: screenWidth * 0.8,
                   height: screenHeight * 0.4,
                   child:
-                      Lottie.asset("assets/Animations/AnimationAnalysis.json"),
+                      Lottie.asset("assets/Animations/AnimationAnalysis.json",
+                          frameRate: FrameRate.max),
                 ),
                 Text(
                   "Assurance and Support",
-                  style: GoogleFonts.saira(
-                    fontSize: 28,
+                  style: GoogleFonts.poppins(
+                    fontSize: 24,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,),
                 ),
-                SizedBox(height: 10),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
-                    "With SwineCare, you get real-time health insights and early alerts for ASF and other diseases. "
-                    "Our AI-driven support ensures your pigs receive the best care, preventing outbreaks and reducing risks for your farm.",
+                    "Get real-time health alerts and AI-driven support to prevent ASF and other diseases, ensuring your farm’s safety.",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      height: 1.5,
-                      fontStyle: FontStyle.italic,
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
-                        color: Colors.black
+                      color: Colors.grey[700],
                     ),
                   ),
                 ),
@@ -57,7 +50,7 @@ class IntroPage3 extends StatelessWidget {
             ),
           ),
         ),
-      ]),
-    );
+      );
+
   }
 }
