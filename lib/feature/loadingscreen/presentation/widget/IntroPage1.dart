@@ -9,10 +9,10 @@ class IntroPage1 extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-//dsadasd
+
     return
         Container(
-          padding: const EdgeInsets.only(top: 90, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -27,7 +27,7 @@ class IntroPage1 extends StatelessWidget {
                 Text(
                   "Welcome to SwineCare",
                   style: GoogleFonts.poppins(
-                      fontSize: 24,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.black
                   ),

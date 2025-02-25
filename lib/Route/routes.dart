@@ -14,14 +14,14 @@ class RouterConfiguration {
   GoRouter routes() {
     return GoRouter(
       // redirect: (context, state) =>, RESERVE CODE FOR REDIRECTION INCASE IF USER IS LOGGED IN YOU CAN TRANSFER THEM TO LOGIN OR MAIN SCREEN
-      initialLocation: '/intro',
+      initialLocation: '/loading-screen',
       routes: [
         GoRoute(path: '/intro',
         builder: (context, state) => const IntroPage()
         ),
         GoRoute(
           path: '/loading-screen',
-          builder: (context, state) =>  const Loadingscreen(),
+          builder: (context, state) =>  const LoadingScreen(),
         ),
         GoRoute(
           path: '/login',

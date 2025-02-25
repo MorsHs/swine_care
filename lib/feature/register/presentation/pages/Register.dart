@@ -22,6 +22,7 @@ class Register extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Logoimage(),
+                  SizedBox(height: 50),
                   LoginOrCreateLabel(label: "Create Account"),
                   Textfieldcontainer(
                     isHidden: false,
