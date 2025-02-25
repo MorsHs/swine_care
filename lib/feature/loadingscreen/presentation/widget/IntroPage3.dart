@@ -14,7 +14,7 @@ class IntroPage3 extends StatelessWidget {
       backgroundColor: Colors.white,
       body:
         Container(
-          padding: const EdgeInsets.only(top: 90, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -28,9 +28,9 @@ class IntroPage3 extends StatelessWidget {
                           frameRate: FrameRate.max),
                 ),
                 Text(
-                  "Assurance and Support",
+                  "Expert Guidance & Support",
                   style: GoogleFonts.poppins(
-                    fontSize: 24,
+                    fontSize: 22,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,),
                 ),

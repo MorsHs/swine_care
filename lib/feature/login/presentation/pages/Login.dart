@@ -6,7 +6,6 @@ import 'package:swine_care/feature/login/presentation/widget/redirect_to_signup.
 import 'package:swine_care/global_widget/Login_or_create_label.dart';
 import 'package:swine_care/global_widget/LogoImage.dart';
 import 'package:swine_care/global_widget/TextFieldContainer.dart';
-import '../../../register/presentation/widget/redirect_to_login.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -23,6 +22,7 @@ class Login extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Logoimage(),
+                  SizedBox(height: 60),
                   LoginOrCreateLabel(label: "Login"),
                   Textfieldcontainer(
                     isHidden: false,

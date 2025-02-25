@@ -5,17 +5,17 @@ import 'package:swine_care/feature/loadingscreen/presentation/widget/IntroPage2.
 import 'package:swine_care/feature/loadingscreen/presentation/widget/IntroPage3.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/widget/PageIndicator.dart';
 
-class Loadingscreen extends StatefulWidget {
-  const Loadingscreen({super.key});
+class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({super.key});
 
   @override
-  State<Loadingscreen> createState() => _LoadingscreenState();
+  State<LoadingScreen> createState() => _LoadingScreenState();
 }
 
 PageController _controller = PageController();
 bool onLastPage = false;
 
-class _LoadingscreenState extends State<Loadingscreen> {
+class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

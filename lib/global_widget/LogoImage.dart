@@ -7,7 +7,7 @@ class Logoimage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Image(
       image: AssetImage('assets/Logo/swinecarelogo.png'),
-      width: 350,
+      width: 250,
 
     );
   }
