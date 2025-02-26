@@ -10,7 +10,7 @@ import 'package:swine_care/feature/settings/presentation/widget/Profile.dart';
 import 'package:swine_care/feature/settings/presentation/widget/ReportBug.dart';
 import 'package:swine_care/feature/settings/presentation/widget/SendFeedback.dart';
 import 'package:swine_care/feature/settings/presentation/widget/TermsConditions.dart';
-import 'package:swine_care/global_widget/AdvanceDrawer.dart';
+import 'package:swine_care/feature/advancedrawer/presentation/pages/AdvanceDrawer.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});

@@ -6,7 +6,7 @@ import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/T
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/PreventingAfricanSwineFever.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/SwineCareGuidesLabel.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/SwineCareGuidesLabel2.dart';
-import 'package:swine_care/global_widget/AdvanceDrawer.dart';
+import 'package:swine_care/feature/advancedrawer/presentation/pages/AdvanceDrawer.dart';
 
 class GuidePage extends StatefulWidget {
   const GuidePage({super.key});
