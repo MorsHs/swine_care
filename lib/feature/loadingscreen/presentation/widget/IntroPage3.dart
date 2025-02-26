@@ -30,15 +30,15 @@ class IntroPage3 extends StatelessWidget {
                 Text(
                   "Expert Guidance & Support",
                   style: GoogleFonts.poppins(
-                    fontSize: 22,
+                    fontSize: 20,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 4),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
-                    "Get real-time health alerts and AI-driven support to prevent ASF and other diseases, ensuring your farm’s safety.",
+                    "Get real-time alerts and AI support to prevent ASF and protect your farm",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                       fontSize: 16,

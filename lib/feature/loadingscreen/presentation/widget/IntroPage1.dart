@@ -27,16 +27,16 @@ class IntroPage1 extends StatelessWidget {
                 Text(
                   "Welcome to SwineCare",
                   style: GoogleFonts.poppins(
-                      fontSize: 22,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.black
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 4),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    "Your AI-powered assistant for swine health! Monitor, diagnose, and make smart decisions to keep your pigs disease-free.",
+                    "AI-powered swine health assistant! Monitor, diagnose, and keep your pigs disease-free.",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                       fontSize: 16,

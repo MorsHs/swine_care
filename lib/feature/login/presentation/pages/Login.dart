@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:swine_care/Theme/button_theme/default_login_signup_theme.dart';
 import 'package:swine_care/feature/login/presentation/widget/forgot_password.dart';
 import 'package:swine_care/feature/login/presentation/widget/login_button.dart';
@@ -13,32 +14,49 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black45,
+              size: 20
+          ),
+          onPressed: () => context.go('/loading-screen'),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: const SafeArea(
         child: login_signup_theme(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Logoimage(),
-                  SizedBox(height: 60),
-                  LoginOrCreateLabel(label: "Login"),
-                  Textfieldcontainer(
-                    isHidden: false,
-                    label: "Email",
+          child: Stack(
+            children: [
+              Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Logoimage(),
+                      SizedBox(height: 60),
+                      LoginOrCreateLabel(label: "Login"),
+                      Textfieldcontainer(
+                        isHidden: false,
+                        label: "Email",
+                      ),
+                      Textfieldcontainer(
+                        isHidden: true,
+                        label: "Password",
+                      ),
+                      ForgotPassword(),
+                      LoginButton(),
+                      RedirectToSignup()
+                    ],
                   ),
-                  Textfieldcontainer(
-                    isHidden: true,
-                    label: "Password",
-                  ),
-                  ForgotPassword(),
-                  LoginButton(),
-                  RedirectToSignup()
-                ],
+                ),
               ),
-            ),
+
+            ]
           ),
+
         ),
       ),
     );
