@@ -26,15 +26,15 @@ class IntroPage2 extends StatelessWidget {
                 Text(
                   "Understanding SwineCare",
                   style: GoogleFonts.poppins(
-                      fontSize: 22,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 4),
                  Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30.0),
                   child: Text(
-                    "AI-driven monitoring with real-time insights. Detect early signs of disease, optimize nutrition, and boost farm productivity.",
+                    "AI-driven insights to detect diseases early, optimize nutrition, and boost productivity.",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                       fontSize: 16,

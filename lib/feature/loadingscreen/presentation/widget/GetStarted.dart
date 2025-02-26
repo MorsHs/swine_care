@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:swine_care/Theme/button_theme/default_login_signup_theme.dart';
 
 class GetStarted extends StatelessWidget {
@@ -14,10 +15,11 @@ class GetStarted extends StatelessWidget {
             onPressed: () {
               context.go('/login');
             },
-            child: const Text("Get Started",
-            style: TextStyle(
-              fontWeight: FontWeight.bold
-            ),),
+            child:  Text("Get Started",
+            style: GoogleFonts.rubik(
+                fontWeight: FontWeight.w400
+            ),
+          ),
           ),
         ),
       );

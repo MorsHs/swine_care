@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swine_care/feature/loadingscreen/presentation/widget/DontHaveAnAccount.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/widget/GetStarted.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/widget/IntroPage1.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/widget/IntroPage2.dart';
@@ -38,15 +39,21 @@ class _LoadingScreenState extends State<LoadingScreen> {
             PageIndicator(
               controller: _controller,
             ),
+            const SizedBox(height: 10),
             const Positioned(
-              bottom: 40,
+              bottom: 20,
               left: 0,
               right: 0,
-              child: Center(
-                child: GetStarted(),
+              child: Column(
+                children: [
+                    GetStarted(),
+                  SizedBox(height: 5),
+                  DontHaveAnAccount(),
+                ],
               ),
             ),
-            const SizedBox(height: 20),
+
+            const SizedBox(height: 40),
           ],
         ),
       ),
