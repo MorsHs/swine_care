@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:swine_care/feature/advancedrawer/presentation/widgets/DrawerItem.dart';
+import 'package:swine_care/feature/advancedrawer/presentation/widgets/LogoutUseCase.dart';
+
 
 class DrawerMenu extends StatelessWidget {
   final AdvancedDrawerController drawerController;
@@ -14,57 +17,46 @@ class DrawerMenu extends StatelessWidget {
       controller: drawerController,
       backdropColor: Colors.blueGrey[900],
       animationDuration: const Duration(milliseconds: 300),
-      animationCurve: Curves.easeInOut,
-      openScale: 0.9,
+      animationCurve: Curves.fastEaseInToSlowEaseOut,
+      openScale: 0.85,
       openRatio: 0.7,
-      childDecoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+      childDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black45,
+            blurRadius: 12,
+            offset: Offset(-5, 5),
+          )
+        ],
       ),
       drawer: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            // Profile
             _buildProfileSection(),
-
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
             // Navigation Items
-            _buildDrawerItem(
-              context,
-              icon: Icons.home,
-              title: "Home",
-              route: "/homepage",
-            ),
-            _buildDrawerItem(
-              context,
-              icon: Icons.menu_book,
-              title: "Guide",
-              route: "/guide",
-            ),
-            _buildDrawerItem(
-              context,
-              icon: Icons.settings,
-              title: "Settings",
-              route: "/setting",
-            ),
+            DrawerItem(icon: Icons.home, title: "Home", route: "/homepage"),
+            DrawerItem(icon: Icons.menu_book, title: "Guide", route: "/guide"),
+            DrawerItem(icon: Icons.settings, title: "Settings", route: "/setting"),
 
             const Spacer(),
 
-            _buildDrawerItem(
-              context,
+            // Logout
+            DrawerItem(
               icon: Icons.logout_outlined,
               title: "Logout",
-              route: "/login",
+              onTap: () => LogoutUseCase().confirmAndLogout(context),
             ),
-            const SizedBox(height: 10),
 
+            const SizedBox(height: 20),
             const Padding(
               padding: EdgeInsets.all(16.0),
               child: Text(
-                "SwineCare v1.milliondalar",
-                style: TextStyle(color: Colors.white70),
+                "SwineCare v1.0",
+                style: TextStyle(color: Colors.white70, fontSize: 12),
               ),
             ),
           ],
@@ -72,14 +64,12 @@ class DrawerMenu extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          // title: Text("Swine Care",
-          //   style: GoogleFonts.saira(
-          //     fontWeight: FontWeight.bold,
-          //         fontSize: 18
-          //   ),
-          // ),
+          title: Text(
+            "Swine Care",
+            style: GoogleFonts.rubik(fontWeight: FontWeight.w600, fontSize: 18),
+          ),
           leading: IconButton(
-            icon: const Icon(Icons.menu),
+            icon: const Icon(Icons.menu_sharp, size: 28),
             onPressed: () => drawerController.showDrawer(),
           ),
         ),
@@ -88,20 +78,23 @@ class DrawerMenu extends StatelessWidget {
     );
   }
 
-  //profile info
   Widget _buildProfileSection() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundImage: AssetImage('assets/images/rose.jpg'),
+          Hero(
+            tag: "profilePic",
+            child: CircleAvatar(
+              radius: 32,
+              backgroundColor: Colors.white,
+              child: ClipOval(
+                child: Image.asset('assets/images/rose.jpg', fit: BoxFit.cover),
+              ),
+            ),
           ),
-          SizedBox(width: 12),
-
-          // User Info
-          Column(
+          const SizedBox(width: 12),
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -123,18 +116,6 @@ class DrawerMenu extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  // Drawer Item Widget
-  Widget _buildDrawerItem(BuildContext context,
-      {required IconData icon, required String title, required String route}) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.white),
-      title: Text(title, style: const TextStyle(color: Colors.white)),
-      onTap: () {
-        GoRouter.of(context).go(route);
-      },
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:swine_care/feature/homepage/presentation/widget/CameraGrid.dart'
 import 'package:swine_care/feature/homepage/presentation/widget/CheckerButton.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/HomeLabel.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/SaveButton.dart';
-import 'package:swine_care/global_widget/AdvanceDrawer.dart';
+import 'package:swine_care/feature/advancedrawer/presentation/pages/AdvanceDrawer.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/SymptomsChecker.dart';
 
 class HomePage extends StatefulWidget {
