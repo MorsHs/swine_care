@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swine_care/feature/loadingscreen/presentation/widget/DontHaveAnAccount.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/widget/GetStarted.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/widget/IntroPage1.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/widget/IntroPage2.dart';
@@ -41,15 +40,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
             ),
             const SizedBox(height: 10),
             const Positioned(
-              bottom: 20,
+              bottom: 40,
               left: 0,
               right: 0,
-              child: Column(
-                children: [
-                    GetStarted(),
-                  SizedBox(height: 5),
-                  DontHaveAnAccount(),
-                ],
+              child: Center(
+                child: GetStarted(),
               ),
             ),
 
