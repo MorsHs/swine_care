@@ -11,11 +11,18 @@ class LogoutUseCase {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("No"),
+            child: const Text("No",
+              style: TextStyle(
+                  color: Colors.black
+              ),),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("Yes"),
+            child: const Text("Yes",
+            style: TextStyle(
+                color: Colors.blueAccent
+            ),
+            ),
           ),
         ],
       ),
