@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:swine_care/Theme/button_theme/default_login_signup_theme.dart';
 import 'package:swine_care/feature/login/presentation/widget/forgot_password.dart';
 import 'package:swine_care/feature/login/presentation/widget/login_button.dart';
@@ -14,49 +13,45 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black45,
-              size: 20
-          ),
-          onPressed: () => context.go('/loading-screen'),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: const SafeArea(
+      backgroundColor: Colors.white,
+      body: SafeArea(
         child: login_signup_theme(
-          child: Stack(
+          child: Column(
             children: [
-              Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Logoimage(),
-                      SizedBox(height: 60),
-                      LoginOrCreateLabel(label: "Login"),
-                      Textfieldcontainer(
-                        isHidden: false,
-                        label: "Email",
-                      ),
-                      Textfieldcontainer(
-                        isHidden: true,
-                        label: "Password",
-                      ),
-                      ForgotPassword(),
-                      LoginButton(),
-                      RedirectToSignup()
-                    ],
+              const Padding(
+                padding: EdgeInsets.only(top: 150), // Adjust top spacing
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Logoimage(),
+                ),
+              ),
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        LoginOrCreateLabel(label: "Login"),
+                        Textfieldcontainer(
+                          isHidden: false,
+                          label: "Email",
+                        ),
+                        Textfieldcontainer(
+                          isHidden: true,
+                          label: "Password",
+                        ),
+                        ForgotPassword(),
+                        LoginButton(),
+                        RedirectToSignup(),
+                        SizedBox(height: 100)
+                      ],
+                    ),
                   ),
                 ),
               ),
 
-            ]
+            ],
           ),
-
         ),
       ),
     );
