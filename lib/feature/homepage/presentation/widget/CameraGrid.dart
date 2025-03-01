@@ -38,21 +38,17 @@ class CameraGrid extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-
-        // Row of 4 containers for cameras
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-
             CameraContainer(
-              text: "pig ears",
+              text: "Pig Ears",
               icon: Icons.add_a_photo,
               selectedImage: selectedImageEars,
               onTap: onImageEarsSelected,
             ),
-
             CameraContainer(
-              text: "pig skin",
+              text: "Pig Skin",
               icon: Icons.add_a_photo,
               selectedImage: selectedImageSkin,
               onTap: onImageSkinSelected,
@@ -63,16 +59,14 @@ class CameraGrid extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-
             CameraContainer(
-              text: "pig legs",
+              text: "Pig Legs",
               icon: Icons.add_a_photo,
               selectedImage: selectedImageLegs,
               onTap: onImageLegsSelected,
             ),
-
             CameraContainer(
-              text: "pig nose",
+              text: "Pig Nose",
               icon: Icons.add_a_photo,
               selectedImage: selectedImageNose,
               onTap: onImageNoseSelected,

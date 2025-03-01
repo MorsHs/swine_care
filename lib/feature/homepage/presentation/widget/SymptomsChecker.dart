@@ -35,7 +35,7 @@ class _SymptomsCheckerState extends State<SymptomsChecker> {
               Expanded(
                 child: Text(
                   question,
-                  style: GoogleFonts.concertOne(
+                  style: GoogleFonts.saira(
                     fontSize: 16,
                     color: Colors.black,
                   ),
@@ -43,51 +43,35 @@ class _SymptomsCheckerState extends State<SymptomsChecker> {
               ),
               Row(
                 children: [
-
-                  // Yes Button
                   GestureDetector(
                     onTap: () => _setAnswer(question, true),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: _answers[question] == true
-                            ? Colors.green
-                            : Colors.grey[300],
+                        color: _answers[question] == true ? Colors.green : Colors.grey[300],
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         "Yes",
                         style: TextStyle(
-                          color: _answers[question] == true
-                              ? Colors.white
-                              : Colors.black,
+                          color: _answers[question] == true ? Colors.white : Colors.black,
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(width: 8),
-
-                  // No Button
                   GestureDetector(
                     onTap: () => _setAnswer(question, false),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: _answers[question] == false
-                            ? Colors.red
-                            : Colors.grey[300],
+                        color: _answers[question] == false ? Colors.red : Colors.grey[300],
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         "No",
                         style: TextStyle(
-                          color: _answers[question] == false
-                              ? Colors.white
-                              : Colors.black,
+                          color: _answers[question] == false ? Colors.white : Colors.black,
                         ),
                       ),
                     ),
