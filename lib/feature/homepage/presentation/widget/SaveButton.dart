@@ -6,20 +6,17 @@ class SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Center(
+    return Center(
       child: ElevatedButton(
         onPressed: () {
-
+          // Add your onPressed code here!
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blueAccent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 32,
-            vertical: 12,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
         ),
         child: Text(
           "SAVE",
