@@ -1,12 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:swine_care/feature/homepage/presentation/widget/CameraGrid.dart';
-import 'package:swine_care/feature/homepage/presentation/widget/CheckerButton.dart';
-import 'package:swine_care/feature/homepage/presentation/widget/SaveButton.dart';
 import 'package:swine_care/feature/advancedrawer/presentation/pages/AdvanceDrawer.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/CheckerButton.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/ImagePickerUseCase.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/ImageUploadButton.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/SaveButton.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/SymptomsChecker.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/TextLabel1.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/TextLabel2.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,22 +18,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final ImagePicker picker = ImagePicker();
+  final ImagePickerUseCase _imagePickerUseCase = ImagePickerUseCase();
   File? selectedImageEars;
   File? selectedImageSkin;
   File? selectedImageLegs;
   File? selectedImageNose;
-
-  Future<void> getImage(ImageSource source, Function(File) setImage) async {
-    final pickedFile = await picker.pickImage(source: source);
-    if (pickedFile != null) {
-      setState(() {
-        setImage(File(pickedFile.path));
-      });
-    } else {
-      print("No image selected.");
-    }
-  }
 
   final _drawerController = AdvancedDrawerController();
 
@@ -43,10 +34,17 @@ class _HomePageState extends State<HomePage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // const HomeLabel(),
-              // const SizedBox(height: 24),
+              // Title
+              TextLabel1(),
+              const SizedBox(height: 20),
+
+              // Instructions
+              TextLabel2(),
+              const SizedBox(height: 10),
+
+              // Image Upload Section
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(16),
@@ -54,47 +52,74 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: CameraGrid(
-                  selectedImageEars: selectedImageEars,
-                  selectedImageSkin: selectedImageSkin,
-                  selectedImageLegs: selectedImageLegs,
-                  selectedImageNose: selectedImageNose,
-                  onImageEarsSelected: () async {
-                    await getImage(ImageSource.gallery, (image) {
-                      setState(() {
-                        selectedImageEars = image;
-                      });
-                    });
-                  },
-                  onImageSkinSelected: () async {
-                    await getImage(ImageSource.gallery, (image) {
-                      setState(() {
-                        selectedImageSkin = image;
-                      });
-                    });
-                  },
-                  onImageLegsSelected: () async {
-                    await getImage(ImageSource.gallery, (image) {
-                      setState(() {
-                        selectedImageLegs = image;
-                      });
-                    });
-                  },
-                  onImageNoseSelected: () async {
-                    await getImage(ImageSource.gallery, (image) {
-                      setState(() {
-                        selectedImageNose = image;
-                      });
-                    });
-                  },
+                child: Column(
+                  children: [
+                    ImageUploadButton(
+                      label: 'Ears',
+                      imagePath: 'assets/images/pigparts/earpig.png',
+                      image: selectedImageEars,
+                      onTap: () async {
+                        final image = await _imagePickerUseCase.pickImage(context);
+                        setState(() {
+                          selectedImageEars = image;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    ImageUploadButton(
+                      label: 'Skin',
+                      imagePath: 'assets/images/pigparts/pigskin.jpg',
+                      image: selectedImageSkin,
+                      onTap: () async {
+                        final image = await _imagePickerUseCase.pickImage(context);
+                        setState(() {
+                          selectedImageSkin = image;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    ImageUploadButton(
+                      label: 'Legs',
+                      imagePath: 'assets/images/pigparts/piglegs.png',
+                      image: selectedImageLegs,
+                      onTap: () async {
+                        final image = await _imagePickerUseCase.pickImage(context);
+                        setState(() {
+                          selectedImageLegs = image;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    ImageUploadButton(
+                      label: 'Nose',
+                      imagePath: 'assets/images/pigparts/pignose.jpeg',
+                      image: selectedImageNose,
+                      onTap: () async {
+                        final image = await _imagePickerUseCase.pickImage(context);
+                        setState(() {
+                          selectedImageNose = image;
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 15),
+
+              const SizedBox(height: 20),
+
+              // Detect ASF Button
               const CheckerButton(),
+
               const SizedBox(height: 10),
+
+              // Symptoms Checker
               const SymptomsChecker(),
+
               const SizedBox(height: 50),
+
+              // Save Button
               const SaveButton(),
+
               const SizedBox(height: 20),
             ],
           ),
@@ -103,3 +128,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
