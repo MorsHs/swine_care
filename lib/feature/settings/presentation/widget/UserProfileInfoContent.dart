@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/colors/ArgieSizes.dart';
-import 'package:swine_care/feature/homepage/presentation/widget/homesswidget/PrimaryHeaderContainer.dart';
+import 'package:swine_care/global_widget/PrimaryHeader/PrimaryHeaderContainer.dart';
 import 'package:swine_care/feature/settings/presentation/widget/UserProfileTile.dart';
 import 'package:swine_care/global_widget/GlobalAppBar.dart';
 
