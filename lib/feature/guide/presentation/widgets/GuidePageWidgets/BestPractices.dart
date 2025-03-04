@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class FarmManagement extends StatelessWidget {
-  const FarmManagement({super.key});
+class BestPractices extends StatelessWidget {
+  const BestPractices({super.key});
 
   @override
   Widget build(BuildContext context) {

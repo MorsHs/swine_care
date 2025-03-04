@@ -33,7 +33,7 @@ class GuideItem extends StatelessWidget {
           );
         },
         child: Container(
-          height: 120, // Fixed height for uniform card sizes
+          height: 120,
           padding: const EdgeInsets.all(10),
           child: Row(
             children: [
@@ -68,9 +68,7 @@ class GuideItem extends StatelessWidget {
                       description,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 14, color: Colors.black54
-                      ),
+                      style: const TextStyle(fontSize: 14, color: Colors.black54),
                     ),
                   ],
                 ),

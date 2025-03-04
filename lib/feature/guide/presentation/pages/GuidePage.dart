@@ -28,14 +28,15 @@ class _GuidePageState extends State<GuidePage> {
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 10),
                 SwineCareGuidesLabel(),
                 SwineCareGuidesLabel2(),
                 SizedBox(height: 4),
                 StartingSwineFarm(),
                 SizedBox(height: 10),
-                FarmManagement(),
+                BestPractices(),
                 SizedBox(height: 10),
-                TipsToAvoidSickPigs(),
+                PreventingAfricanSwineFever(),
                 SizedBox(height: 10),
                 EmergencyMeasuresForDiseaseOutbreaks(),
                 SizedBox(height: 30),

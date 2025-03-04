@@ -33,7 +33,7 @@ class _IntroPageState extends State<IntroPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'assets/Logo/swinecarelogo.png',
+              'assets/Logo/SwineCareIcon1.png',
               fit: BoxFit.contain,
               height: 180,
               width: 180,
