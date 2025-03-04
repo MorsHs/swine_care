@@ -1,16 +1,34 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:swine_care/feature/homepage/presentation/pages/ResultsPage.dart';
 
 class SaveButton extends StatelessWidget {
-  const SaveButton({super.key});
+  final Map<String, File?> uploadedImages;
+  final Map<String, bool?> symptoms;
+
+  const SaveButton({
+    super.key,
+    required this.uploadedImages,
+    required this.symptoms,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ResultsPage(
+                uploadedImages: uploadedImages,
+                symptoms: symptoms,
+              ),
+            ),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blueAccent,
@@ -18,12 +36,12 @@ class SaveButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-          elevation: 5, // Add shadow for depth
+          elevation: 5,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Iconsax.add_circle, color: Colors.white), // Add an icon
+            const Icon(Iconsax.add_circle, color: Colors.white),
             const SizedBox(width: 8),
             Text(
               "SAVE",
