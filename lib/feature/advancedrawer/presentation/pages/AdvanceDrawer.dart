@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:swine_care/feature/advancedrawer/presentation/widgets/DrawerItem.dart';
 import 'package:swine_care/feature/advancedrawer/presentation/widgets/LogoutUseCase.dart';
 
@@ -38,15 +39,15 @@ class DrawerMenu extends StatelessWidget {
             const SizedBox(height: 30),
 
             // Navigation Items
-            DrawerItem(icon: Icons.home, title: "Home", route: "/homepage"),
-            DrawerItem(icon: Icons.menu_book, title: "Guide", route: "/guide"),
-            DrawerItem(icon: Icons.settings, title: "Settings", route: "/setting"),
+            DrawerItem(icon: Iconsax.home, title: "Home", route: "/homepage"),
+            DrawerItem(icon: Iconsax.activity, title: "Guide", route: "/guide"),
+            DrawerItem(icon: Iconsax.settings, title: "Settings", route: "/setting"),
 
             const Spacer(),
 
             // Logout
             DrawerItem(
-              icon: Icons.logout_outlined,
+              icon: Iconsax.logout,
               title: "Logout",
               onTap: () => LogoutUseCase().confirmAndLogout(context),
             ),
@@ -64,14 +65,39 @@ class DrawerMenu extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            "Swine Care",
-            style: GoogleFonts.rubik(fontWeight: FontWeight.w600, fontSize: 18),
+          // backgroundColor: Colors.white, // Set AppBar background to white
+          title: Row(
+            children: [
+              // Custom Icon
+              Image.asset(
+                "assets/Logo/SwineCareIcon1.png", // Path to your custom icon
+                width: 30, // Adjust size as needed
+                height: 30,
+              ),
+              const SizedBox(width: 8), // Add spacing between the icon and text
+              // App Title
+              Text(
+                "Swine Care",
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  // color: Colors.black, // Ensure text color contrasts with the white background
+                ),
+              ),
+            ],
           ),
-          leading: IconButton(
-            icon: const Icon(Icons.menu_sharp, size: 28),
-            onPressed: () => drawerController.showDrawer(),
+          leading: GestureDetector(
+            onTap: () => drawerController.showDrawer(),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0), // Add padding for better alignment
+              child: Image.asset(
+                "assets/images/menu-bar.png", // Replace with your PNG menu icon
+                width: 16, // Adjust size as needed
+                height: 16,
+              ),
+            ),
           ),
+          elevation: 2, // Subtle shadow for depth
         ),
         body: body,
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swine_care/feature/homepage/presentation/widget/homesswidget/CurvedEdgeComponent.dart';
+import 'package:swine_care/global_widget/PrimaryHeader/CurvedEdgeComponent.dart';
 
 class CurvedEdgeWidget extends StatelessWidget {
   const CurvedEdgeWidget({

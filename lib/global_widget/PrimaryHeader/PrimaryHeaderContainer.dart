@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
-import 'package:swine_care/feature/homepage/presentation/widget/homesswidget/CircularContainer.dart';
-import 'package:swine_care/feature/homepage/presentation/widget/homesswidget/CurvedEdgeWidget.dart';
+import 'package:swine_care/global_widget/PrimaryHeader/CircularContainer.dart';
+import 'package:swine_care/global_widget/PrimaryHeader/CurvedEdgeWidget.dart';
 
 class PrimaryHeaderContainer extends StatelessWidget {
   const PrimaryHeaderContainer({
