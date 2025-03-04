@@ -1,14 +1,16 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:swine_care/feature/advancedrawer/presentation/pages/AdvanceDrawer.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/CheckerButton.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/ImagePickerUseCase.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/ImageUploadButton.dart';
-import 'package:swine_care/feature/homepage/presentation/widget/SaveButton.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/SymptomsChecker.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/TextLabel1.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/TextLabel2.dart';
+
+import '../widget/SaveButton.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,6 +25,21 @@ class _HomePageState extends State<HomePage> {
   File? selectedImageSkin;
   File? selectedImageLegs;
   File? selectedImageNose;
+
+  // Map to store symptom responses
+  final Map<String, bool?> _answers = {
+    "High temperature?": null,
+    "Clumsy movement?": null,
+    "Loss of appetite?": null,
+    "Rapid breathing?": null,
+    "Unusual vocalization?": null,
+  };
+
+  void _setAnswer(String question, bool answer) {
+    setState(() {
+      _answers[question] = answer;
+    });
+  }
 
   final _drawerController = AdvancedDrawerController();
 
@@ -113,12 +130,23 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 10),
 
               // Symptoms Checker
-              const SymptomsChecker(),
+              SymptomsChecker(
+                answers: _answers,
+                onAnswerChanged: _setAnswer,
+              ),
 
               const SizedBox(height: 50),
 
               // Save Button
-              const SaveButton(),
+              SaveButton(
+                uploadedImages: {
+                  'Ears': selectedImageEars,
+                  'Skin': selectedImageSkin,
+                  'Legs': selectedImageLegs,
+                  'Nose': selectedImageNose,
+                },
+                symptoms: _answers, // Pass the _answers map here
+              ),
 
               const SizedBox(height: 20),
             ],
@@ -128,5 +156,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
