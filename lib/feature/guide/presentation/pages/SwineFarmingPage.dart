@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/BackButton.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/HartButton.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/SwineFarmingWidgets/DescriptionText.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/SwineFarmingWidgets/GuideItem.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/SwineFarmingWidgets/ImageContainer.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/SwineFarmingWidgets/SectionHeader.dart';
+
 
 class SwineFarmingPage extends StatelessWidget {
   const SwineFarmingPage({super.key});
@@ -19,21 +19,22 @@ class SwineFarmingPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
+              // Back Button and Heart Button
               Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BackButtonToGuidePage(),
 
-                  HeartButton(),
                 ],
               ),
+              SizedBox(height: 20),
 
-
-              const SectionHeader(title: "Keeping Your Pigs Healthy"),
-              const ImageContainer(imagePath: "assets/images/swinefarmingimages/youngpigs.jpg"),
-              const DescriptionText(
-                text: "Healthy pigs require a combination of proper management, nutrition, and disease prevention. "
+              // Section Header
+              SectionHeader(title: "Keeping Your Pigs Healthy"),
+              ImageContainer(imagePath: "assets/images/swinefarmingimages/youngpigs.jpg"),
+              DescriptionText(
+                text:
+                "Healthy pigs require a combination of proper management, nutrition, and disease prevention. "
                     "Key factors include:\n\n"
                     "• Stress Reduction: Overcrowding can increase disease transmission (provide at least 4m² per adult pig)\n"
                     "• Ventilation: Install proper airflow systems to prevent respiratory issues\n"
@@ -45,7 +46,8 @@ class SwineFarmingPage extends StatelessWidget {
               // Guide Items
               GuideItem(
                 title: "Provide Clean Water Daily",
-                description: "Pigs drink 2-5 liters daily (depending on size and weather). Use nipple drinkers to prevent contamination. \n\n"
+                description:
+                "Pigs drink 2-5 liters daily (depending on size and weather). Use nipple drinkers to prevent contamination. \n\n"
                     "Practical Tips:\n"
                     "• Check water flow twice daily\n"
                     "• Clean troughs with vinegar solution weekly\n"
@@ -55,7 +57,8 @@ class SwineFarmingPage extends StatelessWidget {
               ),
               GuideItem(
                 title: "Maintain Proper Hygiene",
-                description: "Critical for preventing outbreaks:\n\n"
+                description:
+                "Critical for preventing outbreaks:\n\n"
                     "1. Daily: Remove manure and leftover feed\n"
                     "2. Weekly: Disinfect with potassium peroxymonosulfate (1:200 dilution)\n"
                     "3. Monthly: Full pen cleaning with pressure washer\n\n"
@@ -64,7 +67,8 @@ class SwineFarmingPage extends StatelessWidget {
               ),
               GuideItem(
                 title: "Ensure a Balanced Diet",
-                description: "Optimal feed composition:\n\n"
+                description:
+                "Optimal feed composition:\n\n"
                     "• Growers (20-50kg): 16-18% protein, 3,200 kcal/kg\n"
                     "• Finishers (50-100kg): 14-16% protein, 3,100 kcal/kg\n"
                     "• Sows: Add 1% calcium supplement during lactation\n\n"
@@ -75,7 +79,8 @@ class SwineFarmingPage extends StatelessWidget {
               ),
               GuideItem(
                 title: "Monitor for Diseases",
-                description: "Critical signs to watch:\n\n"
+                description:
+                "Critical signs to watch:\n\n"
                     "Emergency Symptoms:\n"
                     "• Blueish ears (possible ASF)\n"
                     "• Sudden deaths with bloody diarrhea\n"
@@ -88,7 +93,7 @@ class SwineFarmingPage extends StatelessWidget {
                 imagePath: "assets/images/swinefarmingimages/disease_monitoring.jpg",
               ),
 
-              const SizedBox(height: 30),
+              SizedBox(height: 30),
             ],
           ),
         ),
