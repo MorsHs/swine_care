@@ -40,7 +40,9 @@ class DrawerMenu extends StatelessWidget {
 
             // Navigation Items
             DrawerItem(icon: Iconsax.home, title: "Home", route: "/homepage"),
+            SizedBox(height: 16),
             DrawerItem(icon: Iconsax.activity, title: "Guide", route: "/guide"),
+            SizedBox(height: 16),
             DrawerItem(icon: Iconsax.settings, title: "Settings", route: "/setting"),
 
             const Spacer(),

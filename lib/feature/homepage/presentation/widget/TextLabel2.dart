@@ -20,7 +20,7 @@ class TextLabel2 extends StatelessWidget {
             style: GoogleFonts.poppins(fontWeight: FontWeight.normal),
           ),
           TextSpan(
-            text: 'Early detection can save your herd. ',
+            text: 'Early detection can save your pigs. ',
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.bold,
               color: Colors.green,

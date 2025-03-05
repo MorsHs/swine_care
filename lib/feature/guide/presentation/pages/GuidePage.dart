@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/EmergencyTips.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/BestPractices.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/Tips&Tricks.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/PreventingAfricanSwineFever.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/SwineCareGuidesLabel.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/SwineCareGuidesLabel2.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/EmergencyTips.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/BestPractices.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/Tips&Tricks.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/PreventingAfricanSwineFever.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/SwineCareGuidesLabel.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/SwineCareGuidesLabel2.dart';
 import 'package:swine_care/feature/advancedrawer/presentation/pages/AdvanceDrawer.dart';
 
 class GuidePage extends StatefulWidget {

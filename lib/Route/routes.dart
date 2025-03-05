@@ -1,11 +1,11 @@
 import 'package:go_router/go_router.dart';
-import 'package:swine_care/feature/guide/presentation/pages/BestPracticesPage.dart';
-import 'package:swine_care/feature/guide/presentation/pages/EmergencyMeasuresPage.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/BestPracticesPage.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/EmergencyMeasuresPage.dart';
 import 'package:swine_care/feature/guide/presentation/pages/GuidePage.dart';
-import 'package:swine_care/feature/guide/presentation/pages/PreventingAfricanSwineFeverPage.dart';
-import 'package:swine_care/feature/guide/presentation/pages/SwineFarmingPage.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/EmergencyTips.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/PreventingAfricanSwineFever.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/PreventingAfricanSwineFeverPage.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/SwineFarmingPage.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/EmergencyTips.dart';
+import 'package:swine_care/feature/guide/presentation/widgets/PreventingAfricanSwineFever.dart';
 import 'package:swine_care/feature/homepage/presentation/pages/HomePage.dart';
 import 'package:swine_care/feature/intro/presentation/pages/IntroPage.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/pages/LoadingScreen.dart';
