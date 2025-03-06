@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:swine_care/feature/advancedrawer/presentation/pages/AdvanceDrawer.dart';
@@ -9,7 +10,6 @@ import 'package:swine_care/feature/homepage/presentation/widget/ImageUploadButto
 import 'package:swine_care/feature/homepage/presentation/widget/SymptomsChecker.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/TextLabel1.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/TextLabel2.dart';
-
 import '../widget/SaveButton.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,12 +21,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ImagePickerUseCase _imagePickerUseCase = ImagePickerUseCase();
-  File? selectedImageEars;
+  File? selectedImageEars; //jpeg, png
   File? selectedImageSkin;
   File? selectedImageLegs;
   File? selectedImageNose;
+  Uint8List? webImageEars; //basin mag upload og web na mga image icon,webm
+  Uint8List? webImageSkin;
+  Uint8List? webImageLegs;
+  Uint8List? webImageNose;
 
-  // Map to store symptom responses
   final Map<String, bool?> _answers = {
     "High temperature?": null,
     "Clumsy movement?": null,
@@ -35,13 +38,30 @@ class _HomePageState extends State<HomePage> {
     "Unusual vocalization?": null,
   };
 
-  void _setAnswer(String question, bool answer) {
+  final _drawerController = AdvancedDrawerController();
+
+  void _updateImage(String part, File? image, Uint8List? webImage) {
     setState(() {
-      _answers[question] = answer;
+      switch (part) {
+        case 'Ears':
+          selectedImageEars = image;
+          webImageEars = webImage;
+          break;
+        case 'Skin':
+          selectedImageSkin = image;
+          webImageSkin = webImage;
+          break;
+        case 'Legs':
+          selectedImageLegs = image;
+          webImageLegs = webImage;
+          break;
+        case 'Nose':
+          selectedImageNose = image;
+          webImageNose = webImage;
+          break;
+      }
     });
   }
-
-  final _drawerController = AdvancedDrawerController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +73,11 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title
               TextLabel1(),
               const SizedBox(height: 20),
-
-              // Instructions
               TextLabel2(),
               const SizedBox(height: 10),
 
-              // Image Upload Section
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(16),
@@ -71,73 +87,47 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Column(
                   children: [
-                    ImageUploadButton(
+                    _buildImageSection(
                       label: 'Ears',
                       imagePath: 'assets/images/pigparts/earpig.png',
-                      image: selectedImageEars,
-                      onTap: () async {
-                        final image = await _imagePickerUseCase.pickImage(context);
-                        setState(() {
-                          selectedImageEars = image;
-                        });
-                      },
+                      selectedImage: selectedImageEars,
+                      webImage: webImageEars,
                     ),
                     const SizedBox(height: 10),
-                    ImageUploadButton(
+                    _buildImageSection(
                       label: 'Skin',
                       imagePath: 'assets/images/pigparts/pigskin.jpg',
-                      image: selectedImageSkin,
-                      onTap: () async {
-                        final image = await _imagePickerUseCase.pickImage(context);
-                        setState(() {
-                          selectedImageSkin = image;
-                        });
-                      },
+                      selectedImage: selectedImageSkin,
+                      webImage: webImageSkin,
                     ),
                     const SizedBox(height: 10),
-                    ImageUploadButton(
+                    _buildImageSection(
                       label: 'Legs',
                       imagePath: 'assets/images/pigparts/piglegs.png',
-                      image: selectedImageLegs,
-                      onTap: () async {
-                        final image = await _imagePickerUseCase.pickImage(context);
-                        setState(() {
-                          selectedImageLegs = image;
-                        });
-                      },
+                      selectedImage: selectedImageLegs,
+                      webImage: webImageLegs,
                     ),
                     const SizedBox(height: 10),
-                    ImageUploadButton(
+                    _buildImageSection(
                       label: 'Nose',
                       imagePath: 'assets/images/pigparts/pignose.jpeg',
-                      image: selectedImageNose,
-                      onTap: () async {
-                        final image = await _imagePickerUseCase.pickImage(context);
-                        setState(() {
-                          selectedImageNose = image;
-                        });
-                      },
+                      selectedImage: selectedImageNose,
+                      webImage: webImageNose,
                     ),
                   ],
                 ),
               ),
 
               const SizedBox(height: 20),
-
-              // Detect ASF Button
               const CheckerButton(),
-
               const SizedBox(height: 10),
-
-              // Symptoms Checker
               SymptomsChecker(
                 answers: _answers,
-                onAnswerChanged: _setAnswer,
+                onAnswerChanged: (question, answer) => setState(() {
+                  _answers[question] = answer;
+                }),
               ),
-
               const SizedBox(height: 50),
-
-              // Save Button
               SaveButton(
                 uploadedImages: {
                   'Ears': selectedImageEars,
@@ -145,14 +135,45 @@ class _HomePageState extends State<HomePage> {
                   'Legs': selectedImageLegs,
                   'Nose': selectedImageNose,
                 },
-                symptoms: _answers, // Pass the _answers map here
+                symptoms: _answers,
               ),
-
               const SizedBox(height: 20),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildImageSection({
+    required String label,
+    required String imagePath,
+    required File? selectedImage,
+    required Uint8List? webImage,
+  }) {
+    return ImageUploadButton(
+      label: label,
+      imagePath: imagePath,
+      image: selectedImage,
+      webImage: webImage,
+      onTap: () async {
+        try {
+          final result = await _imagePickerUseCase.pickImage(context);
+          if (result != null) {
+            if (kIsWeb) {
+              final bytes = await result.readAsBytes();
+              _updateImage(label, null, bytes);
+            } else {
+              _updateImage(label, File(result.path), null); // Convert XFile to File here
+            }
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error uploading image: $e')),
+          );
+        }
+      },
+      onRemove: () => _updateImage(label, null, null),
     );
   }
 }
