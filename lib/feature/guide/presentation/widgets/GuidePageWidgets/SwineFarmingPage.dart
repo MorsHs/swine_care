@@ -1,329 +1,294 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:swine_care/feature/guide/presentation/widgets/BackButton.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
-class SwineFarmingPage extends StatelessWidget {
+class SwineFarmingPage extends StatefulWidget {
   const SwineFarmingPage({super.key});
 
-  // Function to launch URLs
+  @override
+  _SwineFarmingPageState createState() => _SwineFarmingPageState();
+}
+
+class _SwineFarmingPageState extends State<SwineFarmingPage> {
+  bool _showQuickTips = false;
+
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      throw 'Could not launch $url';
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Could not launch $url')));
     }
+  }
+
+  void _shareContent() {
+    Share.share(
+      'Check out this Swine Farming Guide! Learn best practices for healthy pigs: https://example.com/swine-guide',
+      subject: 'Swine Farming Tips',
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Back Button
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BackButtonToGuidePage(),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Slideshow Header
-              _buildSlideshowHeader(),
-
-              const SizedBox(height: 20),
-              // Section Header
-              _buildSectionHeader("Good Animal Husbandry Practices for Swine"),
-              _buildImageContainer("assets/images/swinefarmingimages/HusbandryPractices.jpg"),
-              _buildDescriptionText(
-                "The Philippine National Standard (PNS) Code of Good Animal Husbandry Practices (GAHP) ensures safe and sustainable swine farming. "
-                    "Key principles include:\n\n"
-                    "• Farm Location: At least 3 km from national highways and 1 km from built-up areas.\n"
-                    "• Biosecurity Measures: Implement quarantine protocols for new pigs and control stray animals.\n"
-                    "• Environmental Management: Prevent pollution by managing waste properly.\n"
-                    "• Animal Welfare: Provide adequate space, clean water, and proper nutrition.\n\n"
-                    "Example: A farm in Bulacan reduced disease outbreaks by implementing strict biosecurity and waste management practices.",
-              ),
-
-              // Guide Items
-              _buildGuideItem(
-                title: "Provide Clean Water Daily",
-                description:
-                "Pigs require clean, potable water at all times. Use nipple drinkers to ensure easy access.\n\n"
-                    "Practical Tips:\n"
-                    "• Test water quality at least once at the start of production.\n"
-                    "• Clean water pipes regularly to prevent biofilm buildup.\n"
-                    "• Maintain water pressure for nipple drinkers to avoid obstruction.\n\n"
-                    "Example: A Pampanga farm improved growth rates by ensuring a continuous supply of clean water.",
-                imagePath: "assets/images/swinefarmingimages/cleanwater.jpg",
-                context: context,
-              ),
-              _buildGuideItem(
-                title: "Maintain Proper Hygiene",
-                description:
-                "Hygiene is critical to prevent disease outbreaks:\n\n"
-                    "1. Daily: Remove manure and leftover feed.\n"
-                    "2. Weekly: Disinfect with potassium peroxymonosulfate (1:200 dilution).\n"
-                    "3. Monthly: Full pen cleaning with pressure washer.\n\n"
-                    "Biosecurity Measures:\n"
-                    "• Install footbaths with disinfectant at entry points.\n"
-                    "• Restrict visitors and ensure they wear protective clothing.\n\n"
-                    "Example: A Batangas farm contained cholera by implementing footbaths and restricting visitor access.",
-                imagePath: "assets/images/swinefarmingimages/hygiene.jpg",
-                context: context,
-              ),
-              _buildGuideItem(
-                title: "Ensure a Balanced Diet",
-                description:
-                "Optimal feed composition:\n\n"
-                    "• Growers (20-50kg): 16-18% protein, 3,200 kcal/kg\n"
-                    "• Finishers (50-100kg): 14-16% protein, 3,100 kcal/kg\n"
-                    "• Sows: Add 1% calcium supplement during lactation\n\n"
-                    "Feeding Management:\n"
-                    "• Follow a 'first in – first out' rule for feed storage.\n"
-                    "• Avoid banned drugs or additives in medicated feeds.\n"
-                    "• Store medicated feed separately from non-medicated feed.\n\n"
-                    "Warning: Swill feeding is prohibited unless heated to 90°C for 60 minutes.",
-                imagePath: "assets/images/swinefarmingimages/pigfood.jpg",
-                context: context,
-              ),
-              _buildGuideItem(
-                title: "Monitor for Diseases",
-                description:
-                "Critical signs to watch:\n\n"
-                    "Emergency Symptoms:\n"
-                    "• Blueish ears (possible ASF)\n"
-                    "• Sudden deaths with bloody diarrhea\n"
-                    "• High fever (>40°C)\n\n"
-                    "Prevention Protocol:\n"
-                    "• Vaccinate against hog cholera every 6 months.\n"
-                    "• Deworm every 3 months (use ivermectin 0.3mg/kg).\n"
-                    "• Quarantine new pigs for 30 days.\n\n"
-                    "Example: A cooperative in Cebu uses a digital system to track vaccination schedules and health records.",
-                imagePath: "assets/images/swinefarmingimages/disease_monitoring.jpg",
-                context: context,
-              ),
-
-              const SizedBox(height: 10),
-
-              // Stack Widget for Breed Selection
-              _buildStackedContent(),
-
-              const SizedBox(height: 30),
-
-              // Links Section
-              Text(
-                "For more info, please visit the links below:",
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              const SizedBox(height: 10),
-              _buildLink(
-                text: "Code of Good Animal Husbandry Practices for Swine",
-                url: "https://pcsp.org.ph/wp-content/uploads/2019/06/Correct-final-draft-GAHP-for-Swine.pdf",
-              ),
-              const SizedBox(height: 10),
-              _buildLink(
-                text: "Swine Raising Tips and Best Practices",
-                url: "https://cagayanvalley.da.gov.ph/wp-content/uploads/2018/02/swine.pdf",
-              ),
-              const SizedBox(height: 40),
-            ],
+      backgroundColor: const Color(0xFFF5F5F0),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF4CAF50),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => context.go('/guide'),
+        ),
+        title: Text(
+          "Swine Farming Guide",
+          style: GoogleFonts.poppins(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share, color: Colors.white),
+            onPressed: _shareContent,
+            tooltip: "Share Guide",
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          _buildSlideshowHeader(),
+          const SizedBox(height: 20),
+          _buildSectionHeader("Good Swine Farming"),
+          _buildImageContainer(
+              "assets/images/swinefarmingimages/HusbandryPractices.jpg"),
+          _buildDescriptionText(
+            "The Philippine National Standard (PNS) Code ensures safe, sustainable swine farming:\n\n"
+                "• Farm Location: Set up 3 km from highways, 1 km from towns to avoid contamination.\n"
+                "• Biosecurity: Quarantine new pigs for 30 days, fence out stray dogs and rats.\n"
+                "• Waste Control: Use pits or composters to manage manure—no river dumping!\n"
+                "• Pig Comfort: Provide 1.5-2 sqm per pig, fresh water, and shade.\n\n"
+                "Success Story: A Bulacan farm cut disease by 70% with biosecurity and waste pits!",
+          ),
+          const Divider(color: Colors.grey, height: 30),
+          ..._buildGuideItems(context),
+          const Divider(color: Colors.grey, height: 30),
+          _buildStackedContent(),
+          const SizedBox(height: 20),
+          _buildQuickTipsToggle(),
+          if (_showQuickTips) _buildQuickTipsSection(),
+          const SizedBox(height: 30),
+          _buildLinksSection(),
+          const SizedBox(height: 40),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () =>
+            _launchURL("tel:+639123456789"), // Local emergency number example
+        backgroundColor: const Color(0xFFFF9800),
+        child: const Icon(Icons.phone, color: Colors.white),
+        tooltip: "Call Vet/Support",
       ),
     );
   }
 
-  // Slideshow Header Widget
   Widget _buildSlideshowHeader() {
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 240,
+        autoPlay: true,
+        enlargeCenterPage: true,
+        viewportFraction: 0.85,
+        autoPlayInterval: const Duration(seconds: 4),
+      ),
+      items: [
+        _buildSlideshowImage(
+            "assets/images/swinefarmingimages/animalwelfare.jpg",
+            "Selecting the Right Breed",
+            "Choose hardy breeds like Landrace or native pigs."),
+        _buildSlideshowImage("assets/images/swinefarmingimages/pigbreeding.jpg",
+            "Breeding Management", "Plan mating for strong piglets."),
+        _buildSlideshowImage(
+            "assets/images/swinefarmingimages/keeping-piglets-warm.jpg",
+            "Caring for Piglets",
+            "Keep them warm and fed!"),
+        _buildSlideshowImage("assets/images/swinefarmingimages/pig1.jpg",
+            "Maintain Swine", "Daily care keeps pigs healthy."),
+        _buildSlideshowImage("assets/images/swinefarmingimages/native-pigs.jpg",
+            "Native Pigs", "Great for small farms!"),
+        _buildSlideshowImage("assets/images/swinefarmingimages/pig3.jpg",
+            "Pig Progress", "Track growth for profit."),
+      ],
+    );
+  }
+
+  Widget _buildSlideshowImage(String imagePath, String label, String subtitle) {
     return Container(
-      height: 200,
-      margin: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 5))
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: PageView(
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
+          fit: StackFit.expand,
           children: [
-            _buildSlideshowImage("assets/images/swinefarmingimages/animalwelfare.jpg", "Selecting the Right Breed"),
-            _buildSlideshowImage("assets/images/swinefarmingimages/pigbreeding.jpg", "Breeding Management"),
-            _buildSlideshowImage("assets/images/swinefarmingimages/keeping-piglets-warm.jpg", "Caring for Piglets"),
-            _buildSlideshowImage("assets/images/swinefarmingimages/pig1.jpg", "Maintain Swine"),
-            _buildSlideshowImage("assets/images/swinefarmingimages/native-pigs.jpg", "Native Pigs"),
-            _buildSlideshowImage("assets/images/swinefarmingimages/pig3.jpg", "Pig Progress"),
+            Image.asset(imagePath, fit: BoxFit.cover),
+            Positioned(
+              bottom: 15,
+              left: 15,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: GoogleFonts.poppins(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        backgroundColor: Colors.black54),
+                  ),
+                  Text(
+                    subtitle,
+                    style: GoogleFonts.poppins(
+                        fontSize: 14, color: Colors.white70),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  // Slideshow Image Widget
-  Widget _buildSlideshowImage(String imagePath, String label) {
-    return Stack(
-      fit: StackFit.expand,
+  Widget _buildSectionHeader(String title) {
+    return Row(
       children: [
-        Image.asset(
-          imagePath,
-          fit: BoxFit.cover,
-        ),
-        Positioned(
-          bottom: 10,
-          left: 10,
-          child: Text(
-            label,
-            style: GoogleFonts.poppins(
+        const Icon(
+            Icons.agriculture,
+            color: Color(0xFF4CAF50),
+            size: 30),
+        const SizedBox(width: 10),
+        Text(
+          title,
+          style: GoogleFonts.poppins(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
-              backgroundColor: Colors.black54,
-            ),
-          ),
+              color: const Color(0xFF4CAF50)),
         ),
       ],
     );
   }
 
-  // Stack Widget for Breed Selection
-  Widget _buildStackedContent() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        _buildImageContainer("assets/images/swinefarmingimages/RightBreed.jpg"),
-        Positioned(
-          bottom: 20,
-          child: ElevatedButton(
-            onPressed: () async {
-              const String url = "https://philjournalsci.dost.gov.ph/images/pdf/pjs_pdf/vol151no5/genetic_diversity_of_Phil_native_pig_from_Quezon_and_Marinduque_.pdf";
-              if (await canLaunchUrl(Uri.parse(url))) {
-                await launchUrl(Uri.parse(url));
-              } else {
-                print("Could not launch $url");
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.pinkAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-            ),
-            child: Text(
-              "Learn More About Breeds",
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Section Header Widget
-  Widget _buildSectionHeader(String title) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      child: Text(
-        title,
-        style: GoogleFonts.poppins(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.black87,
-        ),
-      ),
-    );
-  }
-
-  // Image Container Widget
   Widget _buildImageContainer(String imagePath) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 5)
+          )
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: Stack(
-          children: [
-            Image.asset(
-              imagePath,
-              width: double.infinity,
-              height: 140,
-              fit: BoxFit.cover,
-            ),
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.black.withValues(alpha: 0.4), Colors.transparent],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
-                ),
-              ),
-            ),
-          ],
+        borderRadius: BorderRadius.circular(20),
+        child: Image.asset(imagePath,
+            height: 180, width: double.infinity, fit: BoxFit.cover
         ),
       ),
     );
   }
 
-  // Description Text Widget
   Widget _buildDescriptionText(String text) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Text(
         text,
         style: GoogleFonts.poppins(
-          fontSize: 16,
-          color: Colors.black54,
-        ),
+            fontSize: 18, color: Colors.black87, height: 1.5),
       ),
     );
   }
 
-  // Guide Item Widget
+  List<Widget> _buildGuideItems(BuildContext context) {
+    return [
+      _buildGuideItem(
+        title: "Provide Clean Water Daily",
+        description: "Pigs need clean water all day:\n\n"
+            "• Why? Dirty water spreads sickness.\n"
+            "• How? Use nipple drinkers (1 per 10 pigs).\n"
+            "• Tips: Test water monthly—pH 6.5-8.5 is best. Flush pipes weekly to stop slime.\n"
+            "• Bonus: Add a water tank for dry days.\n\n"
+            "Success: A Pampanga farm boosted pig weight by 15% with clean water!",
+        imagePath: "assets/images/swinefarmingimages/cleanwater.jpg",
+        icon: Icons.water_drop,
+        context: context,
+      ),
+      _buildGuideItem(
+        title: "Maintain Proper Hygiene",
+        description: "Cleanliness stops diseases:\n\n"
+            "• Daily: Shovel out manure, scrape leftover feed.\n"
+            "• Weekly: Spray pens with disinfectant (1:200 potassium peroxymonosulfate).\n"
+            "• Monthly: Power wash floors and walls.\n"
+            "• Extras: Footbaths at gates (use lime), boot dips for workers.\n\n"
+            "Success: A Batangas farm stopped cholera with footbaths and no visitors!",
+        imagePath: "assets/images/swinefarmingimages/hygiene.jpg",
+        icon: Icons.cleaning_services,
+        context: context,
+      ),
+      _buildGuideItem(
+        title: "Ensure a Balanced Diet",
+        description: "Feed right for fat pigs:\n\n"
+            "• Growers (20-50kg)**: 16-18% protein, 3,200 kcal/kg—corn + soybean mix.\n"
+            "• Finishers (50-100kg)**: 14-16% protein, 3,100 kcal/kg—less protein, more carbs.\n"
+            "• Sows: Add 1% calcium (crushed shells) when nursing.\n"
+            "• Rules: Store feed in dry bins, use oldest first, no banned drugs.\n"
+            "• Warning: Swill must be cooked (90°C, 1 hour) to kill germs.\n\n"
+            "Tip: Mix your own feed to save cash!",
+        imagePath: "assets/images/swinefarmingimages/pigfood.jpg",
+        icon: Icons.fastfood,
+        context: context,
+      ),
+      _buildGuideItem(
+        title: "Monitor for Diseases",
+        description: "Catch problems fast:\n\n"
+            "• Red Flags: Blue ears (ASF?), bloody poop, fever over 40°C, sudden deaths.\n"
+            "• Prevention: Vaccinate for hog cholera (6 months), deworm with ivermectin (3 months).\n"
+            "• Quarantine: New pigs stay separate for 30 days—watch for coughs or limps.\n"
+            "• Tools: Use a thermometer, keep a logbook.\n\n"
+            "Success: A Cebu co-op tracks shots online and cut losses by 50%!",
+        imagePath: "assets/images/swinefarmingimages/disease_monitoring.jpg",
+        icon: Icons.health_and_safety,
+        context: context,
+      ),
+    ];
+  }
+
   Widget _buildGuideItem({
     required String title,
     required String description,
     required String imagePath,
+    required IconData icon,
     required BuildContext context,
   }) {
     return Card(
       elevation: 5,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -331,113 +296,79 @@ class SwineFarmingPage extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => Scaffold(
                 appBar: AppBar(
-                  title: Text(
-                    title,
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
+                  backgroundColor: const Color(0xFF4CAF50),
+                  title: Text(title,
+                      style: GoogleFonts.poppins(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white)),
                 ),
                 body: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Hero(
-                        tag: imagePath,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            imagePath,
-                            width: double.infinity,
-                            height: 200,
-                            fit: BoxFit.cover,
-                          ),
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(imagePath,
+                              width: double.infinity,
+                              height: 220,
+                              fit: BoxFit.cover),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        title,
-                        style: GoogleFonts.poppins(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        description,
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
+                        const SizedBox(height: 16),
+                        Text(description,
+                            style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                color: Colors.black87,
+                                height: 1.5)),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           );
         },
-        borderRadius: BorderRadius.circular(15),
-        splashColor: Colors.pinkAccent.withValues(alpha: 0.2),
-        highlightColor: Colors.pinkAccent.withValues(alpha: 0.1),
-        child: Container(
-          height: 120,
-          padding: const EdgeInsets.all(10),
+        borderRadius: BorderRadius.circular(20),
+        splashColor: const Color(0xFF4CAF50).withValues(alpha: 0.3),
+        child: Padding(
+          padding: const EdgeInsets.all(15),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image with Shadow and Border
-              Hero(
-                tag: imagePath,
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.2),
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      imagePath,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.asset(imagePath,
+                    width: 90, height: 90, fit: BoxFit.cover),
               ),
-              const SizedBox(width: 12),
-              // Text Content
+              const SizedBox(width: 15),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      title,
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
+                    Row(
+                      children: [
+                        Icon(icon, color: const Color(0xFF4CAF50), size: 24),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: GoogleFonts.poppins(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     Text(
                       description,
-                      maxLines: 3,
+                      maxLines: 4,
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
+                          fontSize: 16, color: Colors.black54, height: 1.5),
                     ),
                   ],
                 ),
@@ -449,17 +380,159 @@ class SwineFarmingPage extends StatelessWidget {
     );
   }
 
-  // Link Widget
-  Widget _buildLink({required String text, required String url}) {
-    return InkWell(
-      onTap: () => _launchURL(url),
-      child: Text(
-        text,
-        style: GoogleFonts.poppins(
-          fontSize: 16,
-          color: Colors.blue,
-          decoration: TextDecoration.underline,
+  Widget _buildStackedContent() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        _buildImageContainer("assets/images/swinefarmingimages/RightBreed.jpg"),
+        Positioned(
+          bottom: 25,
+          child: ElevatedButton(
+            onPressed: () => _launchURL(
+                "https://philjournalsci.dost.gov.ph/images/pdf/pjs_pdf/vol151no5/genetic_diversity_of_Phil_native_pig_from_Quezon_and_Marinduque_.pdf"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF9800),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+            ),
+            child: Text(
+              "Learn More About Breeds",
+              style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildQuickTipsToggle() {
+    return GestureDetector(
+      onTap: () => setState(() => _showQuickTips = !_showQuickTips),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF4CAF50).withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Quick Tips for Farmers",
+              style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF4CAF50)),
+            ),
+            Icon(_showQuickTips ? Icons.expand_less : Icons.expand_more,
+                color: const Color(0xFF4CAF50)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickTipsSection() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildQuickTip("Start Small",
+              "Begin with 5-10 pigs to learn the ropes before scaling up."),
+          _buildQuickTip("Check Daily",
+              "Walk your pens every morning—happy pigs mean good profits!"),
+          _buildQuickTip("Save Rainwater",
+              "Collect rain in barrels for cheap, clean water."),
+          _buildQuickTip(
+              "Sell Smart", "Time sales for holidays when pork prices spike."),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickTip(String title, String tip) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.check_circle, color: Color(0xFF4CAF50), size: 20),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                    style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87)),
+                Text(tip,
+                    style: GoogleFonts.poppins(
+                        fontSize: 14, color: Colors.black54)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLinksSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            const Icon(Icons.link, color: Color(0xFF4CAF50), size: 24),
+            const SizedBox(width: 10),
+            Text(
+              "For More Info:",
+              style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        _buildLink(
+          text: "Code of Good Animal Husbandry Practices for Swine",
+          url:
+          "https://pcsp.org.ph/wp-content/uploads/2019/06/Correct-final-draft-GAHP-for-Swine.pdf",
+        ),
+        const SizedBox(height: 10),
+        _buildLink(
+          text: "Swine Raising Tips and Best Practices",
+          url:
+          "https://cagayanvalley.da.gov.ph/wp-content/uploads/2018/02/swine.pdf",
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLink({required String text, required String url}) {
+    return GestureDetector(
+      onTap: () => _launchURL(url),
+      child: Row(
+        children: [
+          const Icon(Icons.arrow_forward, color: Color(0xFF4CAF50), size: 18),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: const Color(0xFF4CAF50),
+                  decoration: TextDecoration.underline),
+            ),
+          ),
+        ],
       ),
     );
   }
