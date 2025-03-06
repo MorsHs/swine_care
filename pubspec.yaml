@@ -89,6 +89,7 @@ flutter:
     - assets/Animations/AnimationPigDance.json
     - assets/Animations/AnimationHowItWorks.json
     - assets/Animations/AnimationAnalysis.json
+    - assets/Animations/ResultAnimation.json
 
 
 
