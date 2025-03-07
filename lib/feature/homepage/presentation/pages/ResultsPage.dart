@@ -244,13 +244,13 @@ class _ResultsPageState extends State<ResultsPage> {
                               Icon(
                                 Icons.recommend,
                                 color: Colors.green.shade700,
-                                size: 28,
+                                size: 24,
                               ),
                               const SizedBox(width: 12),
                               Text(
                                 "Recommended Actions",
                                 style: GoogleFonts.poppins(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black87,
                                 ),
