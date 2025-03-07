@@ -21,11 +21,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ImagePickerUseCase _imagePickerUseCase = ImagePickerUseCase();
-  File? selectedImageEars; //jpeg, png
+  File? selectedImageEars;
   File? selectedImageSkin;
   File? selectedImageLegs;
   File? selectedImageNose;
-  Uint8List? webImageEars; //basin mag upload og web na mga image icon,webm
+  Uint8List? webImageEars;
   Uint8List? webImageSkin;
   Uint8List? webImageLegs;
   Uint8List? webImageNose;
@@ -135,6 +135,12 @@ class _HomePageState extends State<HomePage> {
                   'Legs': selectedImageLegs,
                   'Nose': selectedImageNose,
                 },
+                webImages: {
+                  'Ears': webImageEars,
+                  'Skin': webImageSkin,
+                  'Legs': webImageLegs,
+                  'Nose': webImageNose,
+                },
                 symptoms: _answers,
               ),
               const SizedBox(height: 20),
@@ -164,7 +170,7 @@ class _HomePageState extends State<HomePage> {
               final bytes = await result.readAsBytes();
               _updateImage(label, null, bytes);
             } else {
-              _updateImage(label, File(result.path), null); // Convert XFile to File here
+              _updateImage(label, File(result.path), null);
             }
           }
         } catch (e) {
