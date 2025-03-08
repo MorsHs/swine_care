@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
 
 class SymptomsChecker extends StatelessWidget {
   final Map<String, bool?> answers;
@@ -13,6 +14,9 @@ class SymptomsChecker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final BuildContext localContext = context;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,7 +26,7 @@ class SymptomsChecker extends StatelessWidget {
             text: TextSpan(
               style: GoogleFonts.poppins(
                 fontSize: 16,
-                color: Colors.black87,
+                color: Theme.of(localContext).textTheme.bodyLarge!.color,
               ),
               children: [
                 TextSpan(
@@ -37,7 +41,7 @@ class SymptomsChecker extends StatelessWidget {
                   "These symptoms may indicate African Swine Fever (ASF). Early detection is crucial to prevent the spread of the disease and protect your herd.",
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    color: Colors.grey[700],
+                    color: Theme.of(localContext).textTheme.bodyMedium!.color,
                   ),
                 ),
               ],
@@ -45,6 +49,17 @@ class SymptomsChecker extends StatelessWidget {
           ),
         ),
         ...answers.keys.map((question) {
+          final bool? answer = answers[question];
+          final Color yesBackgroundColor = answer == true
+              ? Theme.of(localContext).colorScheme.primary ?? ArgieColors.primary
+              : Theme.of(localContext).cardTheme.color ?? ArgieColors.ligth;
+          final Color noBackgroundColor = answer == false
+              ? Theme.of(localContext).colorScheme.error ?? Colors.red
+              : Theme.of(localContext).cardTheme.color ?? ArgieColors.ligth;
+
+          final Color yesTextColor = _getContrastingColor(yesBackgroundColor);
+          final Color noTextColor = _getContrastingColor(noBackgroundColor);
+
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
@@ -55,7 +70,7 @@ class SymptomsChecker extends StatelessWidget {
                     children: [
                       Icon(
                         _getIconForQuestion(question),
-                        color: Colors.blueGrey,
+                        color: Theme.of(localContext).colorScheme.secondary,
                         size: 20,
                       ),
                       const SizedBox(width: 8),
@@ -64,15 +79,19 @@ class SymptomsChecker extends StatelessWidget {
                           question,
                           style: GoogleFonts.poppins(
                             fontSize: 16,
-                            color: Colors.black87,
+                            color: Theme.of(localContext).textTheme.bodyLarge!.color,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.info_outline, color: Colors.blueGrey, size: 18),
+                        icon: Icon(
+                          Icons.info_outline,
+                          color: Theme.of(localContext).colorScheme.secondary,
+                          size: 18,
+                        ),
                         onPressed: () {
-                          _showDescriptionDialog(context, _getTooltipForQuestion(question));
+                          _showDescriptionDialog(localContext, _getTooltipForQuestion(question));
                         },
                       ),
                     ],
@@ -85,13 +104,13 @@ class SymptomsChecker extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                          color: answers[question] == true ? Colors.green : Colors.grey[300],
+                          color: yesBackgroundColor,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           "Yes",
                           style: TextStyle(
-                            color: answers[question] == true ? Colors.white : Colors.black,
+                            color: yesTextColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -103,13 +122,13 @@ class SymptomsChecker extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                          color: answers[question] == false ? Colors.red : Colors.grey[300],
+                          color: noBackgroundColor,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           "No",
                           style: TextStyle(
-                            color: answers[question] == false ? Colors.white : Colors.black,
+                            color: noTextColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -131,18 +150,29 @@ class SymptomsChecker extends StatelessWidget {
       builder: (context) => AlertDialog(
         title: Text(
           "More Information",
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
+          ),
         ),
         content: Text(
           description,
-          style: GoogleFonts.poppins(fontSize: 14),
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            color: Theme.of(context).textTheme.bodyMedium!.color,
+          ),
         ),
+        backgroundColor: Theme.of(context).cardTheme.color,
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
               "Close",
-              style: GoogleFonts.poppins(color: Colors.green),
+              style: GoogleFonts.poppins(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? ArgieColors.textthird // Use white in dark mode
+                    : Theme.of(context).colorScheme.primary,
+              ),
             ),
           ),
         ],
@@ -182,5 +212,10 @@ class SymptomsChecker extends StatelessWidget {
       default:
         return "This symptom may indicate a potential health issue.";
     }
+  }
+
+  Color _getContrastingColor(Color backgroundColor) {
+    final double luminance = backgroundColor.computeLuminance();
+    return luminance > 0.5 ? Colors.black : ArgieColors.textthird;
   }
 }

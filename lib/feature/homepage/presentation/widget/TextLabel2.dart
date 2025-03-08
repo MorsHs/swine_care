@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
 
 class TextLabel2 extends StatelessWidget {
   const TextLabel2({
@@ -12,7 +13,7 @@ class TextLabel2 extends StatelessWidget {
       text: TextSpan(
         style: GoogleFonts.poppins(
           fontSize: 16,
-          color: Colors.black87,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         children: [
           TextSpan(
@@ -23,12 +24,17 @@ class TextLabel2 extends StatelessWidget {
             text: 'Early detection can save your pigs. ',
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.bold,
-              color: Colors.green,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? ArgieColors.textthird // Use white in dark mode for visibility
+                  : Theme.of(context).colorScheme.primary,
             ),
           ),
           TextSpan(
             text: 'Upload clear images of the following parts of the pig for analysis:',
-            style: GoogleFonts.poppins(fontWeight: FontWeight.normal),
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.normal,
+              color: Theme.of(context).textTheme.bodyMedium!.color,
+            ),
           ),
         ],
       ),
