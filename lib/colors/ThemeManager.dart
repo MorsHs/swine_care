@@ -19,10 +19,21 @@ class ThemeManager {
   }
 
   static ThemeData getTheme() {
+    final ColorScheme colorScheme = ColorScheme.fromSwatch(
+      primarySwatch: Colors.blue,
+      brightness: _isDarkMode ? Brightness.dark : Brightness.light,
+    ).copyWith(
+      primary: ArgieColors.primary,
+      secondary: _isDarkMode ? ArgieColors.textthird : ArgieColors.textsecondary,
+      surface: _isDarkMode ? ArgieColors.dark : ArgieColors.ligth,
+      onPrimary: _isDarkMode ? ArgieColors.textthird : Colors.black,
+      onSurface: _isDarkMode ? ArgieColors.textthird : ArgieColors.textprimary,
+    );
+
     return ThemeData(
       useMaterial3: true,
       brightness: _isDarkMode ? Brightness.dark : Brightness.light,
-      primaryColor: ArgieColors.primary,
+      colorScheme: colorScheme,
       scaffoldBackgroundColor: _isDarkMode ? ArgieColors.dark : ArgieColors.ligth,
       textTheme: TextTheme(
         bodyLarge: TextStyle(color: _isDarkMode ? ArgieColors.textthird : ArgieColors.textprimary),
@@ -38,10 +49,31 @@ class ThemeManager {
         unselectedItemColor: _isDarkMode ? ArgieColors.textthird : ArgieColors.textsecondary,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ArgieColors.primary,
-          foregroundColor: _isDarkMode ? Colors.white : ArgieColors.textthird,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                (states) => states.contains(WidgetState.disabled)
+                ? (_isDarkMode ? ArgieColors.dark : ArgieColors.textsecondary)
+                : ArgieColors.primary,
+          ),
+          foregroundColor: WidgetStateProperty.resolveWith<Color>(
+                (states) {
+              if (states.contains(WidgetState.disabled)) {
+                return _isDarkMode ? ArgieColors.textthird : ArgieColors.textsecondary;
+              }
+              return _isDarkMode ? ArgieColors.textthird : Colors.black; // Use white in dark mode for contrast
+            },
+          ),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          ),
+          elevation: WidgetStateProperty.resolveWith<double>(
+                (states) => states.contains(WidgetState.disabled) ? 2 : 8,
+          ),
+          shadowColor: WidgetStateProperty.resolveWith<Color>(
+                (states) => states.contains(WidgetState.disabled)
+                ? (_isDarkMode ? ArgieColors.dark : ArgieColors.textsecondary).withValues(alpha: 0.3)
+                : ArgieColors.primary.withValues(alpha: 0.5),
+          ),
         ),
       ),
       cardTheme: CardTheme(

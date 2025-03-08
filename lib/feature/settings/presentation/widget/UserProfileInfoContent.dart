@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/colors/ArgieSizes.dart';
 import 'package:swine_care/global_widget/PrimaryHeader/PrimaryHeaderContainer.dart';
 import 'package:swine_care/feature/settings/presentation/widget/UserProfileTile.dart';
@@ -16,16 +15,16 @@ class UserProfileInfoContent extends StatelessWidget {
       child: Column(
         children: [
           GlobalAppBar(
-            title: Text('Account',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: ArgieColors.textthirdary)),
+            title: Text(
+              'Account',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              ),
+            ),
           ),
           UserProfileTile(),
-          SizedBox(
-            height: ArgieSizes.spaceBwtSection,
-          ),
-
+          SizedBox(height: ArgieSizes.spaceBwtSection),
         ],
       ),
     );
