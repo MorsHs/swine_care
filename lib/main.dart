@@ -1,25 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:go_router/go_router.dart';
 import 'package:swine_care/Route/routes.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:swine_care/colors/ThemeManager.dart';
 
-Future<void> main()async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Settings.init(cacheProvider: SharePreferenceCache());
+  await ThemeManager.init(); // Initialize theme with persisted state
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final ValueNotifier<bool> _isDarkModeNotifier = ValueNotifier<bool>(ThemeManager.isDarkMode);
+  late final GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    _isDarkModeNotifier.value = ThemeManager.isDarkMode;
+    print('App Initialized with Dark Mode: ${ThemeManager.isDarkMode}'); // Debug print
+    _router = RouterConfiguration().routes(); // Initialize router once
+  }
+
+  void updateTheme(bool value) {
+    print('Updating Theme to: $value'); // Debug print
+    ThemeManager.toggleDarkMode(value).then((_) {
+      setState(() {
+        _isDarkModeNotifier.value = value;
+        print('Theme Updated to: $value'); // Debug print
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _isDarkModeNotifier.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      routerConfig: RouterConfiguration().routes(),
+    return ValueListenableBuilder<bool>(
+      valueListenable: _isDarkModeNotifier,
+      builder: (context, isDarkMode, child) {
+        print('Building MaterialApp with Theme: $isDarkMode'); // Debug print
+        return MaterialApp.router(
+          theme: ThemeManager.getTheme(),
+          debugShowCheckedModeBanner: false,
+          routerConfig: _router, // Use the pre-initialized router
+        );
+      },
     );
+  }
+}
+
+void updateTheme(BuildContext context, bool value) {
+  final state = context.findAncestorStateOfType<_MyAppState>();
+  if (state != null) {
+    state.updateTheme(value); // Update the theme without navigation
   }
 }

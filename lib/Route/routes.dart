@@ -19,8 +19,28 @@ class RouterConfiguration {
   GoRouter routes() {
     return GoRouter(
       initialLocation: '/loading-screen',
+      redirect: (context, state) {
+        final currentLocation = state.fullPath;
+        print('Redirect Check - Location: $currentLocation'); // Debug print
+
+        // Allow all defined routes to persist without redirecting to /loading-screen
+        if (currentLocation!.startsWith('/intro') ||
+            currentLocation.startsWith('/loading-screen') ||
+            currentLocation.startsWith('/login') ||
+            currentLocation.startsWith('/signup') ||
+            currentLocation.startsWith('/homepage') ||
+            currentLocation.startsWith('/guide') ||
+            currentLocation.startsWith('/history') ||
+            currentLocation.startsWith('/setting')) {
+          print('Allowing Route: $currentLocation');
+          return null; // Allow the route to persist
+        }
+
+        // Redirect to /loading-screen only for undefined routes
+        print('Redirecting to /loading-screen');
+        return '/loading-screen';
+      },
       routes: [
-        // Top-level routes (outside the bottom navigation shell)
         GoRoute(
           path: '/intro',
           builder: (context, state) => const IntroPage(),
@@ -37,9 +57,9 @@ class RouterConfiguration {
           path: '/signup',
           builder: (context, state) => const Register(),
         ),
-        // StatefulShellRoute for bottom navigation bar
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
+            print('ScaffoldWithBottomNavBar Rebuilt for: ${navigationShell.currentIndex}'); // Debug print
             return ScaffoldWithBottomNavBar(navigationShell: navigationShell);
           },
           branches: [
