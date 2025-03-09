@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BestPracticesPage extends StatelessWidget {
@@ -17,10 +18,11 @@ class BestPracticesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F1),
+      backgroundColor: isDarkMode ? Colors.grey[850] : const Color(0xFFF5F7F1),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF4CAF50),
+        backgroundColor: ArgieColors.primary,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -39,7 +41,7 @@ class BestPracticesPage extends StatelessWidget {
             icon: const Icon(Icons.favorite_border, color: Colors.white),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Added to Favorites!")),
+                SnackBar(content: Text("Added to Favorites!", style: TextStyle(color: isDarkMode ? Colors.white : Colors.black87))),
               );
             },
           ),
@@ -50,8 +52,7 @@ class BestPracticesPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Starting a Swine Farm Section
-            _buildSectionHeader("Starting Your Farm"),
+            _buildSectionHeader(context, "Starting Your Farm"),
             _buildExpandableSectionWithImage(
               context: context,
               title: "1. Choose the Right Location",
@@ -82,9 +83,7 @@ class BestPracticesPage extends StatelessWidget {
                   "Warning: Bad setup risks disease.",
             ),
             const SizedBox(height: 20),
-
-            // Managing a Swine Farm Section
-            _buildSectionHeader("Managing Your Farm"),
+            _buildSectionHeader(context, "Managing Your Farm"),
             _buildExpandableSectionWithImage(
               context: context,
               title: "1. Daily Feeding",
@@ -122,40 +121,30 @@ class BestPracticesPage extends StatelessWidget {
                   "Tip: Early detection saves trouble.",
             ),
             const SizedBox(height: 20),
-
-            // Tips Section
-            _buildTipsSection(),
-
-            // Links Section
-            _buildLinksSection(),
+            _buildTipsSection(context),
+            _buildLinksSection(context),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Quick Note Saved!")),
+            SnackBar(content: Text("Quick Note Saved!", style: TextStyle(color: isDarkMode ? Colors.white : Colors.black87))),
           );
         },
-        backgroundColor: const Color(0xFF4CAF50),
+        backgroundColor: ArgieColors.primary,
         child: const Icon(Icons.note_add),
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(BuildContext context, String title) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFF8BC34A), // Light green
+        color: ArgieColors.primary,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Text(
         title,
@@ -168,22 +157,23 @@ class BestPracticesPage extends StatelessWidget {
     );
   }
 
-  // Expandable Section with Image
   Widget _buildExpandableSectionWithImage({
     required BuildContext context,
     required String title,
     required String imagePath,
     required String content,
   }) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Card(
+        color: isDarkMode ? Colors.grey[800] : Colors.white,
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: ExpansionTile(
           tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           leading: CircleAvatar(
-            backgroundColor: const Color(0xFF4CAF50),
+            backgroundColor: ArgieColors.primary,
             child: Text(
               title.split(" ")[0],
               style: GoogleFonts.poppins(color: Colors.white),
@@ -194,7 +184,7 @@ class BestPracticesPage extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              color: isDarkMode ? Colors.white70 : Colors.black87,
             ),
           ),
           children: [
@@ -217,7 +207,7 @@ class BestPracticesPage extends StatelessWidget {
                     content,
                     style: GoogleFonts.poppins(
                       fontSize: 16,
-                      color: Colors.black87,
+                      color: isDarkMode ? Colors.white70 : Colors.black87,
                       height: 1.5,
                     ),
                   ),
@@ -225,13 +215,13 @@ class BestPracticesPage extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Saved $title tip!")),
+                        SnackBar(content: Text("Saved $title tip!", style: TextStyle(color: isDarkMode ? Colors.white : Colors.black87))),
                       );
                     },
                     icon: const Icon(Icons.bookmark_border),
                     label: const Text("Save Tip"),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFF9800), // Orange for action
+                      backgroundColor: ArgieColors.secondary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -246,12 +236,12 @@ class BestPracticesPage extends StatelessWidget {
     );
   }
 
-  // Tips Section
-  Widget _buildTipsSection() {
+  Widget _buildTipsSection(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Card(
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      color: const Color(0xFFFFF3E0), // Warm light orange
+      color: isDarkMode ? Colors.grey[800] : const Color(0xFFFFF3E0),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -262,33 +252,33 @@ class BestPracticesPage extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF4CAF50),
+                color: isDarkMode ? Colors.white : const Color(0xff6da4ed),
               ),
             ),
             const SizedBox(height: 12),
-            _buildTipItem(Icons.check_circle, "Start small, grow steady."),
-            _buildTipItem(Icons.check_circle, "Train your team well."),
-            _buildTipItem(Icons.check_circle, "Use apps for records."),
-            _buildTipItem(Icons.check_circle, "Ask vets for help."),
+            _buildTipItem(context, Icons.check_circle, "Start small, grow steady."),
+            _buildTipItem(context, Icons.check_circle, "Train your team well."),
+            _buildTipItem(context, Icons.check_circle, "Use apps for records."),
+            _buildTipItem(context, Icons.check_circle, "Ask vets for help."),
           ],
         ),
       ),
     );
   }
 
-  // Tip Item
-  Widget _buildTipItem(IconData icon, String text) {
+  Widget _buildTipItem(BuildContext context, IconData icon, String text) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: const Color(0xFF4CAF50), size: 20),
+          Icon(icon, color: ArgieColors.primary, size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               text,
-              style: GoogleFonts.poppins(fontSize: 16, color: Colors.black87),
+              style: GoogleFonts.poppins(fontSize: 16, color: isDarkMode ? Colors.white70 : Colors.black87),
             ),
           ),
         ],
@@ -296,11 +286,12 @@ class BestPracticesPage extends StatelessWidget {
     );
   }
 
-  // Links Section
-  Widget _buildLinksSection() {
+  Widget _buildLinksSection(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      color: isDarkMode ? Colors.grey[800] : Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -311,26 +302,22 @@ class BestPracticesPage extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: isDarkMode ? Colors.white : Colors.black87,
               ),
             ),
             const SizedBox(height: 12),
-            _buildLinkItem(
-              "Pig Farming in the Philippines: How to Start",
-              "https://www.agrifarming.in/pig-farming-in-the-philippines-how-to-start#",
-            ),
-            _buildLinkItem(
-              "Piggery Business in the Philippines 2023",
-              "https://filipinobusinesshub.com/piggery-business-in-the-philippines-2023/",
-            ),
+            _buildLinkItem(context, "Pig Farming in the Philippines: How to Start",
+                "https://www.agrifarming.in/pig-farming-in-the-philippines-how-to-start#"),
+            _buildLinkItem(context, "Piggery Business in the Philippines 2023",
+                "https://filipinobusinesshub.com/piggery-business-in-the-philippines-2023/"),
           ],
         ),
       ),
     );
   }
 
-  // Link Item
-  Widget _buildLinkItem(String text, String url) {
+  Widget _buildLinkItem(BuildContext context, String text, String url) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: InkWell(
@@ -344,7 +331,7 @@ class BestPracticesPage extends StatelessWidget {
                 text,
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  color: const Color(0xFF2196F3),
+                  color: isDarkMode ? Colors.lightBlueAccent : const Color(0xFF2196F3),
                   decoration: TextDecoration.underline,
                 ),
               ),

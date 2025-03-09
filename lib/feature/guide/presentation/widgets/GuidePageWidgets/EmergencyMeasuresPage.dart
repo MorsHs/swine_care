@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EmergencyMeasuresPage extends StatefulWidget {
@@ -20,17 +21,18 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not launch $url')),
+        SnackBar(content: Text('Could not launch $url', style: TextStyle(color: Theme.of(context).colorScheme.onSurface))),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9F5), // Softer background
+      backgroundColor: isDarkMode ? Colors.grey[850] : const Color(0xFFF8F9F5),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFB0B422),
+        backgroundColor: ArgieColors.primary,
         elevation: 4,
         shadowColor: Colors.black26,
         leading: IconButton(
@@ -48,14 +50,14 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.phone, color: Colors.white),
-            onPressed: () => _launchURL("tel:+639123456789"), // Real phone number
+            onPressed: () => _launchURL("tel:+639123456789"),
             tooltip: "Call Vet",
           ),
         ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [const Color(0xFFB0B422), const Color(0xFFD9D367)],
+              colors: [ArgieColors.primary, ArgieColors.secondary],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -67,14 +69,10 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Immediate Actions Section
-            _buildSectionHeader(
-              "Immediate Actions",
-              _showImmediateActions,
-                  () => setState(() => _showImmediateActions = !_showImmediateActions),
-            ),
+            _buildSectionHeader(context, "Immediate Actions", _showImmediateActions,
+                    () => setState(() => _showImmediateActions = !_showImmediateActions)),
             AnimatedCrossFade(
-              firstChild: _buildContentCard(
+              firstChild: _buildContentCard(context,
                 "When a disease outbreak strikes, act fast to protect your herd:\n\n"
                     "1. Isolate Affected Pigs:\n"
                     "• Move sick pigs calmly using low-stress handling (e.g., boards, not sticks).\n"
@@ -95,15 +93,10 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
               duration: const Duration(milliseconds: 300),
             ),
             const SizedBox(height: 20),
-
-            // Emergency Protocols Section
-            _buildSectionHeader(
-              "Emergency Protocols",
-              _showProtocols,
-                  () => setState(() => _showProtocols = !_showProtocols),
-            ),
+            _buildSectionHeader(context, "Emergency Protocols", _showProtocols,
+                    () => setState(() => _showProtocols = !_showProtocols)),
             AnimatedCrossFade(
-              firstChild: _buildContentCard(
+              firstChild: _buildContentCard(context,
                 "1. Disinfection Procedures:\n"
                     "• Wash pens with hot water, then apply disinfectants (e.g., Virkon-S or bleach).\n"
                     "• Disinfect boots, tools, and trailers after every use.\n\n"
@@ -124,45 +117,35 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
               duration: const Duration(milliseconds: 300),
             ),
             const SizedBox(height: 20),
-
-            // Tips Section
-            _buildTipsSection(),
+            _buildTipsSection(context),
             const SizedBox(height: 20),
-
-            // Links Section
-            _buildLinksSection(),
+            _buildLinksSection(context),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _launchURL("tel:+639123456789"),
-        backgroundColor: const Color(0xFFFFA726),
+        backgroundColor: ArgieColors.secondary,
         child: const Icon(Icons.call, color: Colors.white),
         tooltip: "Emergency Call",
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title, bool isExpanded, VoidCallback onTap) {
+  Widget _buildSectionHeader(BuildContext context, String title, bool isExpanded, VoidCallback onTap) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFFB0B422), Color(0xFFD9D367)],
+          gradient: LinearGradient(
+            colors: [ArgieColors.primary, ArgieColors.secondary],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 6,
-              offset: const Offset(0, 3),
-            ),
-          ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -186,9 +169,11 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
     );
   }
 
-  Widget _buildContentCard(String text, {String? imagePath, String? imageCaption}) {
+  Widget _buildContentCard(BuildContext context, String text, {String? imagePath, String? imageCaption}) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Card(
       elevation: 3,
+      color: isDarkMode ? Colors.grey[800] : Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -197,14 +182,14 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
           children: [
             Text.rich(
               TextSpan(
-                style: GoogleFonts.poppins(fontSize: 16, color: Colors.black87, height: 1.6),
+                style: GoogleFonts.poppins(fontSize: 16, color: isDarkMode ? Colors.white70 : Colors.black87, height: 1.6),
                 children: text.split('\n').map((line) {
                   if (line.startsWith('•') || line.startsWith('Warning')) {
                     return TextSpan(
                       text: '$line\n',
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w600,
-                        color: line.startsWith('Warning') ? Colors.redAccent : Colors.black87,
+                        color: line.startsWith('Warning') ? Colors.redAccent : (isDarkMode ? Colors.white70 : Colors.black87),
                       ),
                     );
                   } else {
@@ -230,7 +215,7 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   fontStyle: FontStyle.italic,
-                  color: Colors.grey[600],
+                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                 ),
               ),
             ],
@@ -240,10 +225,11 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
     );
   }
 
-  Widget _buildTipsSection() {
+  Widget _buildTipsSection(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Card(
       elevation: 3,
-      color: Colors.grey[50],
+      color: isDarkMode ? Colors.grey[800] : Colors.grey[50],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -255,14 +241,14 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
               style: GoogleFonts.poppins(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-                color: Colors.black87,
+                color: isDarkMode ? Colors.white : Colors.black87,
               ),
             ),
             const SizedBox(height: 12),
-            _buildTipItem(Icons.check_circle_outline, "Use herd behavior—pigs follow each other—to move them quickly."),
-            _buildTipItem(Icons.check_circle_outline, "Store a 3-day supply of feed and water for emergencies."),
-            _buildTipItem(Icons.check_circle_outline, "Post biosecurity signs at all entrances."),
-            _buildTipItem(Icons.check_circle_outline, "Practice a mock outbreak drill yearly."),
+            _buildTipItem(context, Icons.check_circle_outline, "Use herd behavior—pigs follow each other—to move them quickly."),
+            _buildTipItem(context, Icons.check_circle_outline, "Store a 3-day supply of feed and water for emergencies."),
+            _buildTipItem(context, Icons.check_circle_outline, "Post biosecurity signs at all entrances."),
+            _buildTipItem(context, Icons.check_circle_outline, "Practice a mock outbreak drill yearly."),
             const SizedBox(height: 12),
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
@@ -279,7 +265,7 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 fontStyle: FontStyle.italic,
-                color: Colors.grey[600],
+                color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
               ),
             ),
           ],
@@ -288,18 +274,19 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
     );
   }
 
-  Widget _buildTipItem(IconData icon, String text) {
+  Widget _buildTipItem(BuildContext context, IconData icon, String text) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: const Color(0xFFB0B422), size: 22),
+          Icon(icon, color: ArgieColors.primary, size: 22),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               text,
-              style: GoogleFonts.poppins(fontSize: 16, color: Colors.black87),
+              style: GoogleFonts.poppins(fontSize: 16, color: isDarkMode ? Colors.white70 : Colors.black87),
             ),
           ),
         ],
@@ -307,10 +294,12 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
     );
   }
 
-  Widget _buildLinksSection() {
+  Widget _buildLinksSection(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      color: isDarkMode ? Colors.grey[800] : Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -321,39 +310,34 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
               style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
+                color: isDarkMode ? Colors.white : Colors.black87,
               ),
             ),
             const SizedBox(height: 12),
-            _buildLinkItem(
-              "ASF Emergency Guidelines (DA Philippines)",
-              "https://www.da.gov.ph/african-swine-fever-asf/",
-            ),
-            _buildLinkItem(
-              "Swine Disease Management",
-              "https://www.agriculture.com.ph/2022/08/10/a-guide-to-swine-raising-in-the-philippines/",
-            ),
+            _buildLinkItem(context, "ASF Emergency Guidelines (DA Philippines)", "https://www.da.gov.ph/african-swine-fever-asf/"),
+            _buildLinkItem(context, "Swine Disease Management", "https://www.agriculture.com.ph/2022/08/10/a-guide-to-swine-raising-in-the-philippines/"),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildLinkItem(String text, String url) {
+  Widget _buildLinkItem(BuildContext context, String text, String url) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => _launchURL(url),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
           children: [
-            const Icon(Icons.launch, color: Color(0xFFB0B422), size: 20),
+            Icon(Icons.launch, color: ArgieColors.primary, size: 20),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 text,
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  color: const Color(0xFFB0B422),
+                  color: isDarkMode ? Colors.lightBlueAccent : ArgieColors.primary,
                   decoration: TextDecoration.underline,
                 ),
               ),
