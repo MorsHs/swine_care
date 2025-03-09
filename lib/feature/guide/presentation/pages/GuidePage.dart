@@ -16,9 +16,10 @@ class GuidePage extends StatefulWidget {
 class _GuidePageState extends State<GuidePage> {
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
       child: Container(
-        margin: const EdgeInsets.only(left: 20, right: 20),
+        margin: const EdgeInsets.only(left: 20, right: 20).copyWith(bottom: 80),
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -170,7 +170,7 @@ class SymptomsChecker extends StatelessWidget {
               "Close",
               style: GoogleFonts.poppins(
                 color: Theme.of(context).brightness == Brightness.dark
-                    ? ArgieColors.textthird // Use white in dark mode
+                    ? ArgieColors.textthird
                     : Theme.of(context).colorScheme.primary,
               ),
             ),

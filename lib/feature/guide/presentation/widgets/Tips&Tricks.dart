@@ -8,7 +8,7 @@ class StartingSwineFarm extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        context.go('/swine-farming');
+        context.go('/guide/swine-farming');
       },
       child: Stack(
           children: [
