@@ -7,7 +7,7 @@ import 'package:swine_care/colors/ThemeManager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Settings.init(cacheProvider: SharePreferenceCache());
-  await ThemeManager.init(); // Initialize theme with persisted state
+  await ThemeManager.init();
   runApp(const MyApp());
 }
 
@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _isDarkModeNotifier.value = ThemeManager.isDarkMode;
     print('App Initialized with Dark Mode: ${ThemeManager.isDarkMode}'); // Debug print
-    _router = RouterConfiguration().routes(); // Initialize router once
+    _router = RouterConfiguration().routes();
   }
 
   void updateTheme(bool value) {
@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
     ThemeManager.toggleDarkMode(value).then((_) {
       setState(() {
         _isDarkModeNotifier.value = value;
-        print('Theme Updated to: $value'); // Debug print
+        print('Theme Updated to: $value'); // Debug
       });
     });
   }
@@ -62,9 +62,10 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+// Update the theme without navigation
 void updateTheme(BuildContext context, bool value) {
   final state = context.findAncestorStateOfType<_MyAppState>();
   if (state != null) {
-    state.updateTheme(value); // Update the theme without navigation
+    state.updateTheme(value);
   }
 }
