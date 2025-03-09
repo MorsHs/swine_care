@@ -19,12 +19,39 @@ class UserProfileInfoContent extends StatelessWidget {
               'Account',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).textTheme.bodyLarge?.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
           ),
-          UserProfileTile(),
-          SizedBox(height: ArgieSizes.spaceBwtSection),
+          const AnimatedOpacity(
+            opacity: 1.0,
+            duration: Duration(milliseconds: 500),
+            child: UserProfileTile(),
+          ),
+          const SizedBox(height: ArgieSizes.spaceBtwSections), // Updated to match ArgieSizes
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: ArgieSizes.paddingDefault),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Text(
+          //         'Member Since: March 08, 2023',
+          //         style: GoogleFonts.poppins(
+          //           fontSize: 14,
+          //           color: Theme.of(context).textTheme.bodyMedium!.color,
+          //         ),
+          //       ),
+          //       SizedBox(height: ArgieSizes.spaceBtwItems),
+          //       Text(
+          //         'Pigs Managed: 45',
+          //         style: GoogleFonts.poppins(
+          //           fontSize: 14,
+          //           color: Theme.of(context).textTheme.bodyMedium!.color,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

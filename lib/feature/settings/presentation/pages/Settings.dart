@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/feature/settings/presentation/widget/SectionHeading.dart';
-import 'package:swine_care/feature/settings/presentation/widget/SettingLogoutButton.dart';
 import 'package:swine_care/feature/settings/presentation/widget/SettingMenuTile.dart';
 import 'package:swine_care/feature/settings/presentation/widget/UserProfileInfoContent.dart';
 import 'package:swine_care/colors/ThemeManager.dart';
@@ -148,9 +149,67 @@ class _SettingsState extends State<Settings> {
                   subtitleColor: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
 
-                const SizedBox(height: 60),
-                SettingLogoutButton(),
                 const SizedBox(height: 20),
+
+                SectionHeading(
+                  tittle: 'Logout',
+                  showActionButton: false,
+                  textColor: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
+                const SizedBox(height: 12),
+
+                SettingMenuTile(
+                  icon: Iconsax.logout,
+                  title: 'Logout',
+                  subtitle: 'Logout your account now',
+                  onTap: () {
+                      print('Logout Button Pressed'); // Debug print
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text(
+                            'Logout',
+                            style: GoogleFonts.poppins(
+                              color: Theme.of(context).textTheme.bodyLarge?.color,
+                            ),
+                          ),
+                          content: Text(
+                            'Are you sure you want to logout?',
+                            style: GoogleFonts.poppins(
+                              color: Theme.of(context).textTheme.bodyMedium?.color,
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(
+                                'Cancel',
+                                style: GoogleFonts.poppins(
+                                  color: ArgieColors.primary,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                print('Confirmed Logout'); // Debug print
+                                Navigator.pop(context);
+                                GoRouter.of(context).push('/login');
+                              },
+                              child: Text(
+                                'Logout',
+                                style: GoogleFonts.poppins(
+                                  color: ArgieColors.primary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                  },
+                  tileColor: Theme.of(context).cardTheme.color,
+                  textColor: Theme.of(context).textTheme.bodyLarge?.color,
+                  subtitleColor: Theme.of(context).textTheme.bodyMedium?.color,
+                ),
               ],
             ),
           ],
