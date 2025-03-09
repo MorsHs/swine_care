@@ -9,11 +9,23 @@ class TextLabel2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final Color baseTextColor = isDarkMode ? ArgieColors.textthird : ArgieColors.textBold;
+    final Color highlightTextColor = isDarkMode ? ArgieColors.textthird : ArgieColors.primary;
+    final Color secondaryTextColor = isDarkMode ? ArgieColors.textthird : ArgieColors.textSemiBlack;
+
+    print('TextLabel2 - Dark Mode: $isDarkMode, Base Color: $baseTextColor, Highlight Color: $highlightTextColor, Secondary Color: $secondaryTextColor');
+
     return RichText(
       text: TextSpan(
         style: GoogleFonts.poppins(
           fontSize: 16,
-          color: Theme.of(context).textTheme.bodyLarge!.color,
+          color: baseTextColor,
+          letterSpacing: 0.3,
+          shadows: isDarkMode
+              ? []
+              : [
+          ],
         ),
         children: [
           TextSpan(
@@ -24,16 +36,18 @@ class TextLabel2 extends StatelessWidget {
             text: 'Early detection can save your pigs. ',
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? ArgieColors.textthird // Use white in dark mode for visibility
-                  : Theme.of(context).colorScheme.primary,
+              color: highlightTextColor,
+              shadows: isDarkMode
+                  ? []
+                  : [
+              ],
             ),
           ),
           TextSpan(
             text: 'Upload clear images of the following parts of the pig for analysis:',
             style: GoogleFonts.poppins(
-              fontWeight: FontWeight.normal,
-              color: Theme.of(context).textTheme.bodyMedium!.color,
+              fontWeight: FontWeight.w400,
+              color: secondaryTextColor,
             ),
           ),
         ],

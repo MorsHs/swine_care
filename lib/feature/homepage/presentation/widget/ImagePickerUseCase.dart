@@ -1,11 +1,10 @@
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 
 class ImagePickerUseCase {
   final ImagePicker _picker = ImagePicker();
 
-  Future<XFile?> pickImage(BuildContext context) async { // Changed return type to XFile?
+  Future<XFile?> pickImage(BuildContext context) async {
     try {
       final source = await showDialog<ImageSource>(
         context: context,
