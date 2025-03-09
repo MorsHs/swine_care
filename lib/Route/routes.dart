@@ -9,6 +9,7 @@ import 'package:swine_care/feature/guide/presentation/widgets/EmergencyTips.dart
 import 'package:swine_care/feature/guide/presentation/widgets/PreventingAfricanSwineFever.dart';
 import 'package:swine_care/feature/historypage/presentation/pages/HistoryPage.dart';
 import 'package:swine_care/feature/homepage/presentation/pages/HomePage.dart';
+import 'package:swine_care/feature/homepage/presentation/pages/ResultsPage.dart';
 import 'package:swine_care/feature/intro/presentation/pages/IntroPage.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/pages/LoadingScreen.dart';
 import 'package:swine_care/feature/login/presentation/pages/Login.dart';
@@ -68,6 +69,18 @@ class RouterConfiguration {
                 GoRoute(
                   path: '/homepage',
                   builder: (context, state) => const HomePage(),
+                  routes: [
+                    GoRoute(
+                      path: 'results',
+                      builder: (context, state) {
+                        final Map<String, dynamic> params = state.extra as Map<String, dynamic>? ?? {};
+                        return ResultsPage(
+                          uploadedImages: params['uploadedImages'] ?? {},
+                          symptoms: params['symptoms'] ?? {},
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
