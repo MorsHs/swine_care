@@ -9,6 +9,9 @@ import 'package:swine_care/feature/homepage/presentation/widget/SymptomsChecker.
 import 'package:swine_care/feature/homepage/presentation/widget/TextLabel1.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/TextLabel2.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/SaveButton.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
+import 'package:swine_care/colors/ArgieSizes.dart';
+import 'package:swine_care/global_widget/PrimaryHeader/PrimaryHeaderContainer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -71,64 +74,92 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0).copyWith(bottom: 80.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextLabel1(
-                isGridView: _isGridView,
-                onToggleGridView: _toggleGridView,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: PrimaryHeaderContainer(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ArgieSizes.paddingDefault,
+                    vertical: ArgieSizes.spaceBtwItems,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextLabel1(
+                        isGridView: _isGridView,
+                        onToggleGridView: _toggleGridView,
+                      ),
+                      SizedBox(height: ArgieSizes.spaceBtwItems),
+                      TextLabel2(),
+                      SizedBox(height: ArgieSizes.spaceBtwSections),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(height: 12),
-              const TextLabel2(),
-              const SizedBox(height: 10),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardTheme.color,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).shadowColor.withValues(alpha: 0.2),
-                      spreadRadius: 1,
-                      blurRadius: 3,
-                      offset: const Offset(0, 2),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(ArgieSizes.paddingDefault).copyWith(bottom: 80.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.all(ArgieSizes.paddingDefault),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? ArgieColors.dark
+                            : ArgieColors.ligth,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.transparent,
+                          width: 2,
+                        ),
+                        gradient: LinearGradient(
+                          colors: [
+                            ArgieColors.primary.withValues(alpha: 0.2),
+                            ArgieColors.secondary.withValues(alpha: 0.1),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+
+                      ),
+                      child: _isGridView ? _buildGridView() : _buildListView(),
                     ),
+                    SizedBox(height: ArgieSizes.spaceBtwSections),
+                    const CheckerButton(),
+                    SizedBox(height: ArgieSizes.spaceBtwWidgets),
+                    SymptomsChecker(
+                      answers: _answers,
+                      onAnswerChanged: (question, answer) => setState(() {
+                        _answers[question] = answer;
+                      }),
+                    ),
+                    SizedBox(height: 50),
+                    SaveButton(
+                      uploadedImages: {
+                        'Ears': selectedImageEars,
+                        'Skin': selectedImageSkin,
+                        'Legs': selectedImageLegs,
+                        'Nose': selectedImageNose,
+                      },
+                      webImages: {
+                        'Ears': webImageEars,
+                        'Skin': webImageSkin,
+                        'Legs': webImageLegs,
+                        'Nose': webImageNose,
+                      },
+                      symptoms: _answers,
+                    ),
+                    SizedBox(height: ArgieSizes.spaceBtwSections),
                   ],
                 ),
-                child: _isGridView ? _buildGridView() : _buildListView(),
               ),
-              const SizedBox(height: 20),
-              const CheckerButton(),
-              const SizedBox(height: 10),
-              SymptomsChecker(
-                answers: _answers,
-                onAnswerChanged: (question, answer) => setState(() {
-                  _answers[question] = answer;
-                }),
-              ),
-              const SizedBox(height: 50),
-              SaveButton(
-                uploadedImages: {
-                  'Ears': selectedImageEars,
-                  'Skin': selectedImageSkin,
-                  'Legs': selectedImageLegs,
-                  'Nose': selectedImageNose,
-                },
-                webImages: {
-                  'Ears': webImageEars,
-                  'Skin': webImageSkin,
-                  'Legs': webImageLegs,
-                  'Nose': webImageNose,
-                },
-                symptoms: _answers,
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -144,7 +175,7 @@ class _HomePageState extends State<HomePage> {
           webImage: webImageEars,
           isGridView: _isGridView,
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: ArgieSizes.spaceBtwWidgets),
         _buildImageSection(
           label: 'Skin',
           imagePath: 'assets/images/pigparts/pigskin.jpg',
@@ -152,7 +183,7 @@ class _HomePageState extends State<HomePage> {
           webImage: webImageSkin,
           isGridView: _isGridView,
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: ArgieSizes.spaceBtwWidgets),
         _buildImageSection(
           label: 'Legs',
           imagePath: 'assets/images/pigparts/piglegs.png',
@@ -160,7 +191,7 @@ class _HomePageState extends State<HomePage> {
           webImage: webImageLegs,
           isGridView: _isGridView,
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: ArgieSizes.spaceBtwWidgets),
         _buildImageSection(
           label: 'Nose',
           imagePath: 'assets/images/pigparts/pignose.jpeg',
@@ -175,8 +206,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildGridView() {
     return GridView.count(
       crossAxisCount: 2,
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
+      crossAxisSpacing: ArgieSizes.spaceBtwWidgets,
+      mainAxisSpacing: ArgieSizes.spaceBtwWidgets,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       childAspectRatio: 0.75,
@@ -220,30 +251,33 @@ class _HomePageState extends State<HomePage> {
     required Uint8List? webImage,
     required bool isGridView,
   }) {
-    return ImageUploadButton(
-      label: label,
-      imagePath: imagePath,
-      image: selectedImage,
-      webImage: webImage,
-      isGridView: isGridView,
-      onTap: () async {
-        try {
-          final result = await _imagePickerUseCase.pickImage(context);
-          if (result != null) {
-            if (kIsWeb) {
-              final bytes = await result.readAsBytes();
-              _updateImage(label, null, bytes);
-            } else {
-              _updateImage(label, File(result.path), null);
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      child: ImageUploadButton(
+        label: label,
+        imagePath: imagePath,
+        image: selectedImage,
+        webImage: webImage,
+        isGridView: isGridView,
+        onTap: () async {
+          try {
+            final result = await _imagePickerUseCase.pickImage(context);
+            if (result != null) {
+              if (kIsWeb) {
+                final bytes = await result.readAsBytes();
+                _updateImage(label, null, bytes);
+              } else {
+                _updateImage(label, File(result.path), null);
+              }
             }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error uploading image: $e')),
+            );
           }
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error uploading image: $e')),
-          );
-        }
-      },
-      onRemove: () => _updateImage(label, null, null),
+        },
+        onRemove: () => _updateImage(label, null, null),
+      ),
     );
   }
 }

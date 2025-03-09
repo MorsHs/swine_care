@@ -2,16 +2,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
+import 'package:swine_care/colors/ArgieSizes.dart';
 
 class ResultsPage extends StatefulWidget {
   final Map<String, File?> uploadedImages;
   final Map<String, bool?> symptoms;
 
-  const ResultsPage({
-    super.key,
-    required this.uploadedImages,
-    required this.symptoms,
-  });
+  const ResultsPage({super.key, required this.uploadedImages, required this.symptoms});
 
   @override
   State<ResultsPage> createState() => _ResultsPageState();
@@ -23,74 +21,51 @@ class _ResultsPageState extends State<ResultsPage> {
   @override
   void initState() {
     super.initState();
-    // Hide animation after 4 seconds
     Future.delayed(const Duration(seconds: 5), () {
-      if (mounted) {
-        setState(() {
-          _showAnimation = false;
-        });
-      }
+      if (mounted) setState(() => _showAnimation = false);
     });
   }
 
-  // Enhanced ASF analysis with more detailed scoring
   String analyzeASF() {
     int riskScore = 0;
     int totalSymptoms = widget.symptoms.length;
     int totalImages = widget.uploadedImages.length;
-
-    // Image analysis (more weight if images are missing)
-    widget.uploadedImages.forEach((part, image) {
-      if (image == null) {
-        riskScore += 2; // Higher penalty for missing images
-      } else {
-        riskScore += 1; // Small risk even with images
-      }
-    });
-
-    // Symptom analysis
+    widget.uploadedImages.forEach((part, image) => riskScore += image == null ? 2 : 1);
     int positiveSymptoms = 0;
     widget.symptoms.forEach((symptom, answer) {
       if (answer == true) {
-        riskScore += 3; // More weight for positive symptoms
+        riskScore += 3;
         positiveSymptoms++;
       }
     });
-
-    // Calculate percentage of positive indicators
     double riskPercentage = (riskScore / ((totalImages * 2) + (totalSymptoms * 3))) * 100;
-
-    if (riskPercentage >= 70 || positiveSymptoms >= 4) {
-      return "Highly Likely";
-    } else if (riskPercentage >= 40 || positiveSymptoms >= 2) {
-      return "Medium Likelihood";
-    } else {
-      return "Low Risk";
-    }
+    if (riskPercentage >= 70 || positiveSymptoms >= 4) return "Highly Likely";
+    if (riskPercentage >= 40 || positiveSymptoms >= 2) return "Medium Likelihood";
+    return "Low Risk";
   }
 
   List<String> getRecommendations(String likelihood) {
     switch (likelihood) {
       case "Highly Likely":
         return [
-          "Immediately isolate the affected pig(s) to prevent spread",
-          "Contact a veterinarian urgently for professional diagnosis",
-          "Implement strict biosecurity measures and disinfect the area",
-          "Monitor other pigs for similar symptoms"
+          "Immediately isolate the affected pig(s)",
+          "Contact a veterinarian urgently",
+          "Implement biosecurity measures",
+          "Monitor other pigs"
         ];
       case "Medium Likelihood":
         return [
-          "Closely monitor the pig for 24-48 hours",
-          "Maintain strict hygiene protocols",
-          "Consult a veterinarian for a professional opinion",
-          "Prepare for potential isolation if symptoms worsen"
+          "Monitor the pig for 24-48 hours",
+          "Maintain hygiene protocols",
+          "Consult a veterinarian",
+          "Prepare for isolation"
         ];
-      default: // Low Risk
+      default:
         return [
-          "Continue regular health monitoring",
-          "Maintain good hygiene and nutrition practices",
-          "Record any changes in behavior or appearance",
-          "Schedule routine veterinary check-up"
+          "Continue health monitoring",
+          "Maintain hygiene",
+          "Record changes",
+          "Schedule check-up"
         ];
     }
   }
@@ -99,8 +74,10 @@ class _ResultsPageState extends State<ResultsPage> {
   Widget build(BuildContext context) {
     final String likelihood = analyzeASF();
     final List<String> recommendations = getRecommendations(likelihood);
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      bottomNavigationBar: null, // Explicitly hide the bottom navigation bar
       body: _showAnimation
           ? Center(
         child: Column(
@@ -110,15 +87,14 @@ class _ResultsPageState extends State<ResultsPage> {
               'assets/Animations/ResultAnimation.json',
               width: 300,
               height: 300,
-              fit: BoxFit.contain,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: ArgieSizes.spaceBtwSections),
             Text(
               'Analyzing Your Data... Please Wait',
               style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: Colors.grey.shade700,
+                color: isDarkMode ? Colors.grey.shade300 : Colors.grey.shade700,
               ),
             ),
           ],
@@ -126,47 +102,54 @@ class _ResultsPageState extends State<ResultsPage> {
       )
           : CustomScrollView(
         slivers: [
-          SliverAppBar(
-            expandedHeight: 200,
-            floating: false,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
-                "Diagnostic Results",
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  shadows: [Shadow(color: Colors.black45, blurRadius: 2)],
-                ),
-              ),
-              background: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Colors.green.shade700,
-                      Colors.green.shade300,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Result Card
+                  // Manual back button
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0, left: 16.0),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: isDarkMode ? Colors.white70 : Colors.blueAccent,
+                      ),
+                      onPressed: () => Navigator.pop(context), // Navigate back to HomePage
+                    ),
+                  ),
+                  // Title section
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [ArgieColors.primary, ArgieColors.third],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      "Diagnostic Results",
+                      style: GoogleFonts.poppins(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: ArgieColors.textthird,
+                        shadows: [const Shadow(color: ArgieColors.shadow, blurRadius: 2)],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: ArgieSizes.spaceBtwSections),
                   Card(
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
+                    color: isDarkMode ? Colors.grey[800] : Colors.white,
                     child: Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -174,24 +157,24 @@ class _ResultsPageState extends State<ResultsPage> {
                             children: [
                               Icon(
                                 Icons.analytics,
-                                color: Colors.green.shade700,
+                                color: ArgieColors.primary,
                                 size: 28,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: ArgieSizes.spaceBtwWidgets),
                               Text(
                                 "ASF Likelihood",
                                 style: GoogleFonts.poppins(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
+                                  color: isDarkMode ? Colors.white70 : Colors.black87,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: ArgieSizes.spaceBtwItems),
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(ArgieSizes.spaceBtwItems),
                             decoration: BoxDecoration(
                               color: likelihood == "Highly Likely"
                                   ? Colors.red.shade100
@@ -225,17 +208,15 @@ class _ResultsPageState extends State<ResultsPage> {
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 24),
-
-                  // Recommendations Section
+                  const SizedBox(height: ArgieSizes.spaceBtwSections),
                   Card(
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
+                    color: isDarkMode ? Colors.grey[800] : Colors.white,
                     child: Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -243,72 +224,67 @@ class _ResultsPageState extends State<ResultsPage> {
                             children: [
                               Icon(
                                 Icons.recommend,
-                                color: Colors.green.shade700,
+                                color: ArgieColors.primary,
                                 size: 24,
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: ArgieSizes.spaceBtwWidgets),
                               Text(
                                 "Recommended Actions",
                                 style: GoogleFonts.poppins(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
+                                  color: isDarkMode ? Colors.white70 : Colors.black87,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
-                          ...recommendations.map((recommendation) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.check_circle_outline,
-                                    color: Colors.green.shade600,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      recommendation,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        color: Colors.black87,
-                                        height: 1.5,
-                                      ),
+                          const SizedBox(height: ArgieSizes.spaceBtwItems),
+                          ...recommendations.map((rec) => Padding(
+                            padding: const EdgeInsets.only(bottom: ArgieSizes.spaceBtwWidgets / 2),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  color: ArgieColors.primary,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: ArgieSizes.spaceBtwWidgets),
+                                Expanded(
+                                  child: Text(
+                                    rec,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 15,
+                                      color: isDarkMode ? Colors.white70 : Colors.black87,
+                                      height: 1.5,
                                     ),
                                   ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
+                                ),
+                              ],
+                            ),
+                          )),
                         ],
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 24),
-
-                  // Back Button
+                  const SizedBox(height: ArgieSizes.spaceBtwSections),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => Navigator.pop(context), // Navigate back to HomePage
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey.shade700,
+                        backgroundColor: ArgieColors.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 12,
+                          horizontal: ArgieSizes.paddingDefault,
+                          vertical: ArgieSizes.spaceBtwItems,
                         ),
                       ),
                       child: Text(
                         "Back to Home",
                         style: GoogleFonts.poppins(
-                          color: Colors.white,
+                          color: ArgieColors.textthird,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
