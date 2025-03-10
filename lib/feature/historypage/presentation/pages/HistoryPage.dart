@@ -206,23 +206,6 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
           ),
           const SizedBox(height: 20),
-          ElevatedButton.icon(
-            onPressed: () {
-              // Navigate to HomePage
-              Navigator.pop(context);
-            },
-            icon: const Icon(Iconsax.arrow_left_2, size: 18),
-            label: Text(
-              'Go to Home',
-              style: GoogleFonts.poppins(fontSize: 16),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ArgieColors.primary,
-              foregroundColor: ArgieColors.textthird,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            ),
-          ),
         ],
       ),
     );

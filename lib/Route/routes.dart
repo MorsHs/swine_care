@@ -15,6 +15,11 @@ import 'package:swine_care/feature/loadingscreen/presentation/pages/LoadingScree
 import 'package:swine_care/feature/login/presentation/pages/Login.dart';
 import 'package:swine_care/feature/register/presentation/pages/Register.dart';
 import 'package:swine_care/feature/settings/presentation/pages/Settings.dart';
+import 'package:swine_care/feature/settings/presentation/widget/ChangePasswordPage.dart';
+import 'package:swine_care/feature/settings/presentation/widget/NotificationsPage.dart';
+import 'package:swine_care/feature/settings/presentation/widget/PrivacyPolicyPage.dart';
+import 'package:swine_care/feature/settings/presentation/widget/SendFeedbackPage.dart';
+import 'package:swine_care/feature/settings/presentation/widget/TermsAndConditionsPage.dart';
 
 class RouterConfiguration {
   GoRouter routes() {
@@ -131,6 +136,28 @@ class RouterConfiguration {
                 GoRoute(
                   path: '/setting',
                   builder: (context, state) => const Settings(),
+                  routes: [
+                    GoRoute(
+                      path: 'notifications',
+                      builder: (context, state) => const NotificationsPage(),
+                    ),
+                    GoRoute(
+                      path: 'change-password',
+                      builder: (context, state) => const ChangePasswordPage(),
+                    ),
+                    GoRoute(
+                      path: 'privacy-policy',
+                      builder: (context, state) => const PrivacyPolicyPage(),
+                    ),
+                    GoRoute(
+                      path: 'terms-conditions',
+                      builder: (context, state) => const TermsAndConditionsPage(),
+                    ),
+                    GoRoute(
+                      path: 'send-feedback',
+                      builder: (context, state) => const SendFeedbackPage(),
+                    ),
+                  ]
                 ),
               ],
             ),

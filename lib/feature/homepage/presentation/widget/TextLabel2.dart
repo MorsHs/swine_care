@@ -11,7 +11,7 @@ class TextLabel2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final Color baseTextColor = isDarkMode ? ArgieColors.textthird : ArgieColors.textBold;
-    final Color highlightTextColor = isDarkMode ? ArgieColors.textthird : ArgieColors.primary;
+    final Color highlightTextColor = isDarkMode ? ArgieColors.textthird : ArgieColors.textseven;
     final Color secondaryTextColor = isDarkMode ? ArgieColors.textthird : ArgieColors.textSemiBlack;
 
     print('TextLabel2 - Dark Mode: $isDarkMode, Base Color: $baseTextColor, Highlight Color: $highlightTextColor, Secondary Color: $secondaryTextColor');

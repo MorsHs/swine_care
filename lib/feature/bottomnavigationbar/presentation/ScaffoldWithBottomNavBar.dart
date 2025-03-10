@@ -1,10 +1,10 @@
-import 'dart:ui'; // For BackdropFilter
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart'; // For matching icons
-import 'package:swine_care/colors/ArgieColors.dart'; // Import your color class
+import 'package:iconsax/iconsax.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
 
-class ScaffoldWithBottomNavBar extends StatelessWidget {
+class ScaffoldWithBottomNavBar extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 
   const ScaffoldWithBottomNavBar({
@@ -13,82 +13,163 @@ class ScaffoldWithBottomNavBar extends StatelessWidget {
   });
 
   @override
+  State<ScaffoldWithBottomNavBar> createState() => _ScaffoldWithBottomNavBarState();
+}
+
+class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _labelFadeAnimation;
+  int _selectedIndex = 0;
+  bool _showLabels = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.navigationShell.currentIndex;
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    _labelFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onItemTapped(int index) {
+    if (_selectedIndex != index) {
+      setState(() {
+        _selectedIndex = index;
+        _showLabels = true;
+        _animationController.forward().then((_) {
+          Future.delayed(const Duration(milliseconds: 1500), () {
+            if (mounted) {
+              setState(() {
+                _showLabels = false;
+              });
+            }
+          });
+        });
+      });
+      widget.navigationShell.goBranch(index);
+    }
+  }
+
+  @override
+  void didUpdateWidget(ScaffoldWithBottomNavBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.navigationShell.currentIndex != _selectedIndex) {
+      setState(() {
+        _selectedIndex = widget.navigationShell.currentIndex;
+      });
+    }
+  }
+
+  final List<Map<String, dynamic>> _navItems = [
+    {'icon': Iconsax.home, 'label': 'HOME', 'route': '/homepage'},
+    {'icon': Icons.tips_and_updates_outlined, 'label': 'GUIDE', 'route': '/guide'},
+    {'icon': Icons.history, 'label': 'HISTORY', 'route': '/history'},
+    {'icon': Icons.settings, 'label': 'SETTINGS', 'route': '/setting'},
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    // Get the current route path
     final String currentPath = GoRouterState.of(context).fullPath ?? '';
-
-    // Define the routes where the bottom navigation bar should be shown
     const mainRoutes = ['/homepage', '/guide', '/history', '/setting'];
-
-    // Check if the current path matches one of the main routes
-    bool showBottomNavBar = mainRoutes.contains(currentPath);
+    final bool showBottomNavBar = mainRoutes.contains(currentPath);
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      extendBody: true, // Allow content to extend behind the navigation bar
-      body: navigationShell,
+      extendBody: true,
+      body: widget.navigationShell,
       bottomNavigationBar: showBottomNavBar
-          ? Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0), // Increased vertical padding for prominence
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(30), // Rounded corners
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12), // Slightly stronger blur
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    ArgieColors.textthird.withValues(alpha: 0.9), // Base white with opacity
-                    ArgieColors.primarybackground.withValues(alpha: 0.7), // Subtle gradient with primary background
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  BoxShadow(
-                    color: ArgieColors.dark.withValues(alpha: 0.2), // Dark shadow from palette
-                    blurRadius: 12,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 4), // Slightly larger offset for depth
+          ? Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              isDarkMode
+                  ? ArgieColors.dark.withValues(alpha: 0.9)
+                  : Colors.white.withValues(alpha: 0.9),
+              ArgieColors.primary.withValues(alpha: 0.2),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: ArgieColors.shadow.withValues(alpha: 0.1),
+              blurRadius: 8,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(_navItems.length, (index) {
+                final item = _navItems[index];
+                final bool isSelected = _selectedIndex == index;
+                return GestureDetector(
+                  onTap: () => _onItemTapped(index),
+                  child: AnimatedBuilder(
+                    animation: _animationController,
+                    builder: (context, child) {
+                      return Transform.scale(
+                        scale: isSelected ? _scaleAnimation.value : 1.0,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              item['icon'] as IconData,
+                              size: isSelected ? 26 : 24,
+                              color: isSelected
+                                  ? ArgieColors.primary
+                                  : isDarkMode
+                                  ? ArgieColors.textthird
+                                  : ArgieColors.textsecondary,
+                            ),
+                            const SizedBox(height: 4),
+                            AnimatedOpacity(
+                              opacity: _showLabels && isSelected ? 1.0 : 0.0,
+                              duration: const Duration(milliseconds: 200),
+                              child: Text(
+                                item['label'] as String,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: isSelected
+                                      ? ArgieColors.primary
+                                      : isDarkMode
+                                      ? Colors.white70
+                                      : Colors.black54,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                ],
-              ),
-              child: BottomNavigationBar(
-                currentIndex: navigationShell.currentIndex,
-                onTap: (index) => navigationShell.goBranch(index),
-                backgroundColor: Colors.transparent, // Transparent to show blur and gradient
-                elevation: 0, // Remove default elevation (we use custom shadow)
-                type: BottomNavigationBarType.fixed, // Prevent shifting animation
-                selectedItemColor: ArgieColors.primary, // Primary color for selected icon
-                unselectedItemColor: ArgieColors.textsecondary, // Secondary text color for unselected icons
-                selectedIconTheme: const IconThemeData(size: 28), // Larger selected icon
-                unselectedIconTheme: const IconThemeData(size: 24), // Slightly smaller unselected icon
-                showSelectedLabels: false, // Hide labels
-                showUnselectedLabels: false, // Hide labels
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Iconsax.home), // Match icon from image
-                    label: 'HOME',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.tips_and_updates_outlined), // Match icon from image
-                    label: 'GUIDE',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.history), // Match icon from image
-                    label: 'HISTORY',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.settings), // Match icon from image
-                    label: 'SETTINGS',
-                  ),
-                ],
-              ),
+                );
+              }),
             ),
           ),
         ),
       )
-          : null, // Hide the bottom navigation bar for subroutes
+          : null,
     );
   }
 }
