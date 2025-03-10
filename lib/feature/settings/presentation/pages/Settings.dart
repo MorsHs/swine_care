@@ -88,16 +88,9 @@ class _SettingsState extends State<Settings> {
                   icon: Iconsax.notification,
                   title: 'Notifications',
                   subtitle: 'Manage notification preferences',
-                  onTap: () {},
-                  tileColor: Theme.of(context).cardTheme.color,
-                  textColor: Theme.of(context).textTheme.bodyLarge?.color,
-                  subtitleColor: Theme.of(context).textTheme.bodyMedium?.color,
-                ),
-                SettingMenuTile(
-                  icon: Iconsax.security_user,
-                  title: 'Account Privacy',
-                  subtitle: 'Control who can see your information',
-                  onTap: () {},
+                  onTap: () {
+                    context.go('/setting/notifications');
+                  },
                   tileColor: Theme.of(context).cardTheme.color,
                   textColor: Theme.of(context).textTheme.bodyLarge?.color,
                   subtitleColor: Theme.of(context).textTheme.bodyMedium?.color,
@@ -106,7 +99,9 @@ class _SettingsState extends State<Settings> {
                   icon: Iconsax.password_check,
                   title: 'Change Password',
                   subtitle: 'Update your account password',
-                  onTap: () {},
+                  onTap: () {
+                    context.go('/setting/change-password');
+                  },
                   tileColor: Theme.of(context).cardTheme.color,
                   textColor: Theme.of(context).textTheme.bodyLarge?.color,
                   subtitleColor: Theme.of(context).textTheme.bodyMedium?.color,
@@ -125,7 +120,9 @@ class _SettingsState extends State<Settings> {
                   icon: Iconsax.security_safe,
                   title: 'Privacy Policy',
                   subtitle: 'Learn how we handle your data',
-                  onTap: () {},
+                  onTap: () {
+                    context.go('/setting/privacy-policy');
+                    },
                   tileColor: Theme.of(context).cardTheme.color,
                   textColor: Theme.of(context).textTheme.bodyLarge?.color,
                   subtitleColor: Theme.of(context).textTheme.bodyMedium?.color,
@@ -134,7 +131,9 @@ class _SettingsState extends State<Settings> {
                   icon: Iconsax.security,
                   title: 'Terms and Conditions',
                   subtitle: 'Review our terms of service',
-                  onTap: () {},
+                  onTap: () {
+                    context.go('/setting/terms-conditions');
+                    },
                   tileColor: Theme.of(context).cardTheme.color,
                   textColor: Theme.of(context).textTheme.bodyLarge?.color,
                   subtitleColor: Theme.of(context).textTheme.bodyMedium?.color,
@@ -143,7 +142,9 @@ class _SettingsState extends State<Settings> {
                   icon: Iconsax.send,
                   title: 'Send Feedback',
                   subtitle: 'Share your experience with us',
-                  onTap: () {},
+                  onTap: () {
+                    context.go('/setting/send-feedback');
+                  },
                   tileColor: Theme.of(context).cardTheme.color,
                   textColor: Theme.of(context).textTheme.bodyLarge?.color,
                   subtitleColor: Theme.of(context).textTheme.bodyMedium?.color,

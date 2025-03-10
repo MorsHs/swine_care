@@ -24,7 +24,7 @@ class TextLabel1 extends StatelessWidget {
             child: Text(
               'Detect ASF in Your Pigs',
               style: GoogleFonts.poppins(
-                fontSize: 24,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
@@ -39,28 +39,13 @@ class TextLabel1 extends StatelessWidget {
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeInOut,
             padding: const EdgeInsets.all(4.0),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).appBarTheme.backgroundColor!.withValues(alpha: 0.8),
-                  Theme.of(context).primaryColor.withValues(alpha: 0.2),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
-                width: 1,
-              ),
-            ),
             child: IconButton(
               icon: Icon(
                 isGridView ? Iconsax.element_3 : Iconsax.element_4,
                 color: Theme.of(context).brightness == Brightness.dark
                     ? ArgieColors.textfifth
                     : ArgieColors.textfourth,
-                size: 18,
+                size: 20,
               ),
               onPressed: null, // Disabled state
               tooltip: isGridView ? 'Switch to List View' : 'Switch to Grid View',

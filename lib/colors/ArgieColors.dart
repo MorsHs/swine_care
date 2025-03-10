@@ -20,6 +20,7 @@ class ArgieColors{
   static Color textfourth = Color(0xFF0E55C6);
   static Color textfifth = Color(0xFF2C6DED);
   static Color textsix = Color(0xFF749AE6);
+  static Color textseven = Color(0xFF0A3781);
 
   //background colors
   static Color ligth = Color(0xFFF6F6F6);

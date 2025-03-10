@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
@@ -108,37 +109,12 @@ class _ResultsPageState extends State<ResultsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Manual back button
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0, left: 16.0),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: isDarkMode ? Colors.white70 : Colors.blueAccent,
-                      ),
-                      onPressed: () => Navigator.pop(context), // Navigate back to HomePage
-                    ),
-                  ),
-                  // Title section
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [ArgieColors.primary, ArgieColors.third],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      "Diagnostic Results",
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: ArgieColors.textthird,
-                        shadows: [const Shadow(color: ArgieColors.shadow, blurRadius: 2)],
-                      ),
+                  Text(
+                    "Diagnostic Results",
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: isDarkMode ? Colors.white : ArgieColors.primary,
                     ),
                   ),
                   const SizedBox(height: ArgieSizes.spaceBtwSections),
@@ -270,7 +246,7 @@ class _ResultsPageState extends State<ResultsPage> {
                   const SizedBox(height: ArgieSizes.spaceBtwSections),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () => Navigator.pop(context), // Navigate back to HomePage
+                      onPressed: () => context.go('/homepage'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ArgieColors.primary,
                         shape: RoundedRectangleBorder(

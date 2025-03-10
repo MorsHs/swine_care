@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/CheckerButton.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/HomePageHeader.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/ImagePickerUseCase.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/ImageUploadButton.dart';
 import 'package:swine_care/feature/homepage/presentation/widget/SymptomsChecker.dart';
@@ -11,7 +12,6 @@ import 'package:swine_care/feature/homepage/presentation/widget/TextLabel2.dart'
 import 'package:swine_care/feature/homepage/presentation/widget/SaveButton.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/colors/ArgieSizes.dart';
-import 'package:swine_care/global_widget/PrimaryHeader/PrimaryHeaderContainer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   final ImagePickerUseCase _imagePickerUseCase = ImagePickerUseCase();
   File? selectedImageEars;
   File? selectedImageSkin;
@@ -40,6 +40,28 @@ class _HomePageState extends State<HomePage> {
   };
 
   bool _isGridView = false;
+
+  late AnimationController _headerAnimationController;
+  late Animation<double> _headerAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _headerAnimationController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    )..repeat(reverse: true);
+    _headerAnimation = Tween<double>(begin: 0.0, end: 0.1).animate(
+      CurvedAnimation(parent: _headerAnimationController, curve: Curves.easeInOut),
+    );
+    _headerAnimationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _headerAnimationController.dispose();
+    super.dispose();
+  }
 
   void _updateImage(String part, File? image, Uint8List? webImage) {
     setState(() {
@@ -70,97 +92,39 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: PrimaryHeaderContainer(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ArgieSizes.paddingDefault,
-                    vertical: ArgieSizes.spaceBtwItems,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextLabel1(
-                        isGridView: _isGridView,
-                        onToggleGridView: _toggleGridView,
-                      ),
-                      SizedBox(height: ArgieSizes.spaceBtwItems),
-                      TextLabel2(),
-                      SizedBox(height: ArgieSizes.spaceBtwSections),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(ArgieSizes.paddingDefault).copyWith(bottom: 80.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.all(ArgieSizes.paddingDefault),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? ArgieColors.dark
-                            : ArgieColors.ligth,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: Colors.transparent,
-                          width: 2,
-                        ),
-                        gradient: LinearGradient(
-                          colors: [
-                            ArgieColors.primary.withValues(alpha: 0.2),
-                            ArgieColors.secondary.withValues(alpha: 0.1),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-
-                      ),
-                      child: _isGridView ? _buildGridView() : _buildListView(),
-                    ),
-                    SizedBox(height: ArgieSizes.spaceBtwSections),
-                    const CheckerButton(),
-                    SizedBox(height: ArgieSizes.spaceBtwWidgets),
-                    SymptomsChecker(
-                      answers: _answers,
-                      onAnswerChanged: (question, answer) => setState(() {
-                        _answers[question] = answer;
-                      }),
-                    ),
-                    SizedBox(height: 50),
-                    SaveButton(
-                      uploadedImages: {
-                        'Ears': selectedImageEars,
-                        'Skin': selectedImageSkin,
-                        'Legs': selectedImageLegs,
-                        'Nose': selectedImageNose,
-                      },
-                      webImages: {
-                        'Ears': webImageEars,
-                        'Skin': webImageSkin,
-                        'Legs': webImageLegs,
-                        'Nose': webImageNose,
-                      },
-                      symptoms: _answers,
-                    ),
-                    SizedBox(height: ArgieSizes.spaceBtwSections),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+  Widget _buildImageSection({
+    required String label,
+    required String imagePath,
+    required File? selectedImage,
+    required Uint8List? webImage,
+    required bool isGridView,
+  }) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      child: ImageUploadButton(
+        label: label,
+        imagePath: imagePath,
+        image: selectedImage,
+        webImage: webImage,
+        isGridView: isGridView,
+        onTap: () async {
+          try {
+            final result = await _imagePickerUseCase.pickImage(context);
+            if (result != null) {
+              if (kIsWeb) {
+                final bytes = await result.readAsBytes();
+                _updateImage(label, null, bytes);
+              } else {
+                _updateImage(label, File(result.path), null);
+              }
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error uploading image: $e')),
+            );
+          }
+        },
+        onRemove: () => _updateImage(label, null, null),
       ),
     );
   }
@@ -175,7 +139,7 @@ class _HomePageState extends State<HomePage> {
           webImage: webImageEars,
           isGridView: _isGridView,
         ),
-        SizedBox(height: ArgieSizes.spaceBtwWidgets),
+        const SizedBox(height: ArgieSizes.spaceBtwWidgets),
         _buildImageSection(
           label: 'Skin',
           imagePath: 'assets/images/pigparts/pigskin.jpg',
@@ -183,7 +147,7 @@ class _HomePageState extends State<HomePage> {
           webImage: webImageSkin,
           isGridView: _isGridView,
         ),
-        SizedBox(height: ArgieSizes.spaceBtwWidgets),
+        const SizedBox(height: ArgieSizes.spaceBtwWidgets),
         _buildImageSection(
           label: 'Legs',
           imagePath: 'assets/images/pigparts/piglegs.png',
@@ -191,7 +155,7 @@ class _HomePageState extends State<HomePage> {
           webImage: webImageLegs,
           isGridView: _isGridView,
         ),
-        SizedBox(height: ArgieSizes.spaceBtwWidgets),
+        const SizedBox(height: ArgieSizes.spaceBtwWidgets),
         _buildImageSection(
           label: 'Nose',
           imagePath: 'assets/images/pigparts/pignose.jpeg',
@@ -244,39 +208,118 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildImageSection({
-    required String label,
-    required String imagePath,
-    required File? selectedImage,
-    required Uint8List? webImage,
-    required bool isGridView,
-  }) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      child: ImageUploadButton(
-        label: label,
-        imagePath: imagePath,
-        image: selectedImage,
-        webImage: webImage,
-        isGridView: isGridView,
-        onTap: () async {
-          try {
-            final result = await _imagePickerUseCase.pickImage(context);
-            if (result != null) {
-              if (kIsWeb) {
-                final bytes = await result.readAsBytes();
-                _updateImage(label, null, bytes);
-              } else {
-                _updateImage(label, File(result.path), null);
-              }
-            }
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error uploading image: $e')),
-            );
-          }
-        },
-        onRemove: () => _updateImage(label, null, null),
+  @override
+  Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return Scaffold(
+      backgroundColor: isDarkMode ? ArgieColors.dark : ArgieColors.ligth,
+      body: Stack(
+        children: [
+          // Background Gradient
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  ArgieColors.primary.withValues(alpha: 0.1),
+                  ArgieColors.secondary.withValues(alpha: 0.5),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+          SafeArea(
+            child: CustomScrollView(
+              slivers: [
+
+                SliverToBoxAdapter(
+                  child: HomePageHeader(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: ArgieSizes.paddingDefault,
+                        vertical: ArgieSizes.spaceBtwItems,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextLabel1(
+                            isGridView: _isGridView,
+                            onToggleGridView: _toggleGridView,
+                          ),
+                          const SizedBox(height: ArgieSizes.spaceBtwItems / 2),
+                          const TextLabel2(),
+                          const SizedBox(height: ArgieSizes.spaceBtwSections),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // Main Content
+                SliverPadding(
+                  padding: const EdgeInsets.all(ArgieSizes.paddingDefault).copyWith(bottom: 100.0),
+                  sliver: SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 300),
+                              transitionBuilder: (child, animation) {
+                                return FadeTransition(opacity: animation, child: child);
+                              },
+                              child: _isGridView ? _buildGridView() : _buildListView(),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: ArgieSizes.spaceBtwSections),
+                        Center(
+                          child: CheckerButton(),
+                        ),
+                        const SizedBox(height: ArgieSizes.spaceBtwWidgets),
+                        Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SymptomsChecker(
+                              answers: _answers,
+                              onAnswerChanged: (question, answer) => setState(() {
+                                _answers[question] = answer;
+                              }),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: ArgieSizes.spaceBtwSections),
+                        SaveButton(
+                          uploadedImages: {
+                            'Ears': selectedImageEars,
+                            'Skin': selectedImageSkin,
+                            'Legs': selectedImageLegs,
+                            'Nose': selectedImageNose,
+                          },
+                          webImages: {
+                            'Ears': webImageEars,
+                            'Skin': webImageSkin,
+                            'Legs': webImageLegs,
+                            'Nose': webImageNose,
+                          },
+                          symptoms: _answers,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
