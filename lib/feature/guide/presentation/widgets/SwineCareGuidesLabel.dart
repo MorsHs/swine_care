@@ -14,15 +14,6 @@ class SwineCareGuidesLabel extends StatelessWidget {
         fontSize: 28,
         fontWeight: FontWeight.bold,
         color: isDarkMode ? Colors.white : ArgieColors.primary,
-        shadows: isDarkMode
-            ? []
-            : [
-          Shadow(
-            color: ArgieColors.shadow.withValues(alpha: 0.3),
-            offset: const Offset(2, 2),
-            blurRadius: 4,
-          ),
-        ],
       ),
     );
   }

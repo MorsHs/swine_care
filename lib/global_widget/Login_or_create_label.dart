@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 class LoginOrCreateLabel extends StatelessWidget {
   final String label;
-  const LoginOrCreateLabel({super.key, required this.label});
+  final Color? color;
+
+  const LoginOrCreateLabel({
+    super.key,
+    required this.label,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Align(alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 25,left: 30),
-        child: Text(label,
-        style: textStyle(),),
-      ),
-    );
-  }
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-  TextStyle textStyle(){
-    return  GoogleFonts.poppins(
-      fontSize: 25,
-      fontWeight: FontWeight.w600
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30),
+      child: Text(
+        label,
+        style: GoogleFonts.poppins(
+          fontSize: 28,
+          fontWeight: FontWeight.bold,
+          color: color ??
+              (isDarkMode ? Colors.white : Colors.black),
+        ),
+      ),
     );
   }
 }

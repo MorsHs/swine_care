@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -8,56 +9,67 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  late bool long_pressed;
+  late bool isPressed;
 
   @override
   void initState() {
-    long_pressed = false;
+    isPressed = false;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: const EdgeInsets.only(right: 40,bottom: 30,top: 10),
+        padding: const EdgeInsets.only(right: 40, bottom: 20, top: 10),
         child: GestureDetector(
           onTap: () {
             setState(() {
-              long_pressed = true;
-              Future.delayed(
-                const Duration(seconds: 3),
-                () {
+              isPressed = true;
+              Future.delayed(const Duration(seconds: 1), () {
+                if (mounted) {
                   setState(() {
-                    long_pressed = false;
+                    isPressed = false;
                   });
-                },
-              );
+                }
+              });
             });
           },
           onLongPressDown: (details) {
             setState(() {
-              long_pressed = true;
+              isPressed = true;
             });
           },
           onLongPressUp: () {
             setState(() {
-              long_pressed = false;
+              isPressed = false;
             });
           },
           onLongPressCancel: () {
             setState(() {
-              long_pressed = false;
+              isPressed = false;
             });
           },
           child: Text(
             "Forgot Password?",
             style: TextStyle(
-                color: long_pressed ? Colors.blue : Colors.black,
-                decoration:
-                    long_pressed ? TextDecoration.underline : TextDecoration.none,
-                decorationColor: long_pressed ? Colors.blue : Colors.black),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: isPressed
+                  ? ArgieColors.primary
+                  : isDarkMode
+                  ? ArgieColors.textthird
+                  : ArgieColors.textsecondary,
+              decoration: isPressed ? TextDecoration.underline : TextDecoration.none,
+              decorationColor: isPressed
+                  ? ArgieColors.primary
+                  : isDarkMode
+                  ? ArgieColors.textthird
+                  : ArgieColors.textsecondary,
+            ),
           ),
         ),
       ),

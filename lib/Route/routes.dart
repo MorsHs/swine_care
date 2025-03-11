@@ -49,23 +49,31 @@ class RouterConfiguration {
       routes: [
         GoRoute(
           path: '/intro',
-          builder: (context, state) => const IntroPage(),
+          builder: (context, state) {
+            return const IntroPage();
+          },
         ),
         GoRoute(
           path: '/loading-screen',
-          builder: (context, state) => const LoadingScreen(),
+          builder: (context, state) {
+            return const LoadingScreen();
+          },
         ),
         GoRoute(
           path: '/login',
-          builder: (context, state) => const Login(),
+          builder: (context, state) {
+            return const Login();
+          },
         ),
         GoRoute(
           path: '/signup',
-          builder: (context, state) => const Register(),
+          builder: (context, state) {
+            return const Register();
+          },
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
-            print('ScaffoldWithBottomNavBar Rebuilt for: ${navigationShell.currentIndex}'); // Debug print
+            print('ScaffoldWithBottomNavBar Rebuilt for: ${navigationShell.currentIndex}');
             return ScaffoldWithBottomNavBar(navigationShell: navigationShell);
           },
           branches: [
@@ -73,7 +81,9 @@ class RouterConfiguration {
               routes: [
                 GoRoute(
                   path: '/homepage',
-                  builder: (context, state) => const HomePage(),
+                  builder: (context, state) {
+                    return const HomePage();
+                  },
                   routes: [
                     GoRoute(
                       path: 'results',
@@ -93,31 +103,45 @@ class RouterConfiguration {
               routes: [
                 GoRoute(
                   path: '/guide',
-                  builder: (context, state) => const GuidePage(),
+                  builder: (context, state) {
+                    return const GuidePage();
+                  },
                   routes: [
                     GoRoute(
                       path: 'swine-farming',
-                      builder: (context, state) => const SwineFarmingPage(),
+                      builder: (context, state) {
+                        return const SwineFarmingPage();
+                      },
                     ),
                     GoRoute(
                       path: 'best-practices',
-                      builder: (context, state) => const BestPracticesPage(),
+                      builder: (context, state) {
+                        return const BestPracticesPage();
+                      },
                     ),
                     GoRoute(
                       path: 'emergency-tips',
-                      builder: (context, state) => const EmergencyMeasuresForDiseaseOutbreaks(),
+                      builder: (context, state) {
+                        return const EmergencyMeasuresForDiseaseOutbreaks();
+                      },
                     ),
                     GoRoute(
                       path: 'emergency',
-                      builder: (context, state) => const EmergencyMeasuresPage(),
+                      builder: (context, state) {
+                        return const EmergencyMeasuresPage();
+                      },
                     ),
                     GoRoute(
                       path: 'preventing_asf',
-                      builder: (context, state) => const PreventingAfricanSwineFever(),
+                      builder: (context, state) {
+                        return const PreventingAfricanSwineFever();
+                      },
                     ),
                     GoRoute(
                       path: 'preventing',
-                      builder: (context, state) => const PreventingAfricanSwineFeverPage(),
+                      builder: (context, state) {
+                        return const PreventingAfricanSwineFeverPage();
+                      },
                     ),
                   ],
                 ),
@@ -127,7 +151,9 @@ class RouterConfiguration {
               routes: [
                 GoRoute(
                   path: '/history',
-                  builder: (context, state) => const HistoryPage(),
+                  builder: (context, state) {
+                    return const HistoryPage();
+                  },
                 ),
               ],
             ),
@@ -135,29 +161,41 @@ class RouterConfiguration {
               routes: [
                 GoRoute(
                   path: '/setting',
-                  builder: (context, state) => const Settings(),
+                  builder: (context, state) {
+                    return const Settings();
+                  },
                   routes: [
                     GoRoute(
                       path: 'notifications',
-                      builder: (context, state) => const NotificationsPage(),
+                      builder: (context, state) {
+                        return const NotificationsPage();
+                      },
                     ),
                     GoRoute(
                       path: 'change-password',
-                      builder: (context, state) => const ChangePasswordPage(),
+                      builder: (context, state) {
+                        return const ChangePasswordPage();
+                      },
                     ),
                     GoRoute(
                       path: 'privacy-policy',
-                      builder: (context, state) => const PrivacyPolicyPage(),
+                      builder: (context, state) {
+                        return const PrivacyPolicyPage();
+                      },
                     ),
                     GoRoute(
                       path: 'terms-conditions',
-                      builder: (context, state) => const TermsAndConditionsPage(),
+                      builder: (context, state) {
+                        return const TermsAndConditionsPage();
+                      },
                     ),
                     GoRoute(
                       path: 'send-feedback',
-                      builder: (context, state) => const SendFeedbackPage(),
+                      builder: (context, state) {
+                        return const SendFeedbackPage();
+                      },
                     ),
-                  ]
+                  ],
                 ),
               ],
             ),

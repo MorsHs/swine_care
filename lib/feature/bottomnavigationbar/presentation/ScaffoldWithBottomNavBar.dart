@@ -77,94 +77,104 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar>
 
   final List<Map<String, dynamic>> _navItems = [
     {'icon': Iconsax.home, 'label': 'HOME', 'route': '/homepage'},
-    {'icon': Icons.tips_and_updates_outlined, 'label': 'GUIDE', 'route': '/guide'},
-    {'icon': Icons.history, 'label': 'HISTORY', 'route': '/history'},
-    {'icon': Icons.settings, 'label': 'SETTINGS', 'route': '/setting'},
+    {'icon': Icons.menu_book_sharp, 'label': 'GUIDE', 'route': '/guide'},
+    {'icon': Iconsax.notification_1, 'label': 'HISTORY', 'route': '/history'},
+    {'icon': Iconsax.setting, 'label': 'SETTINGS', 'route': '/setting'},
   ];
 
   @override
   Widget build(BuildContext context) {
     final String currentPath = GoRouterState.of(context).fullPath ?? '';
+    print('ScaffoldWithBottomNavBar Build - Current Path: $currentPath'); // Debug print
     const mainRoutes = ['/homepage', '/guide', '/history', '/setting'];
     final bool showBottomNavBar = mainRoutes.contains(currentPath);
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       extendBody: true,
-      body: widget.navigationShell,
+      body: SizedBox.expand(
+        child: widget.navigationShell,
+      ),
+      floatingActionButton: null, // Explicitly disable FAB
       bottomNavigationBar: showBottomNavBar
-          ? Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              isDarkMode
-                  ? ArgieColors.dark.withValues(alpha: 0.9)
-                  : Colors.white.withValues(alpha: 0.9),
-              ArgieColors.primary.withValues(alpha: 0.2),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: ArgieColors.shadow.withValues(alpha: 0.1),
-              blurRadius: 8,
-              offset: const Offset(0, -2),
+          ? SizedBox(
+        height: kBottomNavigationBarHeight + 16,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                isDarkMode
+                    ? ArgieColors.dark.withValues(alpha: 0.9)
+                    : Colors.white.withValues(alpha: 0.9),
+                ArgieColors.primary.withValues(alpha: 0.2),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-          ],
-        ),
-        child: SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: List.generate(_navItems.length, (index) {
-                final item = _navItems[index];
-                final bool isSelected = _selectedIndex == index;
-                return GestureDetector(
-                  onTap: () => _onItemTapped(index),
-                  child: AnimatedBuilder(
-                    animation: _animationController,
-                    builder: (context, child) {
-                      return Transform.scale(
-                        scale: isSelected ? _scaleAnimation.value : 1.0,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              item['icon'] as IconData,
-                              size: isSelected ? 26 : 24,
-                              color: isSelected
-                                  ? ArgieColors.primary
-                                  : isDarkMode
-                                  ? ArgieColors.textthird
-                                  : ArgieColors.textsecondary,
-                            ),
-                            const SizedBox(height: 4),
-                            AnimatedOpacity(
-                              opacity: _showLabels && isSelected ? 1.0 : 0.0,
-                              duration: const Duration(milliseconds: 200),
-                              child: Text(
-                                item['label'] as String,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
+            boxShadow: [
+              BoxShadow(
+                color: ArgieColors.shadow.withValues(alpha: 0.1),
+                blurRadius: 8,
+                offset: const Offset(0, -2),
+              ),
+            ],
+          ),
+          child: SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: List.generate(_navItems.length, (index) {
+                  final item = _navItems[index];
+                  final bool isSelected = _selectedIndex == index;
+                  return GestureDetector(
+                    onTap: () => _onItemTapped(index),
+                    child: SizedBox(
+                      width: 60,
+                      child: AnimatedBuilder(
+                        animation: _animationController,
+                        builder: (context, child) {
+                          return Transform.scale(
+                            scale: isSelected ? _scaleAnimation.value : 1.0,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  item['icon'] as IconData,
+                                  size: isSelected ? 26 : 24,
                                   color: isSelected
                                       ? ArgieColors.primary
                                       : isDarkMode
-                                      ? Colors.white70
-                                      : Colors.black54,
+                                      ? ArgieColors.textthird
+                                      : ArgieColors.textsecondary,
                                 ),
-                              ),
+                                const SizedBox(height: 4),
+                                AnimatedOpacity(
+                                  opacity: _showLabels && isSelected ? 1.0 : 0.0,
+                                  duration: const Duration(milliseconds: 200),
+                                  child: Text(
+                                    item['label'] as String,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: isSelected
+                                          ? ArgieColors.primary
+                                          : isDarkMode
+                                          ? Colors.white70
+                                          : Colors.black54,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                );
-              }),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                }),
+              ),
             ),
           ),
         ),
