@@ -24,7 +24,7 @@ class TextLabel1 extends StatelessWidget {
             child: Text(
               'Detect ASF in Your Pigs',
               style: GoogleFonts.poppins(
-                fontSize: 22,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
@@ -45,7 +45,7 @@ class TextLabel1 extends StatelessWidget {
                 color: Theme.of(context).brightness == Brightness.dark
                     ? ArgieColors.textfifth
                     : ArgieColors.textfourth,
-                size: 20,
+                size: 28,
               ),
               onPressed: null, // Disabled state
               tooltip: isGridView ? 'Switch to List View' : 'Switch to Grid View',

@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:swine_care/colors/ArgieSizes.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
+import 'package:swine_care/colors/ArgieSizes.dart';
 
 class SaveButton extends StatefulWidget {
   final Map<String, File?> uploadedImages;
@@ -57,17 +57,21 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
     } else if (!symptomsComplete) {
       return (false, 'Symptoms checklist incomplete');
     }
-    return (true, 'Ready to analyze!');
+    return (true, 'Ready to Analyze!');
   }
 
   void _showValidationDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
         title: Text(
           'Validation Status',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.bold,
+            fontSize: 18,
             color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
         ),
@@ -78,16 +82,20 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
             color: Theme.of(context).textTheme.bodyMedium!.color,
           ),
         ),
-        backgroundColor: Theme.of(context).cardTheme.color ?? ArgieColors.ligth, // Fallback for dialog background
+        backgroundColor: Theme.of(context).cardTheme.color ?? ArgieColors.ligth,
         actions: [
           TextButton(
-            onPressed: Navigator.of(context).pop,
+            onPressed: () {
+              Navigator.of(context).pop(); // Corrected: Added parentheses to call the method
+            },
             child: Text(
               'Close',
               style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
                 color: Theme.of(context).brightness == Brightness.dark
                     ? ArgieColors.textthird
-                    : Theme.of(context).colorScheme.primary,
+                    : ArgieColors.primary,
               ),
             ),
           ),
@@ -100,21 +108,23 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     final (bool isComplete, String missingMessage) = _checkDataCompleteness();
     final Color backgroundColor = isComplete
-        ? Theme.of(context).colorScheme.primary
-        : (Theme.of(context).cardTheme.color ?? ArgieColors.ligth); // Fallback to ArgieColors.ligth if null
+        ? ArgieColors.primary // Use primary color (assumed green) since greenAccent isn't defined
+        : Colors.orange; // Fallback to orange for warning
     final Color textColor = _getContrastingColor(backgroundColor);
 
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
         builder: (context, child) {
-          return Transform.scale(
-            scale: _scaleAnimation.value,
+          return SizedBox(
+            width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
                 if (isComplete) {
                   context.push('/homepage/results', extra: {
                     'uploadedImages': widget.uploadedImages,
+                    'webImages': widget.webImages,
                     'symptoms': widget.symptoms,
                   });
                 } else {
@@ -124,37 +134,35 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
               style: ElevatedButton.styleFrom(
                 backgroundColor: backgroundColor,
                 foregroundColor: textColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: ArgieSizes.paddingDefault,
                   vertical: ArgieSizes.spaceBtwItems,
                 ),
-                elevation: isComplete ? 8 : 2,
+                elevation: isComplete ? 6 : 2,
                 shadowColor: isComplete
                     ? ArgieColors.shadow.withValues(alpha: 0.5)
                     : ArgieColors.shadow.withValues(alpha: 0.3),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    isComplete ? Icons.save : Icons.warning_amber_rounded,
+                    isComplete ? Icons.check_circle : Icons.warning_amber_rounded,
                     size: 20,
                     color: textColor,
                   ),
                   const SizedBox(width: ArgieSizes.spaceBtwWidgets),
-                  Flexible(
-                    child: Text(
-                      isComplete ? "Save & Analyze" : missingMessage,
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
+                  Text(
+                    isComplete ? 'Save & Analyze' : 'Complete Data First',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),

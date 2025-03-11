@@ -12,6 +12,7 @@ class ArgieColors{
 
   //text colors
   static Color textBold = Color(0xFF050404);
+  static Color textBlack = Colors.black;
   static Color textSemiBlack = Colors.black45;
   static Color textSemisemiBlack = Colors.black26;
   static Color textprimary = Color(0xFF333333);
@@ -31,5 +32,12 @@ class ArgieColors{
   static const Color shadow = Color(0xFF000000);
   // Default opacity for shadows
   static const double shadowOpacity = 0.2;
+
+  // New colors for farming app
+  // healthy pigs
+  static const Color greenAccent = Color(0xFF81C784);
+  // incomplete data
+  static const Color orangeAccent = Color(0xFFFFB74D);
+
 
 }
