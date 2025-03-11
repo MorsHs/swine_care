@@ -30,18 +30,10 @@ class SymptomsChecker extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: "Check for Symptoms: ",
+                  text: "Check for Symptoms ",
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                  ),
-                ),
-                TextSpan(
-                  text:
-                  "These symptoms may indicate African Swine Fever (ASF). Early detection is crucial to prevent the spread of the disease and protect your herd.",
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    color: Theme.of(localContext).textTheme.bodyMedium!.color,
                   ),
                 ),
               ],

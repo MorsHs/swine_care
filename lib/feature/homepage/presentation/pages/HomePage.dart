@@ -217,18 +217,18 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       body: Stack(
         children: [
           // Background Gradient
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  ArgieColors.primary.withValues(alpha: 0.1),
-                  ArgieColors.secondary.withValues(alpha: 0.5),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-          ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //     gradient: LinearGradient(
+          //       colors: [
+          //         ArgieColors.primary.withValues(alpha: 0.1),
+          //         ArgieColors.secondary.withValues(alpha: 0.5),
+          //       ],
+          //       begin: Alignment.topLeft,
+          //       end: Alignment.bottomRight,
+          //     ),
+          //   ),
+          // ),
           SafeArea(
             child: CustomScrollView(
               slivers: [
@@ -278,7 +278,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           ),
                         ),
                         const SizedBox(height: ArgieSizes.spaceBtwSections),
-                        Center(
+                        const Center(
                           child: CheckerButton(),
                         ),
                         const SizedBox(height: ArgieSizes.spaceBtwWidgets),
