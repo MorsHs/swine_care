@@ -23,7 +23,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
       backgroundColor: isDarkMode ? ArgieColors.dark : Colors.grey.shade50,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(ArgieSizes.paddingDefault),
+          padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -36,21 +36,18 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     ),
                     onPressed: () => Navigator.pop(context),
                   ),
+                  const SizedBox(width: 26),
                   Text(
                     "Notification Settings",
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: ArgieColors.textthird,
-                      shadows: [Shadow(
-                          color: ArgieColors.shadow,
-                          blurRadius: 2
-                      )],
+                      color: isDarkMode ? Colors.white70 : Colors.black87,
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: ArgieSizes.spaceBtwSections),
+              const SizedBox(height: ArgieSizes.spaceBtwSections),
 
               // Notification Preferences
               Card(
@@ -166,7 +163,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   onPressed: () {
                     // Save notification preferences (to be implemented with backend)
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Notification preferences saved!")),
+                      const SnackBar(content: Text("Notification preferences saved!")),
                     );
                   },
                   style: ElevatedButton.styleFrom(

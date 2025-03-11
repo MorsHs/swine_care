@@ -52,7 +52,7 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
       backgroundColor: isDarkMode ? ArgieColors.dark : Colors.grey.shade50,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(ArgieSizes.paddingDefault),
+          padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
           child: Form(
             key: _formKey,
             child: Column(
@@ -68,22 +68,21 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
                       ),
                       onPressed: () => Navigator.pop(context),
                     ),
+                    const SizedBox(width: 26),
                     Expanded(
                       child: Text(
                         "Send Feedback",
                         style: GoogleFonts.poppins(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: ArgieColors.textthird,
-                          shadows: [Shadow(color: ArgieColors.shadow, blurRadius: 2)],
+                          color: isDarkMode ? Colors.white70 : Colors.black87,
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: ArgieSizes.spaceBtwSections),
+                const SizedBox(height: ArgieSizes.spaceBtwSections),
 
-                // Feedback Form
                 Expanded(
                   child: SingleChildScrollView(
                     child: Card(
@@ -112,8 +111,6 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
                               ),
                             ),
                             const SizedBox(height: 16),
-
-                            // Rating
                             Text(
                               "Rate Your Experience",
                               style: GoogleFonts.poppins(
@@ -148,8 +145,6 @@ class _SendFeedbackPageState extends State<SendFeedbackPage> {
                               }),
                             ),
                             const SizedBox(height: 16),
-
-                            // Comment
                             Text(
                               "Comments or Suggestions",
                               style: GoogleFonts.poppins(
