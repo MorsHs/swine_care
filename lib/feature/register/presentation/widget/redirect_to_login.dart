@@ -1,72 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
 
 class RedirectToLogin extends StatefulWidget {
   const RedirectToLogin({super.key});
 
   @override
-  State<RedirectToLogin> createState() => _RedirectToSignupState();
+  State<RedirectToLogin> createState() => _RedirectToLoginState();
 }
 
-class _RedirectToSignupState extends State<RedirectToLogin> {
-  late bool long_pressed;
+class _RedirectToLoginState extends State<RedirectToLogin> {
+  late bool isPressed;
 
   @override
   void initState() {
-    long_pressed = false;
+    isPressed = false;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
-      padding: const EdgeInsets.only(top: 10,bottom: 50),
+      padding: const EdgeInsets.only(top: 10, bottom: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Already have an account? "),
-          gesture(Text(
-            "Sign in",
-            style: textStyle(),
-          ))
+          Text(
+            "Already have an account? ",
+            style: TextStyle(
+              fontSize: 14,
+              color: isDarkMode ? ArgieColors.textthird : ArgieColors.textsecondary,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              context.go('/login');
+              setState(() {
+                isPressed = true;
+              });
+            },
+            onLongPressDown: (details) {
+              setState(() {
+                isPressed = true;
+              });
+            },
+            onLongPressUp: () {
+              setState(() {
+                isPressed = false;
+              });
+            },
+            onLongPressCancel: () {
+              setState(() {
+                isPressed = false;
+              });
+            },
+            child: Text(
+              "Sign in",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: isPressed
+                    ? ArgieColors.primary
+                    : isDarkMode
+                    ? ArgieColors.textfifth
+                    : ArgieColors.primary,
+                decoration: isPressed ? TextDecoration.underline : TextDecoration.none,
+                decorationColor: isPressed
+                    ? ArgieColors.primary
+                    : isDarkMode
+                    ? ArgieColors.textfifth
+                    : ArgieColors.primary,
+              ),
+            ),
+          ),
         ],
       ),
     );
-  }
-
-  Widget gesture(Widget child) {
-    return GestureDetector(
-      onTap: () {
-        context.go('/login');
-        setState(() {
-          long_pressed = true;
-        });
-      },
-      onLongPressDown: (details) {
-        setState(() {
-          long_pressed = true;
-        });
-      },
-      onLongPressUp: () {
-        setState(() {
-          long_pressed = false;
-        });
-      },
-      onLongPressCancel: () {
-        setState(() {
-          long_pressed = false;
-        });
-      },
-      child: child,
-    );
-  }
-
-  TextStyle textStyle() {
-    return TextStyle(
-        fontWeight: FontWeight.bold,
-        color: long_pressed ? Colors.blue : Colors.blueAccent,
-        decoration:
-        long_pressed ? TextDecoration.underline : TextDecoration.none,
-        decorationColor: long_pressed ? Colors.blue : Colors.black);
   }
 }

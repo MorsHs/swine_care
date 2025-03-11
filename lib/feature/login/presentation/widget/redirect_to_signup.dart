@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:swine_care/feature/loadingscreen/presentation/widget/PageIndicator.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
 
 class RedirectToSignup extends StatefulWidget {
   const RedirectToSignup({super.key});
@@ -10,64 +10,73 @@ class RedirectToSignup extends StatefulWidget {
 }
 
 class _RedirectToSignupState extends State<RedirectToSignup> {
-  late bool long_pressed;
+  late bool isPressed;
 
   @override
   void initState() {
-    long_pressed = false;
+    isPressed = false;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Don't have an account? "),
-          gesture(Text(
-            "Sign Up",
-            style: textStyle(),
-          ))
+          Text(
+            "Don't have an account? ",
+            style: TextStyle(
+              fontSize: 14,
+              color: isDarkMode ? ArgieColors.textthird : ArgieColors.textsecondary,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              context.go('/signup');
+              setState(() {
+                isPressed = true;
+              });
+            },
+            onLongPressDown: (details) {
+              setState(() {
+                isPressed = true;
+              });
+            },
+            onLongPressUp: () {
+              setState(() {
+                isPressed = false;
+              });
+            },
+            onLongPressCancel: () {
+              setState(() {
+                isPressed = false;
+              });
+            },
+            child: Text(
+              "Sign Up",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: isPressed
+                    ? ArgieColors.primary
+                    : isDarkMode
+                    ? ArgieColors.textfifth
+                    : ArgieColors.primary,
+                decoration: isPressed ? TextDecoration.underline : TextDecoration.none,
+                decorationColor: isPressed
+                    ? ArgieColors.primary
+                    : isDarkMode
+                    ? ArgieColors.textfifth
+                    : ArgieColors.primary,
+              ),
+            ),
+          ),
         ],
       ),
     );
-  }
-
-  Widget gesture(Widget child) {
-    return GestureDetector(
-      onTap: () {
-        context.go('/signup');
-        setState(() {
-          long_pressed = true;
-        });
-      },
-      onLongPressDown: (details) {
-        setState(() {
-          long_pressed = true;
-        });
-      },
-      onLongPressUp: () {
-        setState(() {
-          long_pressed = false;
-        });
-      },
-      onLongPressCancel: () {
-        setState(() {
-          long_pressed = false;
-        });
-      },
-      child: child,
-    );
-  }
-
-  TextStyle textStyle() {
-    return TextStyle(
-      fontWeight: FontWeight.bold,
-        color: long_pressed ? Colors.blue : Colors.blueAccent,
-        decoration:
-            long_pressed ? TextDecoration.underline : TextDecoration.none,
-        decorationColor: long_pressed ? Colors.blue : Colors.black);
   }
 }
