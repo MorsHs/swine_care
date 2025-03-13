@@ -6,7 +6,7 @@ class Logoimage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Image(
-      image: AssetImage('assets/Logo/logoswinecare2.png'),
+      image: AssetImage('assets/Logo/logoswinecare.png'),
       width: 300,
 
     );
