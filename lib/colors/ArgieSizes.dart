@@ -26,4 +26,5 @@ static  double dividerHeight = 1.0;
   static const double spaceBtwItems = 12.0;   // Space between items
   static const double spaceBtwWidgets = 8.0;  // Space between smaller widgets
   static const double paddingDefault = 16.0;  // Default padding
+  static const double paddingSmall = 8.0;
 }

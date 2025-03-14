@@ -24,9 +24,11 @@ class ArgieColors{
   static Color textseven = Color(0xFF0A3781);
 
   //background colors
+
   static Color ligth = Color(0xFFF6F6F6);
   static Color dark = Color(0xFF272727);
   static Color primarybackground = Color(0xFF9FC8FB);
+  static Color darkAccent = Colors.grey[800]!;
 
   // Black for shadow base
   static const Color shadow = Color(0xFF000000);
