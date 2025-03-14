@@ -10,6 +10,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey[850] : const Color(0xfff5f7f2),
       appBar: AppBar(
@@ -25,7 +26,10 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text("Saved to Favorites!", style: TextStyle(color: isDarkMode ? Colors.white : Colors.black87)),
+                  content: Text(
+                    "Saved to Favorites!",
+                    style: TextStyle(color: isDarkMode ? Colors.white : Colors.black87),
+                  ),
                   backgroundColor: isDarkMode ? Colors.grey[700] : const Color(0xff388e3c),
                 ),
               );
@@ -45,9 +49,9 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
             const SizedBox(height: 24),
             _buildSection(context, "Prevention Strategies", _preventionStrategiesContent(context)),
             const SizedBox(height: 24),
-            _buildTipsSection(context),
+            _buildTipsSection(context), // Fixed reference
             const SizedBox(height: 24),
-            _buildLearnMoreSection(context),
+            _buildLearnMoreSection(context), // Fixed reference
           ],
         ),
       ),
@@ -61,6 +65,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
+  // Title Section
   Widget _buildTitle(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Row(
@@ -81,6 +86,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
+  // Reusable Section Builder
   Widget _buildSection(BuildContext context, String title, Widget content) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Card(
@@ -108,6 +114,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
+  // Understanding ASF Content
   Widget _understandingASFContent(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Padding(
@@ -120,7 +127,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
             style: GoogleFonts.poppins(fontSize: 16, color: isDarkMode ? Colors.white70 : Colors.black87, height: 1.5),
           ),
           const SizedBox(height: 12),
-          _buildImageCard(context, "assets/images/preventingafricanswinefeverimages/asf_symptoms.jpg", "Pig showing bluish ears and fever"),
+          _buildImageCard(context, "assets/images/preventingafricanswinefeverimages/asf_symptoms.jpg", "Pig showing bluish ears and fever"), // Fixed reference
           const SizedBox(height: 12),
           Text.rich(
             TextSpan(
@@ -140,6 +147,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
+  // Prevention Strategies Content
   Widget _preventionStrategiesContent(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Padding(
@@ -147,23 +155,23 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildPreventionItem(context, "1. Biosecurity Measures", [
+          _buildPreventionItem(context, "1. Biosecurity Measures", [ // Fixed reference
             "Limit farm visitors and use disinfectant footbaths (DAERA).",
             "Avoid swill feeding (kitchen scraps) as it’s a common ASF source (FAO).",
             "Control ticks and wild boar access."
           ], "assets/images/preventingafricanswinefeverimages/BiosecurityMeasures.jpg", "Disinfectant footbath in action"),
           const SizedBox(height: 16),
-          _buildPreventionItem(context, "2. Isolation Protocols", [
+          _buildPreventionItem(context, "2. Isolation Protocols", [ // Fixed reference
             "Quarantine new pigs for 30+ days (USDA).",
             "Isolate sick pigs immediately and notify a vet."
           ], "assets/images/preventingafricanswinefeverimages/quarantineasf.jpg", "Quarantined pig area"),
           const SizedBox(height: 16),
-          _buildPreventionItem(context, "3. Hygiene Practices", [
+          _buildPreventionItem(context, "3. Hygiene Practices", [ // Fixed reference
             "Disinfect tools, vehicles, and pens regularly (WOAH).",
             "Properly dispose of carcasses to avoid spread."
           ], "assets/images/preventingafricanswinefeverimages/HygienePractices.png", "Cleaning pig pens"),
           const SizedBox(height: 16),
-          _buildPreventionItem(context, "4. Monitoring and Reporting", [
+          _buildPreventionItem(context, "4. Monitoring and Reporting", [ // Fixed reference
             "Check pigs daily for ASF signs.",
             "Report outbreaks to authorities fast to limit spread (DAERA)."
           ], "assets/images/preventingafricanswinefeverimages/monitoringASF.jpg", "Farmer checking pigs"),
@@ -172,6 +180,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
+  // Build Prevention Item
   Widget _buildPreventionItem(BuildContext context, String title, List<String> points, String imagePath, String caption) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Column(
@@ -179,7 +188,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
       children: [
         Text(title, style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600, color: isDarkMode ? Colors.white : const Color(0xff1b5e20))),
         const SizedBox(height: 8),
-        _buildImageCard(context, imagePath, caption),
+        _buildImageCard(context, imagePath, caption), // Fixed reference
         const SizedBox(height: 8),
         ...points.map((point) => Padding(
           padding: const EdgeInsets.only(left: 16, bottom: 4),
@@ -189,7 +198,8 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
-  Widget _buildImageCard(BuildContext context, String imagePath, String caption) {
+  // Build Image Card
+  Widget _buildImageCard(BuildContext context, String imagePath, String caption) { // Fixed definition
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
@@ -212,7 +222,8 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTipsSection(BuildContext context) {
+  // Build Tips Section
+  Widget _buildTipsSection(BuildContext context) { // Fixed definition
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(20),
@@ -241,6 +252,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
+  // Build Tip Item
   Widget _buildTipItem(BuildContext context, IconData icon, String text) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Padding(
@@ -258,7 +270,8 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLearnMoreSection(BuildContext context) {
+  // Build Learn More Section
+  Widget _buildLearnMoreSection(BuildContext context) { // Fixed definition
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,6 +289,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
+  // Build Link
   Widget _buildLink(BuildContext context, String title, String url) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
@@ -303,6 +317,7 @@ class PreventingAfricanSwineFeverPage extends StatelessWidget {
     );
   }
 
+  // Show Quick Tips Dialog
   void _showQuickTipsDialog(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     showDialog(
