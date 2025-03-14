@@ -39,7 +39,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey[850] : const Color(0xFFF5F5F0),
       appBar: AppBar(
-        backgroundColor: ArgieColors.primary,
+        backgroundColor: Color(0xffec7c86),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -87,12 +87,6 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
           _buildLinksSection(context),
           const SizedBox(height: 40),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _launchURL("tel:+639123456789"),
-        backgroundColor: ArgieColors.secondary,
-        child: const Icon(Icons.phone, color: Colors.white),
-        tooltip: "Call Vet/Support",
       ),
     );
   }
@@ -253,6 +247,31 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
         icon: Icons.cleaning_services,
       ),
       _buildGuideItem(context,
+        title: "Proper Housing & Biosecurity",
+        description: "Pigs need well-ventilated housing,"
+            " adequate space, and proper drainage. Biosecurity measures, \n"
+            " like limiting visitors, using footbaths, quarantining new pigs,\n"
+            "and regular disinfection, help prevent disease outbreaks.\n",
+        imagePath: "assets/images/swinefarmingimages/ProperHousing.jpg",
+        icon: Icons.house,
+      ),
+      _buildGuideItem(context,
+        title: "Breeding & Reproduction",
+        description: "Monitor sows for estrus, maintain healthy boars, and consider "
+            " artificial insemination for improved genetics. Proper care during  \n"
+            " pregnancy ensures healthy piglets.\n",
+        imagePath: "assets/images/swinefarmingimages/BreedingReproduction.jpeg",
+        icon: Icons.type_specimen,
+      ),
+      _buildGuideItem(context,
+        title: "Waste Management",
+        description: "Properly manage manure and wastewater to maintain "
+            " hygiene and protect the environment. Composting or  \n"
+            " using wastewater treatment systems can be effective.\n",
+        imagePath: "assets/images/swinefarmingimages/WasteManagement.jpg",
+        icon: Icons.transfer_within_a_station,
+      ),
+      _buildGuideItem(context,
         title: "Ensure a Balanced Diet",
         description: "Feed right for fat pigs:\n\n"
             "• Growers (20-50kg)**: 16-18% protein, 3,200 kcal/kg—corn + soybean mix.\n"
@@ -273,7 +292,15 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
             "• Tools: Use a thermometer, keep a logbook.\n\n"
             "Success: A Cebu co-op tracks shots online and cut losses by 50%!",
         imagePath: "assets/images/swinefarmingimages/disease_monitoring.jpg",
-        icon: Icons.health_and_safety,
+        icon: Icons.health_and_safety
+      ),
+      _buildGuideItem(context,
+        title: "Marketing & Financial Planning",
+        description: "Research the pork market, build relationships with buyers, and  "
+            " track expenses to optimize profitability. Efficient planning ensures  \n"
+            " long-term success.\n",
+        imagePath: "assets/images/swinefarmingimages/MarketingFinancial.jpg",
+        icon: Icons.next_plan,
       ),
     ];
   }
@@ -519,6 +546,11 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
           text: "Swine Raising Tips and Best Practices",
           url:
           "https://cagayanvalley.da.gov.ph/wp-content/uploads/2018/02/swine.pdf",
+        ),
+        _buildLink(context,
+          text: "Essential Guide to Pig Farming",
+          url:
+          "https://www.bivatec.com/blog/the-guide-to-starting-a-profitable-pig-farm",
         ),
       ],
     );
