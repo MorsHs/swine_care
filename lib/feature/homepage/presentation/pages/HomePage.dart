@@ -232,7 +232,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           SafeArea(
             child: CustomScrollView(
               slivers: [
-
                 SliverToBoxAdapter(
                   child: HomePageHeader(
                     child: Padding(
