@@ -21,8 +21,14 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Could not launch $url', style: TextStyle(color: Theme.of(context).colorScheme.onSurface))));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Could not launch $url',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+          ),
+        ),
+      );
     }
   }
 
@@ -39,7 +45,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey[850] : const Color(0xFFF5F5F0),
       appBar: AppBar(
-        backgroundColor: Color(0xffec7c86),
+        backgroundColor: const Color(0xFFEC7C86),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -171,7 +177,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
       children: [
         Icon(
           Icons.agriculture,
-          color: isDarkMode ? Colors.white : const Color(0xffec7c86),
+          color: isDarkMode ? Colors.white : const Color(0xFFEC7C86),
           size: 30,
         ),
         const SizedBox(width: 10),
@@ -180,7 +186,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : const Color(0xffec7c86),
+            color: isDarkMode ? Colors.white : const Color(0xFFEC7C86),
           ),
         ),
       ],
@@ -224,7 +230,8 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
   List<Widget> _buildGuideItems(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return [
-      _buildGuideItem(context,
+      _buildGuideItem(
+        context: context,
         title: "Provide Clean Water Daily",
         description: "Pigs need clean water all day:\n\n"
             "• Why? Dirty water spreads sickness.\n"
@@ -234,8 +241,10 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
             "Success: A Pampanga farm boosted pig weight by 15% with clean water!",
         imagePath: "assets/images/swinefarmingimages/cleanwater.jpg",
         icon: Icons.water_drop,
+        key: const ValueKey("guide_water"),
       ),
-      _buildGuideItem(context,
+      _buildGuideItem(
+        context: context,
         title: "Maintain Proper Hygiene",
         description: "Cleanliness stops diseases:\n\n"
             "• Daily: Shovel out manure, scrape leftover feed.\n"
@@ -245,45 +254,48 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
             "Success: A Batangas farm stopped cholera with footbaths and no visitors!",
         imagePath: "assets/images/swinefarmingimages/hygiene.jpg",
         icon: Icons.cleaning_services,
+        key: const ValueKey("guide_hygiene"),
       ),
-      _buildGuideItem(context,
+      _buildGuideItem(
+        context: context,
         title: "Proper Housing & Biosecurity",
-        description: "Pigs need well-ventilated housing,"
-            " adequate space, and proper drainage. Biosecurity measures, \n"
-            " like limiting visitors, using footbaths, quarantining new pigs,\n"
-            "and regular disinfection, help prevent disease outbreaks.\n",
+        description: "Pigs need well-ventilated housing, adequate space, and proper drainage. Biosecurity measures, like limiting visitors, using footbaths, quarantining new pigs, and regular disinfection, help prevent disease outbreaks.\n",
         imagePath: "assets/images/swinefarmingimages/ProperHousing.jpg",
         icon: Icons.house,
+        key: const ValueKey("guide_housing"),
       ),
-      _buildGuideItem(context,
+      _buildGuideItem(
+        context: context,
         title: "Breeding & Reproduction",
-        description: "Monitor sows for estrus, maintain healthy boars, and consider "
-            " artificial insemination for improved genetics. Proper care during  \n"
-            " pregnancy ensures healthy piglets.\n",
+        description: "Monitor sows for estrus, maintain healthy boars, and consider artificial insemination for improved genetics. Proper care during pregnancy ensures healthy piglets.\n",
         imagePath: "assets/images/swinefarmingimages/BreedingReproduction.jpeg",
         icon: Icons.type_specimen,
+        key: const ValueKey("guide_breeding"),
       ),
-      _buildGuideItem(context,
+      _buildGuideItem(
+        context: context,
         title: "Waste Management",
-        description: "Properly manage manure and wastewater to maintain "
-            " hygiene and protect the environment. Composting or  \n"
-            " using wastewater treatment systems can be effective.\n",
+        description: "Properly manage manure and wastewater to maintain hygiene and protect the environment. Composting or using wastewater treatment systems can be effective.\n",
         imagePath: "assets/images/swinefarmingimages/WasteManagement.jpg",
         icon: Icons.transfer_within_a_station,
+        key: const ValueKey("guide_waste"),
       ),
-      _buildGuideItem(context,
+      _buildGuideItem(
+        context: context,
         title: "Ensure a Balanced Diet",
         description: "Feed right for fat pigs:\n\n"
-            "• Growers (20-50kg)**: 16-18% protein, 3,200 kcal/kg—corn + soybean mix.\n"
-            "• Finishers (50-100kg)**: 14-16% protein, 3,100 kcal/kg—less protein, more carbs.\n"
+            "• Growers (20-50kg): 16-18% protein, 3,200 kcal/kg—corn + soybean mix.\n"
+            "• Finishers (50-100kg): 14-16% protein, 3,100 kcal/kg—less protein, more carbs.\n"
             "• Sows: Add 1% calcium (crushed shells) when nursing.\n"
             "• Rules: Store feed in dry bins, use oldest first, no banned drugs.\n"
             "• Warning: Swill must be cooked (90°C, 1 hour) to kill germs.\n\n"
             "Tip: Mix your own feed to save cash!",
         imagePath: "assets/images/swinefarmingimages/pigfood.jpg",
         icon: Icons.fastfood,
+        key: const ValueKey("guide_diet"),
       ),
-      _buildGuideItem(context,
+      _buildGuideItem(
+        context: context,
         title: "Monitor for Diseases",
         description: "Catch problems fast:\n\n"
             "• Red Flags: Blue ears (ASF?), bloody poop, fever over 40°C, sudden deaths.\n"
@@ -292,118 +304,105 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
             "• Tools: Use a thermometer, keep a logbook.\n\n"
             "Success: A Cebu co-op tracks shots online and cut losses by 50%!",
         imagePath: "assets/images/swinefarmingimages/disease_monitoring.jpg",
-        icon: Icons.health_and_safety
+        icon: Icons.health_and_safety,
+        key: const ValueKey("guide_diseases"),
       ),
-      _buildGuideItem(context,
+      _buildGuideItem(
+        context: context,
         title: "Marketing & Financial Planning",
-        description: "Research the pork market, build relationships with buyers, and  "
-            " track expenses to optimize profitability. Efficient planning ensures  \n"
-            " long-term success.\n",
+        description: "Research the pork market, build relationships with buyers, and track expenses to optimize profitability. Efficient planning ensures long-term success.\n",
         imagePath: "assets/images/swinefarmingimages/MarketingFinancial.jpg",
         icon: Icons.next_plan,
+        key: const ValueKey("guide_marketing"),
       ),
     ];
   }
 
-  Widget _buildGuideItem(
-      BuildContext context, {
-        required String title,
-        required String description,
-        required String imagePath,
-        required IconData icon,
-      }) {
+  Widget _buildGuideItem({
+    required BuildContext context,
+    required String title,
+    required String description,
+    required String imagePath,
+    required IconData icon,
+    Key? key,
+  }) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return Card(
-      elevation: 5,
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      color: isDarkMode ? Colors.grey[800] : Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Scaffold(
-                appBar: AppBar(
-                  backgroundColor: ArgieColors.primary,
-                  title: Text(title,
-                      style: GoogleFonts.poppins(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white)),
-                ),
-                backgroundColor: isDarkMode ? Colors.grey[850] : Colors.white,
-                body: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.asset(imagePath,
-                              width: double.infinity,
-                              height: 220,
-                              fit: BoxFit.cover),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(description,
-                            style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                color: isDarkMode ? Colors.white70 : Colors.black87,
-                                height: 1.5)),
-                      ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          FadePageRoute(
+            builder: (context) => GuideDetailPage(
+              title: title,
+              imagePath: imagePath,
+              fullDescription: description,
+            ),
+          ),
+        );
+      },
+      child: Card(
+        key: key,
+        elevation: 5,
+        margin: const EdgeInsets.symmetric(vertical: 12),
+        color: isDarkMode ? Colors.grey[800] : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          splashColor: ArgieColors.primary.withValues(alpha: 0.3),
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Hero(
+                  tag: title, // Hero for smooth image transition
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Image.asset(
+                      imagePath,
+                      width: 90,
+                      height: 90,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-              ),
-            ),
-          );
-        },
-        borderRadius: BorderRadius.circular(20),
-        splashColor: ArgieColors.primary.withValues(alpha: 0.3),
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.asset(imagePath,
-                    width: 90, height: 90, fit: BoxFit.cover),
-              ),
-              const SizedBox(width: 15),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(icon, color: isDarkMode ? Colors.white : const Color(0xffec7c86), size: 24),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            title,
-                            style: GoogleFonts.poppins(
+                const SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(icon, color: isDarkMode ? Colors.white : const Color(0xFFEC7C86), size: 24),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: GoogleFonts.poppins(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: isDarkMode ? Colors.white : Colors.black87),
+                                color: isDarkMode ? Colors.white : Colors.black87,
+                              ),
+                            ),
                           ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        description,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: isDarkMode ? Colors.white70 : Colors.black54,
+                          height: 1.5,
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      description,
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.poppins(
-                          fontSize: 16, color: isDarkMode ? Colors.white70 : Colors.black54, height: 1.5),
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -423,16 +422,16 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
                 "https://philjournalsci.dost.gov.ph/images/pdf/pjs_pdf/vol151no5/genetic_diversity_of_Phil_native_pig_from_Quezon_and_Marinduque_.pdf"),
             style: ElevatedButton.styleFrom(
               backgroundColor: ArgieColors.secondary,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
             ),
             child: Text(
               "Learn More About Pigs",
               style: GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -447,7 +446,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey[700] : const Color(0xffec7c86).withValues(alpha: 0.1),
+          color: isDarkMode ? Colors.grey[700] : const Color(0xFFEC7C86).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Row(
@@ -456,12 +455,13 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
             Text(
               "Quick Tips for Farmers",
               style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : const Color(0xffec7c86)),
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: isDarkMode ? Colors.white : const Color(0xFFEC7C86),
+              ),
             ),
             Icon(_showQuickTips ? Icons.expand_less : Icons.expand_more,
-                color: isDarkMode ? Colors.white : const Color(0xffec7c86)),
+                color: isDarkMode ? Colors.white : const Color(0xFFEC7C86)),
           ],
         ),
       ),
@@ -481,8 +481,8 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
               "Walk your pens every morning—happy pigs mean good profits!"),
           _buildQuickTip(context, "Save Rainwater",
               "Collect rain in barrels for cheap, clean water."),
-          _buildQuickTip(context,
-              "Sell Smart", "Time sales for holidays when pork prices spike."),
+          _buildQuickTip(context, "Sell Smart",
+              "Time sales for holidays when pork prices spike."),
         ],
       ),
     );
@@ -495,7 +495,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.check_circle, color: Color(0xffec7c86), size: 20),
+          const Icon(Icons.check_circle, color: Color(0xFFEC7C86), size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -524,33 +524,31 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
       children: [
         Row(
           children: [
-            Icon(Icons.link, color: isDarkMode ? Colors.white : const Color(0xffec7c86), size: 24),
+            Icon(Icons.link, color: isDarkMode ? Colors.white : const Color(0xFFEC7C86), size: 24),
             const SizedBox(width: 10),
             Text(
               "For More Info:",
               style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: isDarkMode ? Colors.white : Colors.black87),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: isDarkMode ? Colors.white : Colors.black87,
+              ),
             ),
           ],
         ),
         const SizedBox(height: 10),
         _buildLink(context,
           text: "Code of Good Animal Husbandry Practices for Swine",
-          url:
-          "https://pcsp.org.ph/wp-content/uploads/2019/06/Correct-final-draft-GAHP-for-Swine.pdf",
+          url: "https://pcsp.org.ph/wp-content/uploads/2019/06/Correct-final-draft-GAHP-for-Swine.pdf",
         ),
         const SizedBox(height: 10),
         _buildLink(context,
           text: "Swine Raising Tips and Best Practices",
-          url:
-          "https://cagayanvalley.da.gov.ph/wp-content/uploads/2018/02/swine.pdf",
+          url: "https://cagayanvalley.da.gov.ph/wp-content/uploads/2018/02/swine.pdf",
         ),
         _buildLink(context,
           text: "Essential Guide to Pig Farming",
-          url:
-          "https://www.bivatec.com/blog/the-guide-to-starting-a-profitable-pig-farm",
+          url: "https://www.bivatec.com/blog/the-guide-to-starting-a-profitable-pig-farm",
         ),
       ],
     );
@@ -562,18 +560,102 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
       onTap: () => _launchURL(url),
       child: Row(
         children: [
-          Icon(Icons.arrow_forward, color: isDarkMode ? Colors.white : const Color(0xffec7c86), size: 18),
+          Icon(Icons.arrow_forward, color: isDarkMode ? Colors.white : const Color(0xFFEC7C86), size: 18),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               text,
               style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: isDarkMode ? Colors.white : const Color(0xffec7c86),
-                  decoration: TextDecoration.underline),
+                fontSize: 16,
+                color: isDarkMode ? Colors.white : const Color(0xFFEC7C86),
+                decoration: TextDecoration.underline,
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class FadePageRoute<T> extends MaterialPageRoute<T> {
+  FadePageRoute({required WidgetBuilder builder}) : super(builder: builder);
+
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 500);
+
+  @override
+  Widget buildTransitions(
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child,
+      ) {
+    return FadeTransition(
+      opacity: animation,
+      child: child,
+    );
+  }
+}
+
+class GuideDetailPage extends StatelessWidget {
+  final String title;
+  final String imagePath;
+  final String fullDescription;
+
+  const GuideDetailPage({
+    super.key,
+    required this.title,
+    required this.imagePath,
+    required this.fullDescription,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFEC7C86),
+        title: Text(
+          title,
+          style: GoogleFonts.poppins(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      backgroundColor: isDarkMode ? Colors.grey[850] : Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Hero(
+                tag: title, // Hero for smooth image transition
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    imagePath,
+                    width: double.infinity,
+                    height: 220,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                fullDescription,
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  color: isDarkMode ? Colors.white70 : Colors.black87,
+                  height: 1.5,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
