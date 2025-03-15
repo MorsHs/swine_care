@@ -26,41 +26,41 @@ class _GuidePageState extends State<GuidePage> {
         children: [
           // Header Section with Gradient Background
           Container(
-            padding: EdgeInsets.all(ArgieSizes.paddingDefault),
+            padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  ArgieColors.primary.withOpacity(isDarkMode ? 0.2 : 0.4),
+                  ArgieColors.primary.withValues(alpha: (isDarkMode ? 0.2 : 0.4)),
                   isDarkMode ? ArgieColors.dark : Colors.grey.shade100,
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
             ),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 10),
-                const SwineCareGuidesLabel(),
-                const SwineCareGuidesLabel2(),
-                SizedBox(height: ArgieSizes.spaceBtwSections),
+                SizedBox(height: 10),
+                SwineCareGuidesLabel(),
+                SwineCareGuidesLabel2(),
+                // SizedBox(height: ArgieSizes.spaceBtwSections),
               ],
             ),
           ),
 
           Container(
             margin: const EdgeInsets.only(left: 20, right: 20).copyWith(bottom: 80),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 4),
-                const StartingSwineFarm(),
+                // SizedBox(height: 4),
+                StartingSwineFarm(),
                 SizedBox(height: ArgieSizes.spaceBtwItems),
-                const BestPractices(),
+                BestPractices(),
                 SizedBox(height: ArgieSizes.spaceBtwItems),
-                const PreventingAfricanSwineFever(),
+                PreventingAfricanSwineFever(),
                 SizedBox(height: ArgieSizes.spaceBtwItems),
-                const EmergencyMeasuresForDiseaseOutbreaks(),
+                EmergencyMeasuresForDiseaseOutbreaks(),
                 SizedBox(height: ArgieSizes.spaceBtwSections),
               ],
             ),
