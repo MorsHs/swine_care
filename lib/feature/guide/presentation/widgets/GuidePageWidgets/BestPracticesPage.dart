@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/colors/ArgieSizes.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,10 +45,10 @@ class BestPracticesPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: isDarkMode ? ArgieColors.dark : const Color(0xFFF5F7F1),
       appBar: AppBar(
-        backgroundColor: ArgieColors.primary,
+        backgroundColor: Color(0xff6da4ed),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Iconsax.arrow_circle_left, color: Colors.white),
           onPressed: () => context.go('/guide'),
         ),
         title: Text(
@@ -57,29 +58,8 @@ class BestPracticesPage extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
+          textAlign: TextAlign.center,
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.favorite_border, color: Colors.white),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    "Added to Favorites!",
-                    style: GoogleFonts.poppins(
-                        color: isDarkMode ? Colors.white : Colors.black87),
-                  ),
-                  backgroundColor: ArgieColors.primary,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  margin: const EdgeInsets.all(16),
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(ArgieSizes.paddingDefault),
@@ -429,7 +409,7 @@ class PracticeDetailPage extends StatelessWidget {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ArgieColors.primary,
+        backgroundColor: Color(0xff6da4ed),
         title: Text(
           title,
           style: GoogleFonts.poppins(color: Colors.white),

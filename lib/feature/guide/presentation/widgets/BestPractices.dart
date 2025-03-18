@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 
 class BestPractices extends StatelessWidget {
   const BestPractices({super.key});
@@ -35,7 +36,7 @@ class BestPractices extends StatelessWidget {
                         const SizedBox(height: 5),
                         Container(
                           padding: const EdgeInsets.all(5),
-                          child: const Icon(Icons.star_border_outlined),
+                          child:  Icon(Iconsax.award),
                         ),
                         const SizedBox(height: 30),
                         const Text(
