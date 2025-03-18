@@ -77,8 +77,8 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar>
 
   final List<Map<String, dynamic>> _navItems = [
     {'icon': Iconsax.home, 'label': 'HOME', 'route': '/homepage'},
-    {'icon': Icons.menu_book_sharp, 'label': 'GUIDE', 'route': '/guide'},
-    {'icon': Iconsax.notification_1, 'label': 'HISTORY', 'route': '/history'},
+    {'icon': Iconsax.book, 'label': 'GUIDE', 'route': '/guide'},
+    {'icon': Iconsax.notification_status, 'label': 'HISTORY', 'route': '/history'},
     {'icon': Iconsax.setting, 'label': 'SETTINGS', 'route': '/setting'},
   ];
 

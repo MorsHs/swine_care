@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,10 +38,11 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
     return Scaffold(
       backgroundColor: isDarkMode ? Colors.grey[900] : const Color(0xFFF0F4F8),
       appBar: AppBar(
+        backgroundColor:  Color(0xffb0b422),
         elevation: 8,
         shadowColor: isDarkMode ? Colors.black45 : Colors.grey[400],
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Iconsax.arrow_circle_left, color: Colors.white),
           onPressed: () => context.go('/guide'),
         ),
         title: Text(
@@ -50,23 +52,9 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
             fontWeight: FontWeight.w800,
             color: Colors.white,
           ),
+          textAlign: TextAlign.center,
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.phone, color: Colors.white),
-            onPressed: () => _launchURL("tel:+639123456789"),
-            tooltip: "Call Vet",
-          ),
-        ],
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [ArgieColors.primary, ArgieColors.secondary.withValues(alpha: 0.9)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
+
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -106,19 +94,18 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
           ],
         ),
       ),
-      floatingActionButton: _buildAnimatedFab(context),
     );
   }
 
   Widget _buildHeaderSection(BuildContext context) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    //final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Card(
       elevation: 10,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [ArgieColors.primary, ArgieColors.secondary],
+            colors: [Color(0xffbeb946), ArgieColors.secondary],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -316,12 +303,12 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
                       color: isDarkMode ? Colors.white : Colors.black87,
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 18),
+                  const Icon(Icons.arrow_forward_ios, color: Color(0xffbeb946), size: 18),
                 ],
               ),
               const SizedBox(height: 15),
               Hero(
-                tag: title, // Unique tag for Hero animation
+                tag: title,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: Image.asset(
@@ -364,7 +351,7 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
               style: GoogleFonts.poppins(
                 fontSize: 22,
                 fontWeight: FontWeight.w700,
-                color: isDarkMode ? Colors.white : const Color(0xFF1B5E20),
+                color: isDarkMode ? Colors.white : const Color(0xffbeb946),
               ),
             ),
             const SizedBox(height: 15),
@@ -404,7 +391,7 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: ArgieColors.primary, size: 24),
+          Icon(icon, color: Color(0xffbeb946), size: 24),
           const SizedBox(width: 15),
           Expanded(
             child: Text(
@@ -461,27 +448,13 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> {
                 text,
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  color: isDarkMode ? Colors.lightBlueAccent : ArgieColors.primary,
+                  color: isDarkMode ? Color(0xffb0b422) : Color(0xffbeb946),
                   decoration: TextDecoration.underline,
                 ),
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildAnimatedFab(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
-      child: FloatingActionButton(
-        onPressed: () => _launchURL("tel:+639123456789"),
-        backgroundColor: ArgieColors.secondary,
-        child: const Icon(Icons.call, color: Colors.white),
-        tooltip: "Emergency Call",
-        elevation: 10,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       ),
     );
   }
@@ -526,7 +499,7 @@ class EmergencyDetailPage extends StatelessWidget {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ArgieColors.primary,
+        backgroundColor: Color(0xffb0b422),
         elevation: 6,
         title: Text(
           title,

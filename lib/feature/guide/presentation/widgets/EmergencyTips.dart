@@ -35,7 +35,7 @@ class EmergencyMeasuresForDiseaseOutbreaks extends StatelessWidget {
                         const SizedBox(height: 5),
                         Container(
                           padding: const EdgeInsets.all(5),
-                          child: const Icon(Icons.emergency_outlined),
+                          child: const Icon(Icons.add_alert_outlined),
                         ),
                         const SizedBox(height: 30),
                         const Text(

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:share_plus/share_plus.dart';
 
 class SwineFarmingPage extends StatefulWidget {
   const SwineFarmingPage({super.key});
@@ -32,13 +32,6 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
     }
   }
 
-  void _shareContent() {
-    Share.share(
-      'Check out this Swine Farming Guide! Learn best practices for healthy pigs: https://example.com/swine-guide',
-      subject: 'Swine Farming Tips',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -48,7 +41,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
         backgroundColor: const Color(0xFFEC7C86),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Iconsax.arrow_circle_left, color: Colors.white),
           onPressed: () => context.go('/guide'),
         ),
         title: Text(
@@ -58,14 +51,8 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
+          textAlign: TextAlign.center,
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share, color: Colors.white),
-            onPressed: _shareContent,
-            tooltip: "Share Guide",
-          ),
-        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
@@ -98,7 +85,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
   }
 
   Widget _buildSlideshowHeader(BuildContext context) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    //final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return CarouselSlider(
       options: CarouselOptions(
         height: 240,
@@ -194,7 +181,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
   }
 
   Widget _buildImageContainer(BuildContext context, String imagePath) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    //final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
@@ -228,7 +215,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
   }
 
   List<Widget> _buildGuideItems(BuildContext context) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    //final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return [
       _buildGuideItem(
         context: context,
@@ -410,7 +397,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
   }
 
   Widget _buildStackedContent(BuildContext context) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+   // final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -469,7 +456,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
   }
 
   Widget _buildQuickTipsSection(BuildContext context) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+   // final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(
