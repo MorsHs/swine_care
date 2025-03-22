@@ -59,46 +59,6 @@ class _BestPracticesPageState extends State<BestPracticesPage> {
     );
   }
 
-  void _showLocalExperts(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          "Local Swine Experts",
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildExpertItem(
-                "Dr. Santos - Bulacan",
-                "Pig disease specialist",
-                "0917-555-1234"
-            ),
-            const Divider(),
-            _buildExpertItem(
-                "Dr. Reyes - Batangas",
-                "Breeding expert",
-                "0918-555-5678"
-            ),
-            const Divider(),
-            _buildExpertItem(
-                "DA Extension Office",
-                "Government support",
-                "8920-2200"
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text("Close", style: TextStyle(color: ArgieColors.primary)),
-          )
-        ],
-      ),
-    );
-  }
 
   Widget _buildExpertItem(String name, String specialty, String contact) {
     return Padding(
@@ -416,7 +376,7 @@ class _BestPracticesPageState extends State<BestPracticesPage> {
         color: isDarkMode ? ArgieColors.darkAccent.withValues(alpha: 0.6) : ArgieColors.primary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(30),
         border: Border.all(
-          color: isDarkMode ? ArgieColors.primary.withValues(alpha: 0.3) : ArgieColors.primary.withValues(alpha: 0.1),
+          color: isDarkMode ? ArgieColors.primary.withValues(alpha: 0.3) : ArgieColors.primary.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -816,42 +776,278 @@ class PracticeDetailPage extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(ArgieSizes.paddingDefault),
+        physics: const BouncingScrollPhysics(),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Hero(
               tag: title,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  imagePath,
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
+              child: Container(
+                height: 200,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(imagePath),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withValues(alpha: 0.7),
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ),
-            SizedBox(height: ArgieSizes.spaceBtwItems),
-            Text(
-              title,
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: isDarkMode ? ArgieColors.textthird : ArgieColors.textBold,
-              ),
-            ),
-            SizedBox(height: ArgieSizes.spaceBtwItems),
-            Text(
-              fullDescription,
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: isDarkMode ? ArgieColors.textsecondary : ArgieColors.textprimary,
-                height: 1.5,
-              ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: _buildFormattedDescription(context, fullDescription),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildFormattedDescription(BuildContext context, String description) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final sections = description.split('\n\n');
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: sections.map((section) {
+        if (section.trim().startsWith('Key Considerations:') ||
+            section.trim().startsWith('Prevention Strategies:') ||
+            section.trim().startsWith('Best Practices:') ||
+            section.trim().startsWith('Design Guidelines:') ||
+            section.trim().startsWith('Feeding Guidelines:') ||
+            section.trim().startsWith('Key Breeding Practices:') ||
+            section.trim().startsWith('Health Management:') ||
+            section.trim().startsWith('Environmental Benefits:') ||
+            section.trim().startsWith('Economic Benefits:')) {
+          return _buildSectionWithBullets(context, section);
+        } else if (section.trim().startsWith('Tips:')) {
+          return _buildTipsSection(context, section);
+        } else if (section.trim().startsWith('Warning:')) {
+          return _buildWarningSection(context, section);
+        } else if (section.trim().startsWith('Example:') ||
+            section.trim().startsWith('Success Story:')) {
+          return _buildExampleSection(context, section);
+        } else {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Text(
+              section,
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                color: isDarkMode ? Colors.white70 : Colors.black87,
+                height: 1.6,
+              ),
+            ),
+          );
+        }
+      }).toList(),
+    );
+  }
+
+  Widget _buildSectionWithBullets(BuildContext context, String section) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final lines = section.split('\n');
+    final title = lines[0];
+    final bullets = lines.sublist(1);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDarkMode ? Colors.grey[850] : Colors.grey[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isDarkMode ? Colors.grey[700]! : Colors.grey[300]!,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.format_list_bulleted,
+                color: Color(0xff6da4ed),
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ...bullets.where((bullet) => bullet.trim().isNotEmpty).map((bullet) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.check_circle_outline,
+                    color: Color(0xff6da4ed),
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      bullet.replaceAll('-', '').trim(),
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        color: isDarkMode ? Colors.white70 : Colors.black87,
+                        height: 1.5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTipsSection(BuildContext context, String section) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDarkMode ? Color(0xFF2C5282).withValues(alpha: 0.3) : Color(0xFFE6F3FF),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.lightbulb_outline, color: Colors.amber, size: 24),
+              const SizedBox(width: 8),
+              Text(
+                'Tips',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: isDarkMode ? Colors.white : Colors.black87,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ...section.split('\n').skip(1).where((tip) => tip.trim().isNotEmpty).map(
+                (tip) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.star_outline, color: Colors.amber, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      tip.replaceAll('-', '').trim(),
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        color: isDarkMode ? Colors.white70 : Colors.black87,
+                        height: 1.5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWarningSection(BuildContext context, String section) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDarkMode ? Colors.red[900]!.withValues(alpha: 0.3) : Colors.red[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isDarkMode ? Colors.red[700]! : Colors.red[200]!,
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.warning_amber_rounded, color: Colors.red[400], size: 24),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              section.replaceAll('Warning:', '').trim(),
+              style: GoogleFonts.poppins(
+                fontSize: 15,
+                color: isDarkMode ? Colors.white70 : Colors.red[900],
+                height: 1.5,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExampleSection(BuildContext context, String section) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDarkMode ? Colors.green[900]!.withValues(alpha: 0.3) : Colors.green[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isDarkMode ? Colors.green[700]! : Colors.green[200]!,
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.emoji_events_outlined, color: Colors.green[400], size: 24),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              section.replaceAll('Example:', '').replaceAll('Success Story:', '').trim(),
+              style: GoogleFonts.poppins(
+                fontSize: 15,
+                color: isDarkMode ? Colors.white70 : Colors.green[900],
+                height: 1.5,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -582,10 +582,10 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildEmergencyContact("Bureau of Animal Industry", "8928-2177"),
-            _buildEmergencyContact("DA Veterinary Hotline", "0920-8543-6700"),
-            _buildEmergencyContact("ASF Reporting Hotline", "0995-1329-339"),
-            _buildEmergencyContact("DA Regional Office", "Check your region"),
+            _buildEmergencyContact("Email:", "pvoddn@gmail.com\n"),
+            _buildEmergencyContact("Phone:", "+63 917 792 2480\n"),
+            _buildEmergencyContact("Address:", "Provincial Government Center, Mankilam, Tagum City, Davao del Norte, Tagum City, Philippines"),
+            _buildEmergencyContact("DAVAO Provincial Office", "Check your region"),
           ],
         ),
         actions: [
@@ -1238,17 +1238,6 @@ class GuideDetailPage extends StatelessWidget {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.bookmark_border, color: Colors.white),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Guide saved for offline reading"),
-                  duration: Duration(seconds: 2),
-                ),
-              );
-            },
-          ),
         ],
       ),
       backgroundColor: isDarkMode ? Colors.grey[850] : Colors.white,
@@ -1329,7 +1318,7 @@ class GuideDetailPage extends StatelessWidget {
                         const Icon(Icons.phone, size: 20),
                         const SizedBox(width: 10),
                         Text(
-                          "DA Hotline: (02) 8920-2200",
+                          "Phone: +63 917 792 2480\n",
                           style: GoogleFonts.poppins(fontSize: 16),
                         ),
                       ],
