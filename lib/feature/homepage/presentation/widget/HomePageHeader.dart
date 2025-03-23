@@ -1,108 +1,126 @@
 import 'package:flutter/material.dart';
-import 'package:swine_care/colors/ArgieColors.dart';
-import 'package:swine_care/global_widget/PrimaryHeader/CircularContainer.dart';
-import 'package:swine_care/global_widget/PrimaryHeader/CurvedEdgeWidget.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/HeaderTextLabel1.dart';
+import 'package:swine_care/feature/homepage/presentation/widget/HeaderTextLabel2.dart';
 
-class HomePageHeader extends StatelessWidget {
-  final Widget child;
+class HomeHeader extends StatelessWidget {
+  final GlobalKey? uploadSectionKey;
 
-  const HomePageHeader({super.key, required this.child});
+  const HomeHeader({
+    Key? key,
+    this.uploadSectionKey,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final size = MediaQuery.of(context).size;
 
-    return CurvedEdgeWidget(
-      child: Container(
-        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              ArgieColors.primary.withValues(alpha: 0.9),
-              ArgieColors.third.withValues(alpha: 0.6),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: (isDarkMode ? 0.2 : 0.1)),
-              blurRadius: 20,
-              offset: const Offset(0, 4),
-            ),
+    return Container(
+      width: double.infinity,
+      constraints: BoxConstraints(
+        minHeight: size.height * 0.18,
+      ),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF2E7DD1),
+            Color(0xFF5E9CF4),
           ],
         ),
-        child: Stack(
-          children: [
-
-            // Refined Circular Overlay 1 (Top Right)
-            Positioned(
-              top: -120, // Slightly smaller positioning
-              right: -180,
-              child: AnimatedContainer(
-                duration: const Duration(seconds: 4),
-                curve: Curves.easeInOutSine,
-                transform: Matrix4.translationValues(0, 20, 0),
-                child: CircularContainer(
-                  width: 300, // Reduced size for cleaner look
-                  height: 300,
-                  radius: 150,
-                  backgroundColor: Colors.transparent,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          ArgieColors.secondary.withValues(alpha: 0.2), // More transparent
-                          Colors.transparent,
-                        ],
-                        radius: 0.9, // Wider spread for softness
-                        center: Alignment.center,
-                      ),
-                    ),
-                  ),
-                ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          // Background patterns
+          Positioned(
+            right: -50,
+            top: -20,
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.1),
               ),
             ),
-
-            // Refined Circular Overlay 2 (Bottom Left)
-            Positioned(
-              bottom: -80, // Adjusted for balance
-              left: -120,
-              child: CircularContainer(
-                width: 250, // Smaller and cleaner
-                height: 250,
-                radius: 125,
-                backgroundColor: Colors.transparent,
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        ArgieColors.primary.withValues(alpha: 0.15),
-                        Colors.transparent,
-                      ],
-                      radius: 0.8,
-                      center: Alignment.center,
-                    ),
-                  ),
-                ),
+          ),
+          Positioned(
+            right: 40,
+            top: -60,
+            child: Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.1),
               ),
             ),
+          ),
+          Positioned(
+            left: -30,
+            bottom: -40,
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.1),
+              ),
+            ),
+          ),
 
-            // Child content with improved alignment
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          // Small decorative elements
+          Positioned(
+            left: 40,
+            top: 20,
+            child: Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.3),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 80,
+            bottom: 30,
+            child: Container(
+              width: 6,
+              height: 6,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withValues(alpha: 0.3),
+              ),
+            ),
+          ),
+
+          // Header content
+          SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 16, 20, 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  child, // Existing child (TextLabel1, TextLabel2, etc.)
-                  const SizedBox(height: 10.0),
+                  const HeaderTextLabel1(),
+                  const SizedBox(height: 8),
+                  HeaderTextLabel2(
+                    uploadSectionKey: uploadSectionKey,
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
