@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp.router(
           theme: ThemeManager.getTheme(),
           debugShowCheckedModeBanner: false,
-          routerConfig: _router, // Use the pre-initialized router
+          routerConfig: _router,
         );
       },
     );

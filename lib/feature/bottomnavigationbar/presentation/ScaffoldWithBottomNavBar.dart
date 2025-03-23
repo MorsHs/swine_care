@@ -16,50 +16,19 @@ class ScaffoldWithBottomNavBar extends StatefulWidget {
   State<ScaffoldWithBottomNavBar> createState() => _ScaffoldWithBottomNavBarState();
 }
 
-class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _labelFadeAnimation;
+class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
   int _selectedIndex = 0;
-  bool _showLabels = false;
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.navigationShell.currentIndex;
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-    _labelFadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
   }
 
   void _onItemTapped(int index) {
     if (_selectedIndex != index) {
       setState(() {
         _selectedIndex = index;
-        _showLabels = true;
-        _animationController.forward().then((_) {
-          Future.delayed(const Duration(milliseconds: 1500), () {
-            if (mounted) {
-              setState(() {
-                _showLabels = false;
-              });
-            }
-          });
-        });
       });
       widget.navigationShell.goBranch(index);
     }
@@ -132,44 +101,35 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar>
                     onTap: () => _onItemTapped(index),
                     child: SizedBox(
                       width: 60,
-                      child: AnimatedBuilder(
-                        animation: _animationController,
-                        builder: (context, child) {
-                          return Transform.scale(
-                            scale: isSelected ? _scaleAnimation.value : 1.0,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  item['icon'] as IconData,
-                                  size: isSelected ? 26 : 24,
-                                  color: isSelected
-                                      ? ArgieColors.primary
-                                      : isDarkMode
-                                      ? ArgieColors.textthird
-                                      : ArgieColors.textsecondary,
-                                ),
-                                const SizedBox(height: 4),
-                                AnimatedOpacity(
-                                  opacity: _showLabels && isSelected ? 1.0 : 0.0,
-                                  duration: const Duration(milliseconds: 200),
-                                  child: Text(
-                                    item['label'] as String,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      color: isSelected
-                                          ? ArgieColors.primary
-                                          : isDarkMode
-                                          ? Colors.white70
-                                          : Colors.black54,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            item['icon'] as IconData,
+                            size: isSelected ? 26 : 24,
+                            color: isSelected
+                                ? ArgieColors.primary
+                                : isDarkMode
+                                ? ArgieColors.textthird
+                                : ArgieColors.textsecondary,
+                          ),
+                          const SizedBox(height: 4),
+                          // Always show the label (no animation)
+                          Text(
+                            item['label'] as String,
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                              color: isSelected
+                                  ? ArgieColors.primary
+                                  : isDarkMode
+                                  ? Colors.white70
+                                  : Colors.black54,
                             ),
-                          );
-                        },
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                     ),
                   );
