@@ -15,31 +15,6 @@ class HeaderTextLabel1 extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Row(
-              //   children: [
-              //     Container(
-              //       padding: const EdgeInsets.all(6),
-              //       decoration: BoxDecoration(
-              //         color: Colors.white.withValues(alpha: 0.2),
-              //         borderRadius: BorderRadius.circular(20),
-              //       ),
-              //       child: Image.asset('assets/Logo/logoswinecare.png',
-              //         fit: BoxFit.cover,
-              //         height: 40,
-              //         width: 150,
-              //       ),
-              //     ),
-              //     // const SizedBox(width: 8),
-              //     // Text(
-              //     //   'SwineCare',
-              //     //   style: GoogleFonts.poppins(
-              //     //     fontSize: 14,
-              //     //     fontWeight: FontWeight.w500,
-              //     //     color: Colors.white.withValues(alpha: 0.9),
-              //     //   ),
-              //     // ),
-              //   ],
-              // ),
               const SizedBox(height: 6),
               Text(
                 'Protect Your Pigs from ASF',
@@ -60,8 +35,6 @@ class HeaderTextLabel1 extends StatelessWidget {
             ],
           ),
         ),
-        // Removed the GestureDetector and AnimatedBuilder
-        // Now using a static container with Iconsax.element_4 permanently
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(

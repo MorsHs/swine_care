@@ -47,8 +47,8 @@ class CheckerButton extends StatelessWidget {
         child: Container(
           // Use constraints to prevent the button from becoming too wide or too narrow
           constraints: BoxConstraints(
-            minWidth: 200 * scaleFactor, // Minimum width
-            maxWidth: screenWidth * 0.9, // Maximum width (90% of screen)
+            minWidth: 200 * scaleFactor,
+            maxWidth: screenWidth * 0.9,
           ),
           decoration: BoxDecoration(
             color: ArgieColors.primary,

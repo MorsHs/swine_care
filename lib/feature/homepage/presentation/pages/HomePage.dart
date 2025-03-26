@@ -63,10 +63,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   // Image paths mapping
   final Map<String, String> _imagePaths = {
-    'Ears': 'assets/images/pigparts/earpig.png',
-    'Skin': 'assets/images/pigparts/pigskin.jpg',
-    'Legs': 'assets/images/pigparts/piglegs.png',
-    'Nose': 'assets/images/pigparts/pignose.jpeg',
+    'Ears': 'assets/images/pigparts/EarIconFinal.jpg',
+    'Skin': 'assets/images/pigparts/SkinIconFinal.jpg',
+    'Legs': 'assets/images/pigparts/LegIconFinal.jpg',
+    'Nose': 'assets/images/pigparts/NoseIconFinal.jpg',
   };
 
 
