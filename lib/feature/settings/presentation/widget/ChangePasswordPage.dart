@@ -15,12 +15,17 @@ class ChangePasswordPage extends StatefulWidget {
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final _formKey = GlobalKey<FormState>();
   final _currentPasswordController = TextEditingController();
+  final _emailController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  // Variable to track the selected authentication method
+  String _authMethod = 'password'; // Default to 'password', can be 'email'
 
   @override
   void dispose() {
     _currentPasswordController.dispose();
+    _emailController.dispose();
     _newPasswordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -87,20 +92,92 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             ),
                             const SizedBox(height: 16),
 
-                            // Current Password
-                            Textfieldcontainer(
-                              isHidden: true,
-                              label: "Current Password",
-                              controller: _currentPasswordController,
-                              showVisibilityToggle: true,
-                              prefixIcon: Iconsax.lock,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please enter your current password";
-                                }
-                                return null;
-                              },
+                            // Authentication Method Selection
+                            Text(
+                              "Authenticate Using",
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+                              ),
                             ),
+                            Row(
+                              children: [
+                                Radio<String>(
+                                  value: 'password',
+                                  groupValue: _authMethod,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _authMethod = value!;
+                                      _currentPasswordController.clear();
+                                      _emailController.clear();
+                                    });
+                                  },
+                                  activeColor: ArgieColors.primary,
+                                ),
+                                Text(
+                                  "Current Password",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    color: isDarkMode ? Colors.white70 : Colors.black87,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Radio<String>(
+                                  value: 'email',
+                                  groupValue: _authMethod,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _authMethod = value!;
+                                      _currentPasswordController.clear();
+                                      _emailController.clear();
+                                    });
+                                  },
+                                  activeColor: ArgieColors.primary,
+                                ),
+                                Text(
+                                  "Email Address",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    color: isDarkMode ? Colors.white70 : Colors.black87,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+
+                            // Conditional Field: Current Password or Email Address
+                            if (_authMethod == 'password')
+                              Textfieldcontainer(
+                                isHidden: true,
+                                label: "Current Password",
+                                controller: _currentPasswordController,
+                                showVisibilityToggle: true,
+                                prefixIcon: Iconsax.lock,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter your current password";
+                                  }
+                                  return null;
+                                },
+                              )
+                            else
+                              Textfieldcontainer(
+                                isHidden: false,
+                                label: "Email Address",
+                                controller: _emailController,
+                                showVisibilityToggle: false,
+                                prefixIcon: Iconsax.sms,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter your email address";
+                                  }
+                                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                                    return "Please enter a valid email address";
+                                  }
+                                  return null;
+                                },
+                              ),
 
                             // New Password
                             Textfieldcontainer(
@@ -115,7 +192,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                 }
                                 if (value.length < 6) {
                                   return "Password must be at least 6 characters long";
-                                }
+                                 }
                                 return null;
                               },
                             ),
@@ -151,8 +228,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // Update password logic (to be implemented with backend)
+                        // For email method, you might send a verification code to the email
+                        // For password method, verify the current password
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Password updated successfully!")),
+                          SnackBar(
+                            content: Text(
+                              _authMethod == 'password'
+                                  ? "Password updated successfully!"
+                                  : "Verification code sent to your email. Please verify to proceed.",
+                            ),
+                          ),
                         );
                         Navigator.pop(context);
                       }
