@@ -1,13 +1,43 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
-import 'dart:math' as math;
+import 'package:image_picker/image_picker.dart';
 
-class UserProfileTile extends StatelessWidget {
-  const UserProfileTile({
-    super.key,
-  });
+class UserProfileTile extends StatefulWidget {
+  const UserProfileTile({super.key});
+
+  @override
+  State<UserProfileTile> createState() => _UserProfileTileState();
+}
+
+class _UserProfileTileState extends State<UserProfileTile> {
+  File? _selectedImage; // Store the selected image file
+  final ImagePicker _picker = ImagePicker();
+
+  // Method to pick an image from the gallery
+  Future<void> _pickImage() async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _selectedImage = File(pickedFile.path);
+        });
+      }
+    } catch (e) {
+      // Handle errors (e.g., permission denied)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Failed to pick image: $e',
+            style: GoogleFonts.poppins(),
+          ),
+          backgroundColor: Colors.red.shade600,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +45,6 @@ class UserProfileTile extends StatelessWidget {
     final Color titleTextColor = isDarkMode ? ArgieColors.textthird : ArgieColors.textBold;
     final Color subtitleTextColor = isDarkMode ? ArgieColors.textthird.withValues(alpha: 0.9) : ArgieColors.textSemiBlack;
     final Color iconColor = isDarkMode ? ArgieColors.textfifth : ArgieColors.textfourth;
-
-    print('UserProfileTile - Dark Mode: $isDarkMode, Title Color: $titleTextColor, Subtitle Color: $subtitleTextColor, Icon Color: $iconColor');
 
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -31,7 +59,14 @@ class UserProfileTile extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(50),
-          child: Image.asset(
+          child: _selectedImage != null
+              ? Image.file(
+            _selectedImage!,
+            width: 50,
+            height: 50,
+            fit: BoxFit.cover,
+          )
+              : Image.asset(
             'assets/images/rose.jpg',
             width: 50,
             height: 50,
@@ -84,14 +119,14 @@ class UserProfileTile extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              // Handle edit action
+              _pickImage(); // Trigger image picker on edit button press
             },
             icon: Icon(
               Iconsax.edit,
               color: iconColor,
               size: 24,
             ),
-            tooltip: 'Edit Profile',
+            tooltip: 'Change Profile Picture',
             splashColor: (Theme.of(context).colorScheme.primary ?? ArgieColors.primary).withValues(alpha: 0.3),
             highlightColor: (Theme.of(context).colorScheme.primary ?? ArgieColors.primary).withValues(alpha: 0.1),
           ),
