@@ -324,13 +324,13 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
           Icon(
             icon,
             color: isDarkMode ? Colors.white : const Color(0xFFEC7C86),
-            size: 28,
+            size: 22,
           ),
           const SizedBox(width: 10),
           Text(
             title,
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
               color: isDarkMode ? Colors.white : const Color(0xFFEC7C86),
             ),
@@ -354,10 +354,14 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
         children: [
           Row(
             children: [
-              const Icon(Icons.warning_amber_rounded, color: Colors.red, size: 24),
+              const Icon(
+                  Icons.warning_amber_rounded,
+                  color: Colors.red,
+                  size: 18
+              ),
               const SizedBox(width: 10),
               Text(
-                "African Swine Fever (ASF) Alert",
+                "African Swine Fever Alert",
                 style: GoogleFonts.poppins(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -519,12 +523,16 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
         children: [
           Row(
             children: [
-              Icon(Icons.healing, color: Colors.amber[800], size: 24),
+              Icon(
+                  Icons.healing,
+                  color: Colors.amber[800],
+                  size: 18
+              ),
               const SizedBox(width: 10),
               Text(
                 "Common Problems & Solutions",
                 style: GoogleFonts.poppins(
-                  fontSize: 18,
+                  fontSize: 17,
                   fontWeight: FontWeight.bold,
                   color: isDarkMode ? Colors.white : Colors.black87,
                 ),
@@ -856,11 +864,6 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
-        Icon(
-          Icons.agriculture,
-          color: isDarkMode ? Colors.white : const Color(0xFFEC7C86),
-          size: 30,
-        ),
         const SizedBox(width: 10),
         Text(
           title,

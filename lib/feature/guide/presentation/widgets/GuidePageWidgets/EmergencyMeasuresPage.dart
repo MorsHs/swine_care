@@ -834,23 +834,23 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> with Sing
           children: [
             Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey[800] : const Color(0xFFF5F5F5),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.lightbulb_outline,
-                    color: Color(0xffb0b422),
-                    size: 18,
-                  ),
-                ),
-                const SizedBox(width: 16),
+                // Container(
+                //   padding: const EdgeInsets.all(10),
+                //   decoration: BoxDecoration(
+                //     color: isDarkMode ? Colors.grey[800] : const Color(0xFFF5F5F5),
+                //     borderRadius: BorderRadius.circular(12),
+                //   ),
+                //   child: const Icon(
+                //     Icons.lightbulb_outline,
+                //     color: Color(0xffb0b422),
+                //     size: 18,
+                //   ),
+                // ),
+                // const SizedBox(width: 16),
                 Text(
                   "Pro Tips for Emergency Response",
                   style: GoogleFonts.poppins(
-                    fontSize: 15,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: isDarkMode ? Colors.white : Colors.black87,
                   ),
@@ -1484,14 +1484,14 @@ class _EmergencyMeasuresPageState extends State<EmergencyMeasuresPage> with Sing
                   child: Icon(
                     Icons.gavel_rounded,
                     color: Colors.blue[700],
-                    size: 24,
+                    size: 16,
                   ),
                 ),
                 const SizedBox(width: 16),
                 Text(
                   "Regulatory Compliance",
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: isDarkMode ? Colors.white : Colors.black87,
                   ),

@@ -77,7 +77,7 @@ class ForgotPasswordPage extends StatelessWidget {
                       const Textfieldcontainer(
                         isHidden: false,
                         label: "Email",
-                        prefixIcon: Icons.email_outlined,
+                        // prefixIcon: Icons.email_outlined,
                       ),
                       const SizedBox(height: 20),
                       FractionallySizedBox(

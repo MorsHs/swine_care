@@ -36,24 +36,24 @@ class Register extends StatelessWidget {
                       Textfieldcontainer(
                         isHidden: false,
                         label: "Username",
-                        prefixIcon: Icons.person_outline,
+                        // prefixIcon: Icons.person_outline,
                       ),
                       Textfieldcontainer(
                         isHidden: false,
                         label: "Email",
-                        prefixIcon: Icons.email_outlined,
+                        // prefixIcon: Icons.email_outlined,
                       ),
                       Textfieldcontainer(
                         isHidden: true,
                         label: "Password",
                         showVisibilityToggle: true,
-                        prefixIcon: Icons.lock_outline,
+                        // prefixIcon: Icons.lock_outline,
                       ),
                       Textfieldcontainer(
                         isHidden: true,
                         label: "Confirm Password",
                         showVisibilityToggle: true,
-                        prefixIcon: Icons.lock_outline,
+                        // prefixIcon: Icons.lock_outline,
                       ),
                       RegisterButton(),
                       RedirectToLogin(),
