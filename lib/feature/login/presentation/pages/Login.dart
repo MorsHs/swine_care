@@ -36,13 +36,13 @@ class Login extends StatelessWidget {
                       Textfieldcontainer(
                         isHidden: false,
                         label: "Email",
-                        prefixIcon: Icons.email_outlined,
+                        // prefixIcon: Icons.email_outlined,
                       ),
                       Textfieldcontainer(
                         isHidden: true,
                         label: "Password",
                         showVisibilityToggle: true,
-                        prefixIcon: Icons.lock_outline,
+                        // prefixIcon: Icons.lock_outline,
                       ),
                       ForgotPassword(),
                       LoginButton(),

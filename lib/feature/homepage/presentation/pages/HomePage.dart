@@ -50,11 +50,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   // UI state
   bool _isGridView = false;
-  // bool _showWelcomeAnimation = true;
-  //
-  // // Animation controllers
-  // late AnimationController _headerAnimationController;
-  // late Animation<double> _headerAnimation;
 
   // Keys and controllers
   final GlobalKey _symptomsSectionKey = GlobalKey();
@@ -179,19 +174,20 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         // Feature card
-                        const FeatureCard(),
+                        // const FeatureCard(),
 
                         // Information card
-                        const InfoCard(),
+                        // const InfoCard(),
 
                         // Progress indicator
-                        ProgressIndicatorCard(
-                          imagesUploaded: _imagesUploaded,
-                          totalImages: 4,
-                          questionsAnswered: _questionsAnswered,
-                          totalQuestions: _answers.length,
-                        ),
+                        // ProgressIndicatorCard(
+                        //   imagesUploaded: _imagesUploaded,
+                        //   totalImages: 4,
+                        //   questionsAnswered: _questionsAnswered,
+                        //   totalQuestions: _answers.length,
+                        // ),
 
                         // Image upload section
                         Card(
@@ -237,9 +233,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         const SizedBox(height: ArgieSizes.spaceBtwSections),
 
                         // Checker button
-                        Center(
-                          child: CheckerButton(symptomsSectionKey: _symptomsSectionKey),
-                        ),
+                        // Center(
+                        //   child: CheckerButton(symptomsSectionKey: _symptomsSectionKey),
+                        // ),
                         const SizedBox(height: ArgieSizes.spaceBtwWidgets),
 
                         // Symptoms checker card
@@ -301,7 +297,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ],
             ),
           ),
-
         ],
       ),
     );
