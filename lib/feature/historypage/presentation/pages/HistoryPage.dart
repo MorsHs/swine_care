@@ -71,7 +71,7 @@ class _HistoryPageState extends State<HistoryPage> {
         .brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDarkMode ? ArgieColors.dark : Colors.grey.shade100,
+      backgroundColor: isDarkMode ? ArgieColors.dark : Colors.white,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
