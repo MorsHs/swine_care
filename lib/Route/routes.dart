@@ -28,7 +28,7 @@ class RouterConfiguration {
       initialLocation: '/loading-screen',
       redirect: (context, state) {
         final currentLocation = state.fullPath;
-        print('Redirect Check - Location: $currentLocation'); // Debug print
+        // print('Redirect Check - Location: $currentLocation'); // Debug print
 
         // Allow all defined routes to persist without redirecting to /loading-screen
         if (currentLocation!.startsWith('/intro') ||
@@ -39,12 +39,12 @@ class RouterConfiguration {
             currentLocation.startsWith('/guide') ||
             currentLocation.startsWith('/history') ||
             currentLocation.startsWith('/setting')) {
-          print('Allowing Route: $currentLocation');
+          // print('Allowing Route: $currentLocation');
           return null; // Allow the route to persist
         }
 
         // Redirect to /loading-screen only for undefined routes
-        print('Redirecting to /loading-screen');
+        // print('Redirecting to /loading-screen');
         return '/loading-screen';
       },
       routes: [
@@ -78,7 +78,7 @@ class RouterConfiguration {
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
-            print('ScaffoldWithBottomNavBar Rebuilt for: ${navigationShell.currentIndex}');
+            // print('ScaffoldWithBottomNavBar Rebuilt for: ${navigationShell.currentIndex}');
             return ScaffoldWithBottomNavBar(navigationShell: navigationShell);
           },
           branches: [

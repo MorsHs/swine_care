@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/EmergencyTips.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/BestPractices.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/Tips&Tricks.dart';
@@ -27,16 +26,16 @@ class _GuidePageState extends State<GuidePage> {
           // Header Section with Gradient Background
           Container(
             padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  ArgieColors.primary.withValues(alpha: (isDarkMode ? 0.2 : 0.4)),
-                  isDarkMode ? ArgieColors.dark : Colors.grey.shade100,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+            // decoration: BoxDecoration(
+            //   gradient: LinearGradient(
+            //     colors: [
+            //       ArgieColors.primary.withValues(alpha: (isDarkMode ? 0.2 : 0.4)),
+            //       isDarkMode ? ArgieColors.dark : Colors.grey.shade100,
+            //     ],
+            //     begin: Alignment.topCenter,
+            //     end: Alignment.bottomCenter,
+            //   ),
+            // ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

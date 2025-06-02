@@ -211,7 +211,7 @@ class _SettingsState extends State<Settings> {
                                 child: Text(
                                   'Logout',
                                   style: GoogleFonts.poppins(
-                                    color: ArgieColors.primary,
+                                    color: Colors.red,
                                   ),
                                 ),
                               ),
