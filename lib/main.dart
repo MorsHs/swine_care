@@ -26,16 +26,16 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _isDarkModeNotifier.value = ThemeManager.isDarkMode;
-    print('App Initialized with Dark Mode: ${ThemeManager.isDarkMode}'); // Debug print
+    // print('App Initialized with Dark Mode: ${ThemeManager.isDarkMode}'); // Debug print
     _router = RouterConfiguration().routes();
   }
 
   void updateTheme(bool value) {
-    print('Updating Theme to: $value'); // Debug print
+    // print('Updating Theme to: $value'); // Debug print
     ThemeManager.toggleDarkMode(value).then((_) {
       setState(() {
         _isDarkModeNotifier.value = value;
-        print('Theme Updated to: $value'); // Debug
+        // print('Theme Updated to: $value'); // Debug
       });
     });
   }
@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
     return ValueListenableBuilder<bool>(
       valueListenable: _isDarkModeNotifier,
       builder: (context, isDarkMode, child) {
-        print('Building MaterialApp with Theme: $isDarkMode'); // Debug print
+        // print('Building MaterialApp with Theme: $isDarkMode'); // Debug print
         return MaterialApp.router(
           theme: ThemeManager.getTheme(),
           debugShowCheckedModeBanner: false,

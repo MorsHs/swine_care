@@ -54,7 +54,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     final String currentPath = GoRouterState.of(context).fullPath ?? '';
-    print('ScaffoldWithBottomNavBar Build - Current Path: $currentPath'); // Debug print
+    // print('ScaffoldWithBottomNavBar Build - Current Path: $currentPath'); // Debug print
     const mainRoutes = ['/homepage', '/guide', '/history', '/setting'];
     final bool showBottomNavBar = mainRoutes.contains(currentPath);
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -70,21 +70,21 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
         height: kBottomNavigationBarHeight + 16,
         child: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                isDarkMode
-                    ? ArgieColors.dark.withValues(alpha: 0.9)
-                    : Colors.white.withValues(alpha: 0.9),
-                ArgieColors.primary.withValues(alpha: 0.2),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            // gradient: LinearGradient(
+            //   colors: [
+            //     isDarkMode
+            //         ? ArgieColors.dark.withValues(alpha: 0.9)
+            //         : Colors.white.withValues(alpha: 0.9),
+            //     ArgieColors.primary.withValues(alpha: 0.2),
+            //   ],
+            //   begin: Alignment.topLeft,
+            //   end: Alignment.bottomRight,
+            // ),
             boxShadow: [
               BoxShadow(
                 color: ArgieColors.shadow.withValues(alpha: 0.1),
                 blurRadius: 8,
-                offset: const Offset(0, -2),
+                offset: const Offset(0, -6),
               ),
             ],
           ),
