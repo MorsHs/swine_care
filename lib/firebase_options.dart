@@ -60,10 +60,11 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCpsauI2BDsuy8cqh4fISWC8mOtEgsgrTg',
-    appId: '1:1011022334480:android:690ba91ca4309dbee25895',
-    messagingSenderId: '1011022334480',
-    projectId: 'swine-care',
-    storageBucket: 'swine-care.firebasestorage.app',
+    apiKey: 'AIzaSyD4WNOXxjYtbhCUoGLeNGOpCopX7smD6rE',
+    appId: '1:452239186829:android:02fc00cd82405bb28bfbc4',
+    messagingSenderId: '452239186829',
+    projectId: 'swine-care-a42e1',
+    storageBucket: 'swine-care-a42e1.firebasestorage.app',
   );
+
 }

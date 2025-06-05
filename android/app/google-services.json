@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1011022334480",
-    "project_id": "swine-care",
-    "storage_bucket": "swine-care.firebasestorage.app"
+    "project_number": "452239186829",
+    "project_id": "swine-care-a42e1",
+    "storage_bucket": "swine-care-a42e1.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1011022334480:android:690ba91ca4309dbee25895",
+        "mobilesdk_app_id": "1:452239186829:android:02fc00cd82405bb28bfbc4",
         "android_client_info": {
           "package_name": "com.example.swine_care"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCpsauI2BDsuy8cqh4fISWC8mOtEgsgrTg"
+          "current_key": "AIzaSyD4WNOXxjYtbhCUoGLeNGOpCopX7smD6rE"
         }
       ],
       "services": {
