@@ -27,7 +27,7 @@ class ForgotPasswordPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        ArgieColors.primary.withOpacity(isDarkMode ? 0.2 : 0.4),
+                        ArgieColors.primary.withValues(alpha: isDarkMode ? 0.2 : 0.4),
                         isDarkMode ? ArgieColors.dark : Colors.grey.shade100,
                       ],
                       begin: Alignment.topCenter,
@@ -48,8 +48,8 @@ class ForgotPasswordPage extends StatelessWidget {
                           shadows: [
                             Shadow(
                               color: isDarkMode
-                                  ? ArgieColors.primary.withOpacity(0.3)
-                                  : ArgieColors.primary.withOpacity(0.2),
+                                  ? ArgieColors.primary.withValues(alpha: 0.3)
+                                  : ArgieColors.primary.withValues(alpha: 0.2),
                               offset: const Offset(1, 1),
                               blurRadius: 3,
                             ),

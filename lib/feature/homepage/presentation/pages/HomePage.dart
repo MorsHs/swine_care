@@ -84,11 +84,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     });
   }
 
-  void _toggleGridView() {
-    setState(() {
-      _isGridView = !_isGridView;
-    });
-  }
+  // void _toggleGridView() {
+  //   setState(() {
+  //     _isGridView = !_isGridView;
+  //   });
+  // }
 
   Future<void> _pickImage(String part) async {
     try {
@@ -109,28 +109,28 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   // Calculate progress metrics
-  int get _imagesUploaded {
-    int count = 0;
-    if (selectedImageEars != null || webImageEars != null) count++;
-    if (selectedImageSkin != null || webImageSkin != null) count++;
-    if (selectedImageLegs != null || webImageLegs != null) count++;
-    if (selectedImageNose != null || webImageNose != null) count++;
-    return count;
-  }
+  // int get _imagesUploaded {
+  //   int count = 0;
+  //   if (selectedImageEars != null || webImageEars != null) count++;
+  //   if (selectedImageSkin != null || webImageSkin != null) count++;
+  //   if (selectedImageLegs != null || webImageLegs != null) count++;
+  //   if (selectedImageNose != null || webImageNose != null) count++;
+  //   return count;
+  // }
 
-  int get _questionsAnswered {
-    int count = 0;
-    for (var answer in _answers.values) {
-      if (answer != null) count++;
-    }
-    return count;
-  }
+  // int get _questionsAnswered {
+  //   int count = 0;
+  //   for (var answer in _answers.values) {
+  //     if (answer != null) count++;
+  //   }
+  //   return count;
+  // }
 
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    // Prepare image maps for the ImageGridView
+    // image maps for the ImageGridView
     final Map<String, File?> selectedImages = {
       'Ears': selectedImageEars,
       'Skin': selectedImageSkin,
@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     };
 
     return Scaffold(
-      backgroundColor: isDarkMode ? ArgieColors.dark : Color(0xFFF8F9FA),
+      backgroundColor: isDarkMode ? ArgieColors.dark : const Color(0xFFF8F9FA),
       body: Stack(
         children: [
 
@@ -155,13 +155,13 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             child: CustomScrollView(
               controller: _scrollController,
               slivers: [
-                // Header - now using the extracted widget
+
+                // Header
                 SliverToBoxAdapter(
                   child: HomeHeader(
                     uploadSectionKey: _uploadSectionKey,
                   ),
                   ),
-
 
                 // Main Content
                 SliverPadding(
@@ -171,23 +171,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        // Feature card
-                        // const FeatureCard(),
-
-                        // Information card
-                        // const InfoCard(),
-
-                        // Progress indicator
-                        // ProgressIndicatorCard(
-                        //   imagesUploaded: _imagesUploaded,
-                        //   totalImages: 4,
-                        //   questionsAnswered: _questionsAnswered,
-                        //   totalQuestions: _answers.length,
-                        // ),
-
                         // Image upload section
                         Card(
-                          key: _uploadSectionKey, // Added key here for scrolling
+                          key: _uploadSectionKey,
                           elevation: 2,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                           color: isDarkMode ? Colors.grey.shade800 : Colors.white,
@@ -228,10 +214,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         ),
                         const SizedBox(height: ArgieSizes.spaceBtwSections),
 
-                        // Checker button
-                        // Center(
-                        //   child: CheckerButton(symptomsSectionKey: _symptomsSectionKey),
-                        // ),
                         const SizedBox(height: ArgieSizes.spaceBtwWidgets),
 
                         // Symptoms checker card
@@ -252,7 +234,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 const SizedBox(height: 16),
 
                                 // Text Label
-                                AnswerAllQuestionsTextLabel(),
+                                const AnswerAllQuestionsTextLabel(),
 
                                 const SizedBox(height: 16),
 
