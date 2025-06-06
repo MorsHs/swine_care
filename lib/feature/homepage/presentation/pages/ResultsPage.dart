@@ -78,7 +78,7 @@ class _ResultsPageState extends State<ResultsPage> {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      bottomNavigationBar: null, // Explicitly hide the bottom navigation bar
+      bottomNavigationBar: null,
       body: _showAnimation
           ? Center(
         child: Column(
