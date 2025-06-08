@@ -47,7 +47,6 @@ class _RegisterState extends State<Register> {
         context.go('/homepage');
       }
     } on FirebaseAuthException catch (e) {
-      print('Firebase Auth Error: ${e.code} - ${e.message}');
       Navigator.pop(context);
       showErrorMessage(e.code);
     }
@@ -106,26 +105,29 @@ class _RegisterState extends State<Register> {
                   child: Column(
                     children: [
                       const LoginOrCreateLabel(label: "Create Account"),
-                      const Textfieldcontainer(
+                      Textfieldcontainer(
+                        controller: usernameController,
                         isHidden: false,
                         label: "Username",
 
                       ),
                      Textfieldcontainer(
+                       controller: emailController,
                         isHidden: false,
                         label: "Email",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                            return 'Please enter a valid email';
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return 'Please enter your email';
+                        //   }
+                        //   if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                        //     return 'Please enter a valid email';
+                        //   }
+                        //   return null;
+                        // },
 
                       ),
                        Textfieldcontainer(
+                         controller: passwordController,
                         isHidden: true,
                         label: "Password",
                         showVisibilityToggle: true,
@@ -141,6 +143,7 @@ class _RegisterState extends State<Register> {
 
                       ),
                        Textfieldcontainer(
+                         controller: confirmPasswordController,
                         isHidden: true,
                         label: "Confirm Password",
                         showVisibilityToggle: true,

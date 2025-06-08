@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -175,7 +176,7 @@ class _SettingsState extends State<Settings> {
                       icon: Iconsax.logout,
                       title: 'Logout',
                       subtitle: 'Logout your account now',
-                      onTap: () {
+                      onTap: () async {
                         print('Logout Button Pressed');
                         showDialog(
                           context: context,
@@ -203,10 +204,49 @@ class _SettingsState extends State<Settings> {
                                 ),
                               ),
                               TextButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   print('Confirmed Logout');
-                                  Navigator.pop(context);
-                                  GoRouter.of(context).push('/login');
+                                  try {
+                                    await FirebaseAuth.instance.signOut();
+                                    print('Firebase Sign-out successful');
+                                    Navigator.pop(context);
+                                    if (context.mounted) {
+                                      GoRouter.of(context).pushReplacement('/login');
+                                    }
+                                  } catch (e) {
+                                    print('Firebase Sign-out error: $e');
+                                    Navigator.pop(context);
+                                    if (context.mounted) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: Text(
+                                            'Error',
+                                            style: GoogleFonts.poppins(
+                                              color: Theme.of(context).textTheme.bodyLarge?.color,
+                                            ),
+                                          ),
+                                          content: Text(
+                                            'Failed to logout. Please try again.',
+                                            style: GoogleFonts.poppins(
+                                              color: Theme.of(context).textTheme.bodyMedium?.color,
+                                            ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context),
+                                              child: Text(
+                                                'OK',
+                                                style: GoogleFonts.poppins(
+                                                  color: ArgieColors.primary,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  }
                                 },
                                 child: Text(
                                   'Logout',
