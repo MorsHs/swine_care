@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swine_care/feature/bottomnavigationbar/presentation/ScaffoldWithBottomNavBar.dart';
 import 'package:swine_care/feature/forgotpassword/presentation/pages/ForgotPasswordPage.dart';
@@ -27,25 +28,27 @@ class RouterConfiguration {
     return GoRouter(
       initialLocation: '/loading-screen',
       redirect: (context, state) {
+        final user = FirebaseAuth.instance.currentUser;
         final currentLocation = state.fullPath;
-        // print('Redirect Check - Location: $currentLocation'); // Debug print
 
-        // Allow all defined routes to persist without redirecting to /loading-screen
-        if (currentLocation!.startsWith('/intro') ||
-            currentLocation.startsWith('/loading-screen') ||
-            currentLocation.startsWith('/login') ||
-            currentLocation.startsWith('/signup') ||
-            currentLocation.startsWith('/homepage') ||
-            currentLocation.startsWith('/guide') ||
-            currentLocation.startsWith('/history') ||
-            currentLocation.startsWith('/setting')) {
-          // print('Allowing Route: $currentLocation');
-          return null; // Allow the route to persist
+        // If user is not authenticated, redirect to login
+        if (user == null) {
+          if (!currentLocation!.startsWith('/login') &&
+              !currentLocation.startsWith('/signup') &&
+              !currentLocation.startsWith('/forgot-password') &&
+              !currentLocation.startsWith('/intro') &&
+              !currentLocation.startsWith('/loading-screen')) {
+            return '/login';
+          }
+        } else {
+          // If user is authenticated, redirect from login/signup pages to homepage
+          if (currentLocation!.startsWith('/login') ||
+              currentLocation.startsWith('/signup') ||
+              currentLocation.startsWith('/forgot-password')) {
+            return '/homepage';
+          }
         }
-
-        // Redirect to /loading-screen only for undefined routes
-        // print('Redirecting to /loading-screen');
-        return '/loading-screen';
+        return null;
       },
       routes: [
         GoRoute(
@@ -63,7 +66,7 @@ class RouterConfiguration {
         GoRoute(
           path: '/login',
           builder: (context, state) {
-            return const Login();
+            return Login();
           },
         ),
         GoRoute(
@@ -78,7 +81,6 @@ class RouterConfiguration {
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
-            // print('ScaffoldWithBottomNavBar Rebuilt for: ${navigationShell.currentIndex}');
             return ScaffoldWithBottomNavBar(navigationShell: navigationShell);
           },
           branches: [
