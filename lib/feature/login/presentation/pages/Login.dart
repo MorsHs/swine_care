@@ -35,14 +35,12 @@ class _LoginState extends State<Login> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      Navigator.pop(context); // Dismiss loading dialog
-      // Navigate to homepage after successful login
+      Navigator.pop(context);
       if (context.mounted) {
         context.go('/homepage');
       }
     } on FirebaseAuthException catch (e) {
-      print('Firebase Auth Error: ${e.code} - ${e.message}');
-      Navigator.pop(context); // Dismiss loading dialog
+      Navigator.pop(context);
       showErrorMessage(e.code);
     }
   }
@@ -129,7 +127,7 @@ class _LoginState extends State<Login> {
                         },
                       ),
                       const ForgotPassword(),
-                      LoginButton(onPressed: signUserIn), // Pass the sign-in function
+                      LoginButton(onPressed: signUserIn),
                       const RedirectToSignup(),
                       const SizedBox(height: ArgieSizes.spaceBtwSections),
                     ],
