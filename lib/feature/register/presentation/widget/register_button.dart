@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 
 class RegisterButton extends StatelessWidget {
-  const RegisterButton({super.key});
+  final VoidCallback onPressed;
+
+  const RegisterButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +15,7 @@ class RegisterButton extends StatelessWidget {
       child: FractionallySizedBox(
         widthFactor: 0.8,
         child: FilledButton(
-          onPressed: () {
-            // Add registration logic here
-          },
+          onPressed: onPressed,
           style: FilledButton.styleFrom(
             backgroundColor: ArgieColors.primary,
             foregroundColor: ArgieColors.textthird,

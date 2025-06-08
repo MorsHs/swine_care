@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:swine_care/Theme/button_theme/default_login_signup_theme.dart';
 import 'package:swine_care/feature/login/presentation/widget/LoginHeader.dart';
 import 'package:swine_care/feature/login/presentation/widget/forgot_password.dart';
@@ -9,8 +11,75 @@ import 'package:swine_care/global_widget/TextFieldContainer.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/colors/ArgieSizes.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void signUserIn() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      Navigator.pop(context); // Dismiss loading dialog
+      // Navigate to homepage after successful login
+      if (context.mounted) {
+        context.go('/homepage');
+      }
+    } on FirebaseAuthException catch (e) {
+      print('Firebase Auth Error: ${e.code} - ${e.message}');
+      Navigator.pop(context); // Dismiss loading dialog
+      showErrorMessage(e.code);
+    }
+  }
+
+  void showErrorMessage(String errorCode) {
+    String message;
+    switch (errorCode) {
+      case 'user-not-found':
+        message = 'No user found with that email.';
+        break;
+      case 'wrong-password':
+        message = 'Incorrect password. Please try again.';
+        break;
+      case 'invalid-email':
+        message = 'The email address is invalid.';
+        break;
+      case 'too-many-requests':
+        message = 'Too many attempts. Please try again later.';
+        break;
+      default:
+        message = 'An error occurred ($errorCode). Please try again.';
+    }
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,31 +92,46 @@ class Login extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // Header Section
                 LoginHeader(isDarkMode: isDarkMode),
-
-                // Form Section
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      LoginOrCreateLabel(label: "Login"),
+                      const LoginOrCreateLabel(label: "Login"),
                       Textfieldcontainer(
+                        controller: emailController,
                         isHidden: false,
                         label: "Email",
-                        // prefixIcon: Icons.email_outlined,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
                       ),
                       Textfieldcontainer(
+                        controller: passwordController,
                         isHidden: true,
                         label: "Password",
                         showVisibilityToggle: true,
-                        // prefixIcon: Icons.lock_outline,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          if (value.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
                       ),
-                      ForgotPassword(),
-                      LoginButton(),
-                      RedirectToSignup(),
-                      SizedBox(height: ArgieSizes.spaceBtwSections),
+                      const ForgotPassword(),
+                      LoginButton(onPressed: signUserIn), // Pass the sign-in function
+                      const RedirectToSignup(),
+                      const SizedBox(height: ArgieSizes.spaceBtwSections),
                     ],
                   ),
                 ),

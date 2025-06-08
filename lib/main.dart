@@ -3,9 +3,14 @@ import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swine_care/Route/routes.dart';
 import 'package:swine_care/colors/ThemeManager.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await Settings.init(cacheProvider: SharePreferenceCache());
   await ThemeManager.init();
   runApp(const MyApp());
