@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
+import 'package:swine_care/data/repositories/AuthRepository.dart';
 import 'package:swine_care/feature/settings/presentation/widget/SectionHeading.dart';
 import 'package:swine_care/feature/settings/presentation/widget/SettingMenuTile.dart';
 import 'package:swine_care/feature/settings/presentation/widget/UserProfileInfoContent.dart';
@@ -19,6 +19,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   bool isDarkModeEnabled = false;
+  final AuthRepository _authRepository = AuthRepository();
 
   @override
   void initState() {
@@ -207,7 +208,7 @@ class _SettingsState extends State<Settings> {
                                 onPressed: () async {
                                   print('Confirmed Logout');
                                   try {
-                                    await FirebaseAuth.instance.signOut();
+                                    await _authRepository.signOut();
                                     print('Firebase Sign-out successful');
                                     Navigator.pop(context);
                                     if (context.mounted) {
