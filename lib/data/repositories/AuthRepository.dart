@@ -32,6 +32,23 @@ class AuthRepository {
     }
 }
 
+// login ang user
+  Future<void> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Login failed: ${e.code} - ${e.message}');
+    } catch (e) {
+      throw Exception('An unexpected error occurred: $e');
+    }
+  }
+
     //maka logout ang user
     Future<void> signOut() async{
     try {
