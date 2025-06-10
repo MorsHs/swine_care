@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swine_care/feature/bottomnavigationbar/presentation/ScaffoldWithBottomNavBar.dart';
-import 'package:swine_care/feature/forgotpassword/presentation/pages/ForgotPasswordPage.dart';
+import 'package:swine_care/feature/changepassword/presentation/widgets/ChangePassword.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/BestPracticesPage.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/EmergencyMeasuresPage.dart';
 import 'package:swine_care/feature/guide/presentation/pages/GuidePage.dart';
@@ -43,8 +43,7 @@ class RouterConfiguration {
         } else {
           // If user is authenticated, redirect from login/signup pages to homepage
           if (currentLocation!.startsWith('/login') ||
-              currentLocation.startsWith('/signup') ||
-              currentLocation.startsWith('/forgot-password')) {
+              currentLocation.startsWith('/signup')) {
             return '/homepage';
           }
         }
@@ -66,7 +65,7 @@ class RouterConfiguration {
         GoRoute(
           path: '/login',
           builder: (context, state) {
-            return Login();
+            return const Login();
           },
         ),
         GoRoute(
@@ -77,13 +76,15 @@ class RouterConfiguration {
         ),
         GoRoute(
           path: '/forgot-password',
-          builder: (context, state) => const ForgotPasswordPage(),
+          builder: (context, state) => const ForgotPassword(),
         ),
+
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
             return ScaffoldWithBottomNavBar(navigationShell: navigationShell);
           },
           branches: [
+
             StatefulShellBranch(
               routes: [
                 GoRoute(
