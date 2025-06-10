@@ -82,7 +82,7 @@ class _RegisterState extends State<Register> {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDarkMode ? ArgieColors.dark : Colors.grey.shade100,
+      backgroundColor: isDarkMode ? ArgieColors.dark : Colors.white,
       body: SafeArea(
         child: login_signup_theme(
           child: SingleChildScrollView(
@@ -117,7 +117,7 @@ class _RegisterState extends State<Register> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
                             }
-                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
+                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                               return 'Please enter a valid email';
                             }
                             return null;

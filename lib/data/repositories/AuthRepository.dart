@@ -43,7 +43,7 @@ class AuthRepository {
         password: password.trim(),
       );
     } on FirebaseAuthException catch (e) {
-      throw Exception('Login failed: ${e.code} - ${e.message}');
+      throw Exception('Login failed: ${e.code}');
     } catch (e) {
       throw Exception('An unexpected error occurred: $e');
     }
