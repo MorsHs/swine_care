@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swine_care/Theme/button_theme/default_login_signup_theme.dart';
+import 'package:swine_care/feature/forgotpassword/presentation/pages/ForgotPassword.dart';
 import 'package:swine_care/feature/login/presentation/widget/LoginHeader.dart';
 import 'package:swine_care/feature/login/presentation/widget/forgot_password.dart';
 import 'package:swine_care/feature/login/presentation/widget/login_button.dart';
@@ -44,7 +45,8 @@ class _LoginState extends State<Login> {
         }
       } on Exception catch (e) {
         Navigator.pop(context);
-        showErrorMessage(e.toString().split(': ').last);
+        final errorMessage = e.toString().replaceFirst('Login failed: ', ' ');
+        showErrorMessage(errorMessage);
       }
     } else {
       Navigator.pop(context);
@@ -67,7 +69,7 @@ class _LoginState extends State<Login> {
         displayMessage = 'Too many attempts. Please try again later.';
         break;
       default:
-        displayMessage = 'An error occurred ($message). Please try again.';
+        displayMessage = 'An error occurred. Please try again.';
     }
     showDialog(
       context: context,
@@ -90,7 +92,7 @@ class _LoginState extends State<Login> {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDarkMode ? ArgieColors.dark : Colors.grey.shade100,
+      backgroundColor: isDarkMode ? ArgieColors.dark : Colors.white,
       body: SafeArea(
         child: login_signup_theme(
           child: SingleChildScrollView(
@@ -134,7 +136,15 @@ class _LoginState extends State<Login> {
                             return null;
                           },
                         ),
-                        const ForgotPassword(),
+
+                        ForgotPasswordWidget(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const ForgotPassword()),
+                            );
+                          },
+                        ),
                         LoginButton(onPressed: signUserIn),
                         const RedirectToSignup(),
                         const SizedBox(height: ArgieSizes.spaceBtwSections),

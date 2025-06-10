@@ -79,7 +79,7 @@ class _TextfieldcontainerState extends State<Textfieldcontainer> {
       )
           : null,
       filled: true,
-      fillColor: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade100,
+      fillColor: isDarkMode ? Colors.white : Colors.white,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide.none,
