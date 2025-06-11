@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swine_care/feature/bottomnavigationbar/presentation/ScaffoldWithBottomNavBar.dart';
-import 'package:swine_care/feature/changepassword/presentation/widgets/ChangePassword.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/BestPracticesPage.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/EmergencyMeasuresPage.dart';
 import 'package:swine_care/feature/guide/presentation/pages/GuidePage.dart';
@@ -73,10 +72,6 @@ class RouterConfiguration {
           builder: (context, state) {
             return const Register();
           },
-        ),
-        GoRoute(
-          path: '/forgot-password',
-          builder: (context, state) => const ForgotPassword(),
         ),
 
         StatefulShellRoute.indexedStack(

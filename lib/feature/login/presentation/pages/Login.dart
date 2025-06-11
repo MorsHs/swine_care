@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
         displayMessage = 'Too many attempts. Please try again later.';
         break;
       default:
-        displayMessage = 'An error occurred. Please try again.';
+        displayMessage = 'Invalid email or password. Please try again.';
     }
     showDialog(
       context: context,
