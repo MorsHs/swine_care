@@ -29,6 +29,7 @@ class _UserProfileTileState extends State<UserProfileTile> {
   }
 
   Future<void> _loadUserData() async {
+    if (!mounted) return;
     setState(() {
       _isLoading = true;
     });
@@ -36,58 +37,71 @@ class _UserProfileTileState extends State<UserProfileTile> {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
+        if (mounted) {
+          setState(() {
+            _username = null;
+            _email = null;
+            _isLoading = false;
+          });
+        }
+        return;
+      }
+
+      final userData = await _authRepository.getUserData();
+      if (mounted) {
+        setState(() {
+          _username = userData['username'];
+          _email = userData['email'];
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+      if (mounted) {
         setState(() {
           _username = null;
           _email = null;
           _isLoading = false;
         });
-        return;
-      }
-
-      final userData = await _authRepository.getUserData();
-      setState(() {
-        _username = userData['username'];
-        _email = userData['email'];
-        _isLoading = false;
-      });
-    } catch (e) {
-      print('Error fetching user data: $e');
-      setState(() {
-        _username = null;
-        _email = null;
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Failed to load user data: $e',
-            style: GoogleFonts.poppins(),
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Failed to load user data: $e',
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: Colors.red.shade600,
           ),
-          backgroundColor: Colors.red.shade600,
-        ),
-      );
+        );
+      }
     }
   }
 
   Future<void> _pickImage() async {
     try {
       final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
+      if (pickedFile != null && mounted) {
         setState(() {
           _selectedImage = File(pickedFile.path);
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Failed to pick image: $e',
-            style: GoogleFonts.poppins(),
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Failed to pick image: $e',
+              style: GoogleFonts.poppins(),
+            ),
+            backgroundColor: Colors.red.shade600,
           ),
-          backgroundColor: Colors.red.shade600,
-        ),
-      );
+        );
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
