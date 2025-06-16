@@ -8,7 +8,7 @@ class Api {
 
   String result = "";
 
-  Future<ApiResult> sendImageToRoboflow() async {
+  Future<void> sendImageToRoboflow() async {
     final uri = Uri.parse(workflowUrl);
 
     final response = await http.post(
