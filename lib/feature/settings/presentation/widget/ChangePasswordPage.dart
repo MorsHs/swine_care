@@ -131,7 +131,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               label: "Current Password",
                               controller: _currentPasswordController,
                               showVisibilityToggle: true,
-                              prefixIcon: Iconsax.lock,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "Please enter your current password";
@@ -145,7 +144,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               label: "New Password",
                               controller: _newPasswordController,
                               showVisibilityToggle: true,
-                              prefixIcon: Iconsax.lock,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "Please enter a new password";
@@ -162,7 +160,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                               label: "Confirm New Password",
                               controller: _confirmPasswordController,
                               showVisibilityToggle: true,
-                              prefixIcon: Iconsax.lock,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "Please confirm your new password";
