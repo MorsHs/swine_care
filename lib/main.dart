@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:swine_care/Route/routes.dart';
 import 'package:swine_care/colors/ThemeManager.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:swine_care/data/api/Api.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -13,6 +14,7 @@ void main() async {
   );
   await Settings.init(cacheProvider: SharePreferenceCache());
   await ThemeManager.init();
+  //await Api().sendImageToRoboflow();
   runApp(const MyApp());
 }
 
