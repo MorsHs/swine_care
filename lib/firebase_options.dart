@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB5IIxIbWMn3gwqYOtv_IRjb-roQSfpAUc',
-    appId: '1:1011022334480:web:2af696a948c8eab2e25895',
-    messagingSenderId: '1011022334480',
-    projectId: 'swine-care',
-    authDomain: 'swine-care.firebaseapp.com',
-    storageBucket: 'swine-care.firebasestorage.app',
-    measurementId: 'G-SNVLQF5E1D',
+    apiKey: 'AIzaSyBlXyIOrX6oAgtxHDkeouuVVSh79sVwA2c',
+    appId: '1:452239186829:web:4895f75844b353c78bfbc4',
+    messagingSenderId: '452239186829',
+    projectId: 'swine-care-a42e1',
+    authDomain: 'swine-care-a42e1.firebaseapp.com',
+    storageBucket: 'swine-care-a42e1.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCpsauI2BDsuy8cqh4fISWC8mOtEgsgrTg',
-    appId: '1:1011022334480:android:690ba91ca4309dbee25895',
-    messagingSenderId: '1011022334480',
-    projectId: 'swine-care',
-    storageBucket: 'swine-care.firebasestorage.app',
+    apiKey: 'AIzaSyD4WNOXxjYtbhCUoGLeNGOpCopX7smD6rE',
+    appId: '1:452239186829:android:02fc00cd82405bb28bfbc4',
+    messagingSenderId: '452239186829',
+    projectId: 'swine-care-a42e1',
+    storageBucket: 'swine-care-a42e1.firebasestorage.app',
   );
+
 }

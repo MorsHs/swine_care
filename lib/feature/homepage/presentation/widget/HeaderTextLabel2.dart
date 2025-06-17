@@ -19,7 +19,7 @@ class HeaderTextLabel2 extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 style: GoogleFonts.poppins(
-                  fontSize: 12,
+                  fontSize:  MediaQuery.of(context).size.width * 0.04,
                   color: Colors.white.withValues(alpha: 0.9),
                   height: 1.5,
                 ),
@@ -28,7 +28,7 @@ class HeaderTextLabel2 extends StatelessWidget {
                     text: 'Upload clear images ',
                     style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
                   ),
-                  TextSpan(
+                  const TextSpan(
                     text: 'of your pigs for instant ASF detection and get expert recommendations.',
                   ),
                 ],
@@ -38,11 +38,10 @@ class HeaderTextLabel2 extends StatelessWidget {
           const SizedBox(width: 8),
           GestureDetector(
             onTap: () {
-              // Scroll to the upload section when the button is clicked
               if (uploadSectionKey?.currentContext != null) {
                 Scrollable.ensureVisible(
                   uploadSectionKey!.currentContext!,
-                  alignment: 0.2,
+                  // alignment: 0.1,
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
                 );
@@ -57,7 +56,7 @@ class HeaderTextLabel2 extends StatelessWidget {
               child: const Icon(
                 Icons.arrow_downward,
                 color: Colors.white,
-                size: 14,
+                size: 18,
               ),
             ),
           ),

@@ -19,16 +19,6 @@ class LoginHeader extends StatelessWidget {
         horizontal: MediaQuery.of(context).size.width * 0.05,
         vertical: MediaQuery.of(context).size.height * 0.02,
       ),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            ArgieColors.primary.withValues(alpha: (isDarkMode ? 0.2 : 0.4)),
-            isDarkMode ? ArgieColors.dark : Colors.grey.shade100,
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

@@ -3,11 +3,18 @@ import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swine_care/Route/routes.dart';
 import 'package:swine_care/colors/ThemeManager.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:swine_care/data/api/Api.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await Settings.init(cacheProvider: SharePreferenceCache());
   await ThemeManager.init();
+  //await Api().sendImageToRoboflow();
   runApp(const MyApp());
 }
 
@@ -26,16 +33,16 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _isDarkModeNotifier.value = ThemeManager.isDarkMode;
-    print('App Initialized with Dark Mode: ${ThemeManager.isDarkMode}'); // Debug print
+    // print('App Initialized with Dark Mode: ${ThemeManager.isDarkMode}'); // Debug print
     _router = RouterConfiguration().routes();
   }
 
   void updateTheme(bool value) {
-    print('Updating Theme to: $value'); // Debug print
+    // print('Updating Theme to: $value'); // Debug print
     ThemeManager.toggleDarkMode(value).then((_) {
       setState(() {
         _isDarkModeNotifier.value = value;
-        print('Theme Updated to: $value'); // Debug
+        // print('Theme Updated to: $value'); // Debug
       });
     });
   }
@@ -51,7 +58,7 @@ class _MyAppState extends State<MyApp> {
     return ValueListenableBuilder<bool>(
       valueListenable: _isDarkModeNotifier,
       builder: (context, isDarkMode, child) {
-        print('Building MaterialApp with Theme: $isDarkMode'); // Debug print
+        // print('Building MaterialApp with Theme: $isDarkMode'); // Debug print
         return MaterialApp.router(
           theme: ThemeManager.getTheme(),
           debugShowCheckedModeBanner: false,
