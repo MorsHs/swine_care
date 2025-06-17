@@ -8,12 +8,20 @@ class Api {
 
   //hehehhehe wlay backend
   final String apiKey = "luUCWZECagqz6ebDZ2FU";
-  final String workflowUrl =
-      "https://serverless.roboflow.com/infer/workflows/morshs-bfrdz/small-object-detection-sahi-4";
-  final String imageUrl =
-      "https://raw.githubusercontent.com/ultralytics/yolov5/master/data/images/bus.jpg";
+  String workflowUrl = "";
+/*  final String imageUrl =
+      "https://raw.githubusercontent.com/ultralytics/yolov5/master/data/images/bus.jpg";*/
 
-  Future<List<Prediction>> sendImageToRoboflow(File imageFile) async {
+  Future<List<Prediction>> sendImageToRoboflow(int part,File imageFile) async {
+// 1 is body 2 is ears
+
+  if(part == 1){ // BODY NI
+    workflowUrl = "https://serverless.roboflow.com/infer/workflows/morshs-bfrdz/small-object-detection-sahi-6";
+  }
+  else { // EARS NI
+    workflowUrl = "https://serverless.roboflow.com/infer/workflows/morshs-bfrdz/small-object-detection-sahi-4";
+  }
+
     final bytes = await imageFile.readAsBytes();
     final base64image = base64Encode(bytes);
 
