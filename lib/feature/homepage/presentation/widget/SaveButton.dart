@@ -6,17 +6,22 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/colors/ArgieSizes.dart';
+import 'package:swine_care/data/model/Prediction.dart';
 
 class SaveButton extends StatefulWidget {
   final Map<String, File?> uploadedImages;
   final Map<String, Uint8List?> webImages;
   final Map<String, bool?> symptoms;
+  final List<Prediction>? earsPredictions;
+  final List<Prediction>? skinPredictions;
 
   const SaveButton({
     super.key,
     required this.uploadedImages,
     required this.webImages,
     required this.symptoms,
+    this.earsPredictions,
+    this.skinPredictions,
   });
 
   @override
@@ -124,7 +129,7 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
                     if (message.contains('images'))
                       _buildMissingItemRow(
                         icon: Icons.image,
-                        text: 'Upload images for all pig parts',
+                        text: 'Upload images for ears and skin',
                       ),
                     if (message.contains('symptoms'))
                       _buildMissingItemRow(
@@ -302,6 +307,8 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
                               'uploadedImages': widget.uploadedImages,
                               'webImages': widget.webImages,
                               'symptoms': widget.symptoms,
+                              'earsPredictions': widget.earsPredictions,
+                              'skinPredictions': widget.skinPredictions,
                             });
                           } else {
                             _showValidationDialog(context, missingMessage);
