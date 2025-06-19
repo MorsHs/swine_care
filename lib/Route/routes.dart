@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swine_care/feature/bottomnavigationbar/presentation/ScaffoldWithBottomNavBar.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/BestPracticesPage.dart';
@@ -21,6 +24,8 @@ import 'package:swine_care/feature/settings/presentation/widget/NotificationsPag
 import 'package:swine_care/feature/settings/presentation/widget/PrivacyPolicyPage.dart';
 import 'package:swine_care/feature/settings/presentation/widget/SendFeedbackPage.dart';
 import 'package:swine_care/feature/settings/presentation/widget/TermsAndConditionsPage.dart';
+
+import '../data/model/Prediction.dart';
 
 class RouterConfiguration {
   GoRouter routes() {
@@ -82,23 +87,31 @@ class RouterConfiguration {
 
             StatefulShellBranch(
               routes: [
-                GoRoute(
-                  path: '/homepage',
-                  builder: (context, state) {
-                    return const HomePage();
-                  },
-                  routes: [
-                    GoRoute(
-                      path: 'results',
-                      builder: (context, state) {
-                        final Map<String, dynamic> params = state.extra as Map<String, dynamic>? ?? {};
-                        return ResultsPage(
-                          uploadedImages: params['uploadedImages'] ?? {},
-                          symptoms: params['symptoms'] ?? {},
-                        );
-                      },
+                StatefulShellRoute.indexedStack(
+                  builder: (context, state, navigationShell) => navigationShell,
+                  branches: [
+                    StatefulShellBranch(
+                      routes: [
+                        GoRoute(
+                          path: '/homepage',
+                          builder: (context, state) => const HomePage(),
+                        ),
+                      ],
                     ),
                   ],
+                ),
+                GoRoute(
+                  path: '/results',
+                  builder: (context, state) {
+                    final Map<String, dynamic> params = state.extra as Map<String, dynamic>? ?? {};
+                    return ResultsPage(
+                      uploadedImages: params['uploadedImages'] as Map<String, File?>? ?? {},
+                      webImages: params['webImages'] as Map<String, Uint8List?>? ?? {},
+                      symptoms: params['symptoms'] as Map<String, bool?>? ?? {},
+                      earsPredictions: params['earsPredictions'] as List<Prediction>?,
+                      skinPredictions: params['skinPredictions'] as List<Prediction>?,
+                    );
+                  },
                 ),
               ],
             ),
