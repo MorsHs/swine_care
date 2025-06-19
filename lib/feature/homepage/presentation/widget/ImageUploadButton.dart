@@ -59,9 +59,8 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
                     Row(
                       children: [
                         Icon(
-                            Icons.photo_library,
-                            color: ArgieColors.primary
-                        ),
+                            widget.label.toLowerCase().contains('ears') ? Icons.hearing : Icons.medical_services,
+                            color: ArgieColors.primary),
                         const SizedBox(width: 8),
                         Text(
                           "Pig ${widget.label} Image",
@@ -84,6 +83,7 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
                           widget.webImage!,
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) {
+                            debugPrint('Error displaying web image for ${widget.label}: $error');
                             return Center(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -91,14 +91,12 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
                                   Icon(
                                       Icons.error_outline,
                                       size: 50,
-                                      color: Colors.red.shade400
-                                  ),
+                                      color: Colors.red.shade400),
                                   const SizedBox(height: 16),
                                   Text(
                                     "Failed to load image",
                                     style: GoogleFonts.poppins(
-                                        color: Colors.red.shade400
-                                    ),
+                                        color: Colors.red.shade400),
                                   ),
                                 ],
                               ),
@@ -109,6 +107,7 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
                           widget.image!,
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) {
+                            debugPrint('Error displaying file image for ${widget.label}: $error');
                             return Center(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -116,14 +115,12 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
                                   Icon(
                                       Icons.error_outline,
                                       size: 50,
-                                      color: Colors.red.shade400
-                                  ),
+                                      color: Colors.red.shade400),
                                   const SizedBox(height: 16),
                                   Text(
                                     "Failed to load image",
                                     style: GoogleFonts.poppins(
-                                        color: Colors.red.shade400
-                                    ),
+                                        color: Colors.red.shade400),
                                   ),
                                 ],
                               ),
@@ -228,6 +225,9 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
                   ? _buildImagePreview(size: imageSize, hasImage: true, isDarkMode: isDarkMode)
                   : Stack(
                 children: [
+
+                  //diri mag upload and user og image
+
                   Image.asset(
                     widget.imagePath,
                     width: imageSize,
@@ -249,7 +249,7 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.4),
+                    color: Colors.black.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
@@ -277,7 +277,7 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
                   fontSize: screenWidth < 400 ? 14 : 16,
                   fontWeight: FontWeight.bold,
                   color: !widget.isActive
-                      ? Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.6)
+                      ? Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.5)
                       : (isDarkMode ? Colors.white : Theme.of(context).textTheme.bodyLarge!.color),
                 ),
                 overflow: TextOverflow.ellipsis,
@@ -377,193 +377,192 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
     final double iconSize = screenWidth < 400 ? 24 : 28;
 
     return LayoutBuilder(
-        builder: (context, constraints) {
-          // Ensure the container size doesn't exceed the available width
-          final double availableWidth = constraints.maxWidth;
-          final double actualSize = availableWidth > containerSize ? containerSize : availableWidth - 16;
+      builder: (context, constraints) {
+        // Ensure the container size doesn't exceed the available width
+        final double availableWidth = constraints.maxWidth;
+        final double actualSize = availableWidth > containerSize ? containerSize : availableWidth - 16;
 
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Image section
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Main image container
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: hasImage
-                        ? GestureDetector(
-                      onTap: () => _showEnlargedImage(context),
-                      child: Container(
-                        width: actualSize,
-                        height: actualSize,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: ArgieColors.primary.withValues(alpha: 0.5),
-                            width: 2,
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(14),
-                          child: _buildImagePreview(
-                              size: actualSize,
-                              hasImage: true,
-                              isDarkMode: isDarkMode
-                          ),
-                        ),
-                      ),
-                    )
-                        : Container(
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Image section
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                // Main image container
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: hasImage
+                      ? GestureDetector(
+                    onTap: () => _showEnlargedImage(context),
+                    child: Container(
                       width: actualSize,
                       height: actualSize,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: widget.isActive
-                              ? Colors.blue.withValues(alpha: 0.6)
-                              : (isDarkMode ? Colors.grey.shade700 : Colors.grey.withValues(alpha: 0.3)),
-                          width: widget.isActive ? 2 : 1,
+                          color: ArgieColors.primary.withValues(alpha: 0.5),
+                          width: 2,
                         ),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(14),
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            Image.asset(
-                              widget.imagePath,
-                              fit: BoxFit.cover,
+                        child: _buildImagePreview(
+                            size: actualSize,
+                            hasImage: true,
+                            isDarkMode: isDarkMode),
+                      ),
+                    ),
+                  )
+                      : Container(
+                    width: actualSize,
+                    height: actualSize,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: widget.isActive
+                            ? Colors.blue.withValues(alpha: 0.5)
+                            : (isDarkMode ? Colors.grey.shade700 : Colors.grey.withValues(alpha: 0.3)),
+                        width: widget.isActive ? 2 : 1,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.asset(
+                            widget.imagePath,
+                            fit: BoxFit.cover,
+                          ),
+                          if (!widget.isActive)
+                            Container(
+                              color: Colors.black.withValues(alpha: 0.3),
                             ),
-                            if (!widget.isActive)
-                              Container(
-                                color: Colors.black.withValues(alpha: 0.3),
-                              ),
-                          ],
-                        ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Overlay for upload indicator
+                if (widget.isActive && !hasImage)
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.add_photo_alternate_rounded,
+                            color: Colors.white.withValues(alpha: 0.9),
+                            size: iconSize,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "Upload",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white.withValues(alpha: 0.9),
+                              fontSize: fontSize - 2,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
 
-                  // Overlay for upload indicator
-                  if (widget.isActive && !hasImage)
-                    Positioned.fill(
+                // Remove button for uploaded images
+                if (hasImage && widget.isActive && widget.onRemove != null)
+                  Positioned(
+                    right: -6,
+                    top: -6,
+                    child: GestureDetector(
+                      onTap: widget.onRemove,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.5),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add_photo_alternate_rounded,
-                              color: Colors.white.withValues(alpha: 0.9),
-                              size: iconSize,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "Upload",
-                              style: GoogleFonts.poppins(
-                                color: Colors.white.withValues(alpha: 0.9),
-                                fontSize: fontSize - 2,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.3),
+                              spreadRadius: 1,
+                              blurRadius: 3,
                             ),
                           ],
                         ),
-                      ),
-                    ),
-
-                  // Remove button for uploaded images
-                  if (hasImage && widget.isActive && widget.onRemove != null)
-                    Positioned(
-                      right: -6,
-                      top: -6,
-                      child: GestureDetector(
-                        onTap: widget.onRemove,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
-                                spreadRadius: 1,
-                                blurRadius: 3,
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.all(6),
-                          child: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                            size: 16,
-                          ),
+                        padding: const EdgeInsets.all(6),
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 16,
                         ),
                       ),
                     ),
-                ],
-              ),
+                  ),
+              ],
+            ),
 
-              // Label and status
-              const SizedBox(height: 6),
-              Text(
-                widget.label,
-                style: GoogleFonts.poppins(
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
-                  color: !widget.isActive
-                      ? Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.6)
-                      : (isDarkMode ? Colors.white : Theme.of(context).textTheme.bodyLarge!.color),
-                ),
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
+            // Label and status
+            const SizedBox(height: 6),
+            Text(
+              widget.label,
+              style: GoogleFonts.poppins(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: !widget.isActive
+                    ? Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.6)
+                    : (isDarkMode ? Colors.white : Theme.of(context).textTheme.bodyLarge!.color),
               ),
-              const SizedBox(height: 2),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: hasImage
-                      ? ArgieColors.primary.withValues(alpha: isDarkMode ? 0.3 : 0.2)
-                      : (!widget.isActive
-                      ? (isDarkMode ? Colors.grey.shade800 : Colors.grey.withValues(alpha: 0.1))
-                      : (isDarkMode ? Colors.blue.withValues(alpha: 0.3) : Colors.blue.withValues(alpha: 0.1))),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      hasImage ? Icons.check_circle : Icons.upload,
-                      size: statusFontSize - 2,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 2),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: hasImage
+                    ? ArgieColors.primary.withValues(alpha: isDarkMode ? 0.3 : 0.2)
+                    : (!widget.isActive
+                    ? (isDarkMode ? Colors.grey.shade800 : Colors.grey.withValues(alpha: 0.1))
+                    : (isDarkMode ? Colors.blue.withValues(alpha: 0.3) : Colors.blue.withValues(alpha: 0.1))),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    hasImage ? Icons.check_circle : Icons.upload,
+                    size: statusFontSize - 2,
+                    color: hasImage
+                        ? ArgieColors.primary
+                        : (!widget.isActive
+                        ? (isDarkMode ? Colors.grey.shade400 : Colors.grey)
+                        : Colors.blue),
+                  ),
+                  const SizedBox(width: 2),
+                  Text(
+                    hasImage ? 'Uploaded' : 'Required',
+                    style: GoogleFonts.poppins(
+                      fontSize: statusFontSize - 2,
+                      fontWeight: FontWeight.w500,
                       color: hasImage
                           ? ArgieColors.primary
                           : (!widget.isActive
                           ? (isDarkMode ? Colors.grey.shade400 : Colors.grey)
                           : Colors.blue),
                     ),
-                    const SizedBox(width: 2),
-                    Text(
-                      hasImage ? 'Uploaded' : 'Required',
-                      style: GoogleFonts.poppins(
-                        fontSize: statusFontSize - 2,
-                        fontWeight: FontWeight.w500,
-                        color: hasImage
-                            ? ArgieColors.primary
-                            : (!widget.isActive
-                            ? (isDarkMode ? Colors.grey.shade400 : Colors.grey)
-                            : Colors.blue),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          );
-        }
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -577,6 +576,7 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
       height: size,
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) {
+        debugPrint('Error displaying web image for ${widget.label}: $error');
         return Container(
           width: size,
           height: size,
@@ -595,6 +595,7 @@ class _ImageUploadButtonState extends State<ImageUploadButton> {
       height: size,
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) {
+        debugPrint('Error displaying file image for ${widget.label}: $error');
         return Container(
           width: size,
           height: size,
