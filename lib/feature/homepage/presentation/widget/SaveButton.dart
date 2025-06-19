@@ -165,6 +165,33 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
               ),
             ),
           ),
+          if (message.contains('Ready'))
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                context.push('/results', extra: {
+                  'uploadedImages': widget.uploadedImages,
+                  'webImages': widget.webImages,
+                  'symptoms': widget.symptoms,
+                  'earsPredictions': widget.earsPredictions,
+                  'skinPredictions': widget.skinPredictions,
+                });
+              },
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+              child: Text(
+                'Proceed',
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: ArgieColors.primary,
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -270,13 +297,15 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
               return DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: isComplete ? [
+                  boxShadow: isComplete
+                      ? [
                     BoxShadow(
                       color: ArgieColors.primary.withValues(alpha: shadowStrength),
                       blurRadius: 12,
                       spreadRadius: 2,
                     ),
-                  ] : [],
+                  ]
+                      : [],
                 ),
                 child: Transform.scale(
                   scale: isComplete ? _scaleAnimation.value : 1.0,
@@ -301,19 +330,7 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
                       color: Colors.transparent,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(16),
-                        onTap: () {
-                          if (isComplete) {
-                            context.push('/homepage/results', extra: {
-                              'uploadedImages': widget.uploadedImages,
-                              'webImages': widget.webImages,
-                              'symptoms': widget.symptoms,
-                              'earsPredictions': widget.earsPredictions,
-                              'skinPredictions': widget.skinPredictions,
-                            });
-                          } else {
-                            _showValidationDialog(context, missingMessage);
-                          }
-                        },
+                        onTap: () => _showValidationDialog(context, missingMessage),
                         child: Center(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
