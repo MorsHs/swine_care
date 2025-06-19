@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +11,7 @@ import 'package:swine_care/data/model/Prediction.dart';
 
 class ResultsPage extends StatefulWidget {
   final Map<String, File?> uploadedImages;
+  final Map<String, Uint8List?> webImages;
   final Map<String, bool?> symptoms;
   final List<Prediction>? earsPredictions;
   final List<Prediction>? skinPredictions;
@@ -16,6 +19,7 @@ class ResultsPage extends StatefulWidget {
   const ResultsPage({
     super.key,
     required this.uploadedImages,
+    required this.webImages,
     required this.symptoms,
     this.earsPredictions,
     this.skinPredictions,
@@ -32,26 +36,26 @@ class _ResultsPageState extends State<ResultsPage> {
   void initState() {
     super.initState();
 
-    // for debug na ma print sa console para makita ang confidence scores
-
-    print('--- Results Page Loaded ---');
-    print('Uploaded Images: ${widget.uploadedImages.map((k, v) => MapEntry(k, v?.path ?? 'null'))}');
-    print('Symptoms: ${widget.symptoms}'); // Debug
+    // Debugggggggggggggg rani ya
+    debugPrint('--- Results Page Loaded ---');
+    debugPrint('Uploaded Images: ${widget.uploadedImages.map((k, v) => MapEntry(k, v?.path ?? 'null'))}');
+    debugPrint('Web Images: ${widget.webImages.map((k, v) => MapEntry(k, v != null ? '${v.length} bytes' : 'null'))}');
+    debugPrint('Symptoms: ${widget.symptoms}');
     if (widget.earsPredictions != null && widget.earsPredictions!.isNotEmpty) {
-      print('--- Ears Predictions ---');
+      debugPrint('--- Ears Predictions ---');
       for (var prediction in widget.earsPredictions!) {
-        print('Prediction: ${prediction.prediction}, Confidence Score: ${(prediction.confidence_score * 100).toStringAsFixed(1)}%');
+        debugPrint('Prediction: ${prediction.prediction}, Confidence Score: ${(prediction.confidence_score * 100).toStringAsFixed(1)}%');
       }
     } else {
-      print('No Ears Predictions Available');
+      debugPrint('No Ears Predictions Available');
     }
     if (widget.skinPredictions != null && widget.skinPredictions!.isNotEmpty) {
-      print('--- Skin Predictions ---');
+      debugPrint('--- Skin Predictions ---');
       for (var prediction in widget.skinPredictions!) {
-        print('Prediction: ${prediction.prediction}, Confidence Score: ${(prediction.confidence_score * 100).toStringAsFixed(1)}%');
+        debugPrint('Prediction: ${prediction.prediction}, Confidence Score: ${(prediction.confidence_score * 100).toStringAsFixed(1)}%');
       }
     } else {
-      print('No Skin Predictions Available');
+      debugPrint('No Skin Predictions Available');
     }
 
     Future.delayed(const Duration(seconds: 5), () {
@@ -59,63 +63,72 @@ class _ResultsPageState extends State<ResultsPage> {
     });
   }
 
-  String analyzeASF() {
-    // Image Analysis Score (60% weight)
-    double imageScore = 0;
-    double maxImageScore = 0;
-
-    // Calculate image scores
-    if (widget.earsPredictions != null && widget.earsPredictions!.isNotEmpty) {
-      double earsConfidence = widget.earsPredictions!.first.confidence_score;
-      imageScore += earsConfidence * 30; // 30% for ears
-      maxImageScore += 30;
-      debugPrint('Ears Image Score: ${earsConfidence * 30}');
+  (String likelihood, double finalScore) analyzeASF() {
+    // Helper to get the highest-risk prediction for a part
+    double getPartScore(List<Prediction>? predictions) {
+      if (predictions == null || predictions.isEmpty) return 0.0;
+      // Prioritize 'asf', then 'unhealthy', then 'infected', else healthy
+      Prediction? highestRisk;
+      for (var label in ['asf', 'unhealthy', 'infected']) {
+        highestRisk = predictions
+            .where((p) => p.prediction.toLowerCase().contains(label))
+            .fold<Prediction?>(null, (prev, p) =>
+        (prev == null || p.confidence_score > prev.confidence_score) ? p : prev);
+        if (highestRisk != null) break;
+      }
+      // If no risky label, use the highest-confidence healthy prediction
+      if (highestRisk == null) {
+        highestRisk = predictions.fold<Prediction?>(null, (prev, p) =>
+        (prev == null || p.confidence_score > prev.confidence_score) ? p : prev);
+      }
+      // Only risky labels contribute to risk score
+      if (highestRisk != null &&
+          (highestRisk.prediction.toLowerCase().contains('asf') ||
+              highestRisk.prediction.toLowerCase().contains('unhealthy') ||
+              highestRisk.prediction.toLowerCase().contains('infected'))) {
+        return highestRisk.confidence_score;
+      }
+      return 0.0;
     }
 
-    if (widget.skinPredictions != null && widget.skinPredictions!.isNotEmpty) {
-      double skinConfidence = widget.skinPredictions!.first.confidence_score;
-      imageScore += skinConfidence * 30; // 30% for skin
-      maxImageScore += 30;
-      debugPrint('Skin Image Score: ${skinConfidence * 30}');
-    }
+    // Ears (30%)
+    double earsScore = getPartScore(widget.earsPredictions) * 30;
+    // Skin (30%)
+    double skinScore = getPartScore(widget.skinPredictions) * 30;
+    // Image total (60%)
+    double imageScore = earsScore + skinScore;
 
-    // Normalize image score to percentage
-    double imagePercentage = maxImageScore > 0 ? (imageScore / maxImageScore) * 100 : 0;
-    debugPrint('Image Analysis Percentage: ${imagePercentage.toStringAsFixed(1)}%');
-
-    // Symptom Score (40% weight)
+    // Symptoms (40%)
     int symptomScore = 0;
     int totalSymptoms = widget.symptoms.length;
-    int positiveSymptoms = 0;
-
-    // Calculate symptom scores
-    widget.symptoms.forEach((symptom, answer) {
-      if (answer == true) {
-        symptomScore += 1;
-        positiveSymptoms++;
-        debugPrint('Symptom $symptom: true, Score: 1');
-      } else {
-        debugPrint('Symptom $symptom: ${answer ?? 'null'}, Score: 0');
-      }
+    widget.symptoms.forEach((_, answer) {
+      if (answer == true) symptomScore += 1;
     });
+    double symptomPercentage = totalSymptoms > 0 ? (symptomScore / totalSymptoms) * 40 : 0;
 
-    // Normalize symptom score to percentage (40% total weight)
-    double symptomPercentage = (symptomScore / totalSymptoms) * 40;
-    debugPrint('Symptom Score: $symptomScore out of $totalSymptoms');
-    debugPrint('Symptom Percentage: ${symptomPercentage.toStringAsFixed(1)}%');
+    // Final weighted score
+    double finalScore = imageScore + symptomPercentage;
 
-    // Calculate final weighted score
-    double finalScore = imagePercentage + symptomPercentage;
-    debugPrint('Final Weighted Score: ${finalScore.toStringAsFixed(1)}%');
-
-    // Determine risk level based on final score
-    if (finalScore >= 70 || (imagePercentage >= 50 && positiveSymptoms >= 3)) {
-      return "Highly Likely";
-    } else if (finalScore >= 40 || (imagePercentage >= 30 && positiveSymptoms >= 2)) {
-      return "Medium Likelihood";
+    // Risk thresholds
+    String likelihood;
+    if (finalScore >= 80) {
+      likelihood = "Highly Risk";
+    } else if (finalScore >= 55) {
+      likelihood = "Medium Risk";
     } else {
-      return "Low Risk";
+      likelihood = "Low Risk";
     }
+
+    // Debug output
+    debugPrint('Ears Score: $earsScore/30');
+    debugPrint('Skin Score: $skinScore/30');
+    debugPrint('Image Score: $imageScore/60');
+    debugPrint('Symptom Score: $symptomScore/$totalSymptoms');
+    debugPrint('Symptom Percentage: $symptomPercentage/40');
+    debugPrint('Final Weighted Score: $finalScore/100');
+    debugPrint('Risk Level: $likelihood');
+
+    return (likelihood, finalScore);
   }
 
   List<String> getRecommendations(String likelihood) {
@@ -177,6 +190,116 @@ class _ResultsPageState extends State<ResultsPage> {
         ),
       );
     }
+    // Find the most relevant prediction
+    Prediction? displayPrediction;
+    for (var label in ['asf', 'unhealthy', 'infected']) {
+      displayPrediction = predictions
+          .where((p) => p.prediction.toLowerCase().contains(label))
+          .fold<Prediction?>(null, (prev, p) =>
+      (prev == null || p.confidence_score > prev.confidence_score) ? p : prev);
+      if (displayPrediction != null) break;
+    }
+    // If all healthy, show the highest-confidence healthy
+    displayPrediction ??= predictions.fold<Prediction?>(null, (prev, p) =>
+    (prev == null || p.confidence_score > prev.confidence_score) ? p : prev);
+
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: isDarkMode ? Colors.grey[800] : Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
+        child: Row(
+          children: [
+            Icon(
+              title.toLowerCase().contains('ears') ? Icons.hearing : Icons.medical_services,
+              color: ArgieColors.primary,
+              size: 24,
+            ),
+            const SizedBox(width: ArgieSizes.spaceBtwWidgets),
+            Expanded(
+              child: Text(
+                "${displayPrediction!.prediction}, Confidence: ${(displayPrediction.confidence_score * 100).toStringAsFixed(1)}%",
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  color: isDarkMode ? Colors.white : Colors.black87,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSymptomsSummary(bool isDarkMode) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: isDarkMode ? Colors.grey[800] : Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.checklist,
+                  color: ArgieColors.primary,
+                  size: 24,
+                ),
+                const SizedBox(width: ArgieSizes.spaceBtwWidgets),
+                Text(
+                  "Symptoms Reported",
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: isDarkMode ? Colors.white70 : Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: ArgieSizes.spaceBtwItems),
+            ...widget.symptoms.entries.map((entry) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      entry.key,
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        color: isDarkMode ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    entry.value == true
+                        ? "Yes"
+                        : entry.value == false
+                        ? "No"
+                        : "Not Answered",
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: entry.value == true
+                          ? Colors.red
+                          : entry.value == false
+                          ? Colors.green
+                          : Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImagePreview(String title, File? image, Uint8List? webImage, bool isDarkMode) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -195,7 +318,7 @@ class _ResultsPageState extends State<ResultsPage> {
                 ),
                 const SizedBox(width: ArgieSizes.spaceBtwWidgets),
                 Text(
-                  "$title Predictions",
+                  "$title Image",
                   style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -205,34 +328,33 @@ class _ResultsPageState extends State<ResultsPage> {
               ],
             ),
             const SizedBox(height: ArgieSizes.spaceBtwItems),
-            ...predictions.map((p) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      p.prediction,
-                      style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: isDarkMode ? Colors.white : Colors.black87,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "Confidence: ${(p.confidence_score * 100).toStringAsFixed(1)}%",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: p.confidence_score > 0.7
-                          ? Colors.red
-                          : p.confidence_score > 0.4
-                          ? Colors.orange
-                          : Colors.green,
-                    ),
-                  ),
-                ],
+            if (image != null || webImage != null)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: kIsWeb && webImage != null
+                    ? Image.memory(
+                  webImage,
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                )
+                    : image != null
+                    ? Image.file(
+                  image,
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                )
+                    : Container(),
+              )
+            else
+              Text(
+                "No $title image uploaded",
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  color: isDarkMode ? Colors.white70 : Colors.black87,
+                ),
               ),
-            )),
           ],
         ),
       ),
@@ -241,7 +363,7 @@ class _ResultsPageState extends State<ResultsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String likelihood = analyzeASF();
+    final (String likelihood, double finalScore) = analyzeASF();
     final List<String> recommendations = getRecommendations(likelihood);
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -287,7 +409,22 @@ class _ResultsPageState extends State<ResultsPage> {
                   ),
                   const SizedBox(height: ArgieSizes.spaceBtwSections),
 
-                  // Confidence Scores Section
+                  // Image Previews
+                  Text(
+                    "Uploaded Images",
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: isDarkMode ? Colors.white70 : Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: ArgieSizes.spaceBtwItems),
+                  _buildImagePreview("Ears", widget.uploadedImages['Ears'], widget.webImages['Ears'], isDarkMode),
+                  const SizedBox(height: ArgieSizes.spaceBtwItems),
+                  _buildImagePreview("Skin", widget.uploadedImages['Skin'], widget.webImages['Skin'], isDarkMode),
+                  const SizedBox(height: ArgieSizes.spaceBtwSections),
+
+                  // Detection Results
                   Text(
                     "Detection Results",
                     style: GoogleFonts.poppins(
@@ -300,6 +437,19 @@ class _ResultsPageState extends State<ResultsPage> {
                   _buildPredictionsList("Ears", widget.earsPredictions, isDarkMode),
                   const SizedBox(height: ArgieSizes.spaceBtwItems),
                   _buildPredictionsList("Skin", widget.skinPredictions, isDarkMode),
+                  const SizedBox(height: ArgieSizes.spaceBtwSections),
+
+                  // Symptoms Summary
+                  Text(
+                    "Symptoms Summary",
+                    style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: isDarkMode ? Colors.white70 : Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: ArgieSizes.spaceBtwItems),
+                  _buildSymptomsSummary(isDarkMode),
                   const SizedBox(height: ArgieSizes.spaceBtwSections),
 
                   // ASF Likelihood Card
@@ -351,18 +501,42 @@ class _ResultsPageState extends State<ResultsPage> {
                                     : Colors.green.shade300,
                               ),
                             ),
-                            child: Text(
-                              likelihood,
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: likelihood == "Highly Likely"
-                                    ? Colors.red.shade700
-                                    : likelihood == "Medium Likelihood"
-                                    ? Colors.orange.shade700
-                                    : Colors.green.shade700,
-                              ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  likelihood,
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: likelihood == "Highly Likely"
+                                        ? Colors.red.shade700
+                                        : likelihood == "Medium Likelihood"
+                                        ? Colors.orange.shade700
+                                        : Colors.green.shade700,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Final Weighted Score: ${finalScore.toStringAsFixed(1)}%',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: isDarkMode ? Colors.white70 : Colors.black87,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '(60% Image Detection, 40% Symptoms)',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -454,8 +628,10 @@ class _ResultsPageState extends State<ResultsPage> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
+
             ),
           ),
         ],
