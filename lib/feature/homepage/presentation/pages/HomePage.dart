@@ -61,17 +61,22 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     'Skin': 'assets/images/pigparts/SkinIconFinal.jpg',
   };
 
-  // Debug strings for API responses
+  // Debuggg for API responses kay wa nako kasabot
   String? _earsDebug;
   String? _skinDebug;
 
   Future<void> _analyzeImages() async {
     debugPrint('\n=== Starting Image Analysis ===');
-    debugPrint('Ears image state: ${selectedImageEars != null ? 'Present' : 'Missing'}');
-    debugPrint('Skin image state: ${selectedImageSkin != null ? 'Present' : 'Missing'}');
+    debugPrint('Ears image state: ${selectedImageEars != null ? 'Present (${selectedImageEars!.path})' : 'Missing'}');
+    debugPrint('Skin image state: ${selectedImageSkin != null ? 'Present (${selectedImageSkin!.path})' : 'Missing'}');
+    debugPrint('Web Ears image state: ${webImageEars != null ? 'Present (${webImageEars!.length} bytes)' : 'Missing'}');
+    debugPrint('Web Skin image state: ${webImageSkin != null ? 'Present (${webImageSkin!.length} bytes)' : 'Missing'}');
 
-    if (selectedImageEars == null && selectedImageSkin == null) {
+    if ((selectedImageEars == null && webImageEars == null) && (selectedImageSkin == null && webImageSkin == null)) {
       debugPrint('ERROR: No images to analyze - both images are null');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No images selected for analysis')),
+      );
       return;
     }
 
@@ -85,17 +90,17 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
     try {
       // Analyze ears image if present
-      if (selectedImageEars != null) {
+      if (selectedImageEars != null || webImageEars != null) {
         debugPrint('\n=== Analyzing Ears Image ===');
-        debugPrint('Ears image path: ${selectedImageEars!.path}');
-        debugPrint('Ears image exists: ${selectedImageEars!.existsSync()}');
-        debugPrint('Ears image size: ${await selectedImageEars!.length()} bytes');
-
         try {
-          final predictions = await _api.sendImageToRoboflow(2, selectedImageEars!);
+          final predictions = await _api.sendImageToRoboflow(
+            2,
+            imageFile: selectedImageEars,
+            webImage: webImageEars,
+          );
           debugPrint('Raw API Response for Ears: $predictions');
 
-          if (predictions != null && predictions.isNotEmpty) {
+          if (predictions.isNotEmpty) {
             setState(() {
               _earsPredictions = predictions;
               double totalConfidence = 0;
@@ -110,9 +115,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               }
 
               double accuracy = validPredictions > 0 ? (totalConfidence / validPredictions) * 100 : 0;
-              _earsDebug = predictions.map((p) =>
-              '${p.prediction}: ${(p.confidence_score * 100).toStringAsFixed(1)}%'
-              ).join(', ') + ' (Accuracy: ${accuracy.toStringAsFixed(1)}%)';
+              _earsDebug = predictions
+                  .map((p) => '${p.prediction}: ${(p.confidence_score * 100).toStringAsFixed(1)}%')
+                  .join(', ') +
+                  ' (Accuracy: ${accuracy.toStringAsFixed(1)}%)';
             });
             debugPrint('Ears Analysis Results: $_earsDebug');
           } else {
@@ -135,17 +141,17 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       }
 
       // Analyze skin image if present
-      if (selectedImageSkin != null) {
+      if (selectedImageSkin != null || webImageSkin != null) {
         debugPrint('\n=== Analyzing Skin Image ===');
-        debugPrint('Skin image path: ${selectedImageSkin!.path}');
-        debugPrint('Skin image exists: ${selectedImageSkin!.existsSync()}');
-        debugPrint('Skin image size: ${await selectedImageSkin!.length()} bytes');
-
         try {
-          final predictions = await _api.sendImageToRoboflow(1, selectedImageSkin!);
+          final predictions = await _api.sendImageToRoboflow(
+            1,
+            imageFile: selectedImageSkin,
+            webImage: webImageSkin,
+          );
           debugPrint('Raw API Response for Skin: $predictions');
 
-          if (predictions != null && predictions.isNotEmpty) {
+          if (predictions.isNotEmpty) {
             setState(() {
               _skinPredictions = predictions;
               double totalConfidence = 0;
@@ -160,9 +166,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               }
 
               double accuracy = validPredictions > 0 ? (totalConfidence / validPredictions) * 100 : 0;
-              _skinDebug = predictions.map((p) =>
-              '${p.prediction}: ${(p.confidence_score * 100).toStringAsFixed(1)}%'
-              ).join(', ') + ' (Accuracy: ${accuracy.toStringAsFixed(1)}%)';
+              _skinDebug = predictions
+                  .map((p) => '${p.prediction}: ${(p.confidence_score * 100).toStringAsFixed(1)}%')
+                  .join(', ') +
+                  ' (Accuracy: ${accuracy.toStringAsFixed(1)}%)';
             });
             debugPrint('Skin Analysis Results: $_skinDebug');
           } else {
@@ -183,47 +190,20 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           });
         }
       }
-
-      _updateSymptomsBasedOnPredictions();
     } catch (e) {
       debugPrint('Error in image analysis: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error analyzing images: $e')),
+        SnackBar(
+          content: Text('Failed to analyze images. Please check your internet connection.'),
+          action: SnackBarAction(
+            label: 'Retry',
+            onPressed: () => _analyzeImages(),
+          ),
+        ),
       );
     } finally {
       setState(() => _isAnalyzing = false);
     }
-  }
-
-  void _updateSymptomsBasedOnPredictions() {
-    if (_earsPredictions == null && _skinPredictions == null) return;
-
-    setState(() {
-      // Reset all symptoms
-      _answers.updateAll((key, value) => false);
-
-      // Check for ASF predictions in ears
-      if (_earsPredictions != null && _earsPredictions!.isNotEmpty) {
-        for (var prediction in _earsPredictions!) {
-          if (prediction.prediction.toLowerCase().contains('asf')) {
-            _answers["High temperature?"] = true;
-            _answers["Loss of appetite?"] = true;
-            break;
-          }
-        }
-      }
-
-      // Check for ASF predictions in skin
-      if (_skinPredictions != null && _skinPredictions!.isNotEmpty) {
-        for (var prediction in _skinPredictions!) {
-          if (prediction.prediction.toLowerCase().contains('asf')) {
-            _answers["Rapid breathing?"] = true;
-            _answers["Clumsy movement?"] = true;
-            break;
-          }
-        }
-      }
-    });
   }
 
   void _updateImage(String part, File? image, Uint8List? webImage) {
@@ -246,6 +226,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           _earsPredictions = null;
           _earsDebug = null;
           debugPrint('Updated Ears Image: ${image?.path ?? webImage?.length} bytes');
+          debugPrint('After setState - Ears Image: ${selectedImageEars?.path ?? webImageEars?.length}');
           break;
         case 'Skin':
           selectedImageSkin = image;
@@ -253,6 +234,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           _skinPredictions = null;
           _skinDebug = null;
           debugPrint('Updated Skin Image: ${image?.path ?? webImage?.length} bytes');
+          debugPrint('After setState - Skin Image: ${selectedImageSkin?.path ?? webImageSkin?.length}');
           break;
       }
     });
@@ -262,13 +244,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     debugPrint('Ears image stored: ${selectedImageEars != null || webImageEars != null}');
     debugPrint('Skin image stored: ${selectedImageSkin != null || webImageSkin != null}');
 
-    // Automatically analyze images when both ears and skin are uploaded
+    // Delay analysis to ensure state is updated
     if ((selectedImageEars != null || webImageEars != null) &&
         (selectedImageSkin != null || webImageSkin != null)) {
-      debugPrint('\n=== Both images uploaded, triggering analysis ===');
+      debugPrint('\n=== Both images uploaded, triggering analysis after delay ===');
       debugPrint('Ears image: ${selectedImageEars?.path ?? webImageEars?.length} bytes');
       debugPrint('Skin image: ${selectedImageSkin?.path ?? webImageSkin?.length} bytes');
-      _analyzeImages();
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (mounted) _analyzeImages();
+      });
     } else {
       debugPrint('\n=== Waiting for both images ===');
       debugPrint('Ears image: ${selectedImageEars != null || webImageEars != null ? 'Present' : 'Missing'}');
@@ -439,44 +423,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
                         // Save button
                         SaveButton(
-                          uploadedImages: {
-                            'Ears': selectedImageEars,
-                            'Skin': selectedImageSkin,
-                          },
-                          webImages: {
-                            'Ears': webImageEars,
-                            'Skin': webImageSkin,
-                          },
+                          uploadedImages: selectedImages,
+                          webImages: webImages,
                           symptoms: _answers,
                           earsPredictions: _earsPredictions,
                           skinPredictions: _skinPredictions,
                         ),
-
-                        // Debug Panel
-                        if ((_earsDebug != null && _earsDebug!.isNotEmpty) || (_skinDebug != null && _skinDebug!.isNotEmpty))
-                          Card(
-                            color: Colors.black.withValues(alpha: 0.8),
-                            margin: const EdgeInsets.only(top: 24),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('DEBUG: API Responses', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                                  if (_earsDebug != null && _earsDebug!.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text('Ears: $_earsDebug', style: const TextStyle(color: Colors.white)),
-                                    ),
-                                  if (_skinDebug != null && _skinDebug!.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text('Skin: $_skinDebug', style: const TextStyle(color: Colors.white)),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
                       ],
                     ),
                   ),
