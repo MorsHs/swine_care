@@ -2,18 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
-import 'package:swine_care/feature/historypage/presentation/widgets/DiagnosisRecord.dart';
 
 class DeleteRecordDialog extends StatelessWidget {
-  final String recordId;
-  final List<DiagnosisRecord> records;
-  final VoidCallback onRecordDeleted;
+  final VoidCallback onConfirm;
 
   const DeleteRecordDialog({
     super.key,
-    required this.recordId,
-    required this.records,
-    required this.onRecordDeleted,
+    required this.onConfirm,
   });
 
   @override
@@ -49,7 +44,7 @@ class DeleteRecordDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop(); // Close dialog
+            Navigator.of(context).pop();
           },
           child: Text(
             'Cancel',
@@ -62,8 +57,8 @@ class DeleteRecordDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            records.removeWhere((record) => record.id == recordId);
-            Navigator.of(context).pop(); // Close dialog
+            onConfirm();
+            Navigator.of(context).pop(); // Close the dialog
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
@@ -78,7 +73,6 @@ class DeleteRecordDialog extends StatelessWidget {
                 margin: const EdgeInsets.all(16),
               ),
             );
-            onRecordDeleted(); // Notify the parent to update state
           },
           child: Text(
             'Delete',
