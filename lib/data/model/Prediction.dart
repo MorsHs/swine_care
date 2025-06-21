@@ -33,4 +33,38 @@ class Prediction {
         detection_id: prediction['detection_id'],
         parent_id: prediction['parent_id']);
   }
+  // Convert Prediction object to a Map for Firestore
+  Map<String, dynamic> toFirestore() {
+    return {
+      'width': width,
+      'height': height,
+      'x': x,
+      'y': y,
+      'confidence_score': confidence_score,
+      'class_id': class_id,
+      'prediction': prediction,
+      'detection_id': detection_id,
+      'parent_id': parent_id,
+    };
+  }
+  // Create a Prediction object from a Firestore document
+  factory Prediction.fromFirestore(Map<String, dynamic> firestore) {
+    return Prediction(
+      width: (firestore['width'] as num).toDouble(),
+      height: (firestore['height'] as num).toDouble(),
+      x: (firestore['x'] as num).toDouble(),
+      y: (firestore['y'] as num).toDouble(),
+      confidence_score: (firestore['confidence_score'] as num).toDouble(),
+      class_id: (firestore['class_id'] as num).toDouble(),
+      prediction: firestore['prediction'] as String,
+      detection_id: firestore['detection_id'] as String,
+      parent_id: firestore['parent_id'] as String,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Prediction(prediction: $prediction, confidence: ${(confidence_score * 100).toStringAsFixed(1)}%, location: ($x, $y), size: ${width}x$height)';
+  }
+
 }

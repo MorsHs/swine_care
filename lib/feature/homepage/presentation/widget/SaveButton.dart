@@ -28,7 +28,8 @@ class SaveButton extends StatefulWidget {
   State<SaveButton> createState() => _SaveButtonState();
 }
 
-class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateMixin {
+class _SaveButtonState extends State<SaveButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _glowAnimation;
@@ -60,7 +61,9 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
     bool imagesComplete = kIsWeb
         ? widget.webImages.values.every((image) => image != null)
         : widget.uploadedImages.values.every((image) => image != null);
+
     bool symptomsComplete = widget.symptoms.values.every((symptom) => symptom != null);
+
     if (!imagesComplete && !symptomsComplete) {
       return (false, 'Missing images and symptoms');
     } else if (!imagesComplete) {
@@ -81,7 +84,9 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
         title: Row(
           children: [
             Icon(
-              message.contains('Ready') ? Icons.check_circle : Icons.warning_amber_rounded,
+              message.contains('Ready')
+                  ? Icons.check_circle
+                  : Icons.warning_amber_rounded,
               color: message.contains('Ready') ? Colors.green : Colors.orange,
               size: 24,
             ),
@@ -169,10 +174,16 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+
+                // Convert nullable map to non-nullable map for analysis.
+                // An unanswered symptom (null) is treated as 'false'.
+                final Map<String, bool> symptomsForAnalysis =
+                widget.symptoms.map((key, value) => MapEntry(key, value ?? false));
+
                 context.push('/results', extra: {
                   'uploadedImages': widget.uploadedImages,
                   'webImages': widget.webImages,
-                  'symptoms': widget.symptoms,
+                  'symptoms': symptomsForAnalysis,
                   'earsPredictions': widget.earsPredictions,
                   'skinPredictions': widget.skinPredictions,
                 });
@@ -181,7 +192,8 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               ),
               child: Text(
                 'Proceed',
@@ -212,189 +224,6 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
                 color: Colors.orange.shade800,
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final (bool isComplete, String missingMessage) = _checkDataCompleteness();
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    // Calculate upload progress
-    int uploadedCount = 0;
-    if (kIsWeb) {
-      for (var webImage in widget.webImages.values) {
-        if (webImage != null) uploadedCount++;
-      }
-    } else {
-      for (var image in widget.uploadedImages.values) {
-        if (image != null) uploadedCount++;
-      }
-    }
-
-    // Calculate symptoms progress
-    int answeredSymptoms = 0;
-    for (var symptom in widget.symptoms.values) {
-      if (symptom != null) answeredSymptoms++;
-    }
-
-    final double uploadProgress = uploadedCount / widget.uploadedImages.length;
-    final double symptomsProgress = answeredSymptoms / widget.symptoms.length;
-    final double totalProgress = (uploadProgress + symptomsProgress) / 2;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: ArgieSizes.paddingDefault,
-        vertical: ArgieSizes.spaceBtwWidgets,
-      ),
-      child: Column(
-        children: [
-          // Progress indicators
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _buildProgressIndicator(
-                    label: 'Images',
-                    progress: uploadProgress,
-                    icon: Icons.photo_library,
-                    color: ArgieColors.primary,
-                    isDarkMode: isDarkMode,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildProgressIndicator(
-                    label: 'Symptoms',
-                    progress: symptomsProgress,
-                    icon: Icons.medical_services,
-                    color: Colors.orange,
-                    isDarkMode: isDarkMode,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Save button
-          AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              final Color backgroundColor = isComplete
-                  ? ArgieColors.primary
-                  : isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200;
-
-              final Color textColor = isComplete
-                  ? Colors.white
-                  : isDarkMode ? Colors.white : Colors.black87;
-
-              final double shadowStrength = isComplete ? _glowAnimation.value : 0.0;
-
-              return DecoratedBox(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: isComplete
-                      ? [
-                    BoxShadow(
-                      color: ArgieColors.primary.withValues(alpha: shadowStrength),
-                      blurRadius: 12,
-                      spreadRadius: 2,
-                    ),
-                  ]
-                      : [],
-                ),
-                child: Transform.scale(
-                  scale: isComplete ? _scaleAnimation.value : 1.0,
-                  child: Container(
-                    height: 56,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: isComplete
-                          ? LinearGradient(
-                        colors: [
-                          ArgieColors.primary,
-                          ArgieColors.secondary,
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      )
-                          : null,
-                      color: isComplete ? null : backgroundColor,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(16),
-                        onTap: () => _showValidationDialog(context, missingMessage),
-                        child: Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (isComplete) ...[
-                                Icon(
-                                  Icons.analytics,
-                                  color: textColor,
-                                  size: 24,
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  'Analyze Results',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor,
-                                  ),
-                                ),
-                              ] else ...[
-                                Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: CircularProgressIndicator(
-                                        value: totalProgress,
-                                        strokeWidth: 2,
-                                        backgroundColor: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade300,
-                                        valueColor: AlwaysStoppedAnimation(
-                                          isDarkMode ? Colors.grey.shade400 : Colors.grey.shade500,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      '${(totalProgress * 100).toInt()}%',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 8,
-                                        fontWeight: FontWeight.bold,
-                                        color: textColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  'Complete Required Data',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: textColor,
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
           ),
         ],
       ),
@@ -461,6 +290,141 @@ class _SaveButtonState extends State<SaveButton> with SingleTickerProviderStateM
           ),
         ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final (bool isComplete, String missingMessage) = _checkDataCompleteness();
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    // Calculate upload progress
+    int uploadedCount = 0;
+    if (kIsWeb) {
+      for (var webImage in widget.webImages.values) {
+        if (webImage != null) uploadedCount++;
+      }
+    } else {
+      for (var image in widget.uploadedImages.values) {
+        if (image != null) uploadedCount++;
+      }
+    }
+
+    // Calculate symptoms progress
+    int answeredSymptoms = 0;
+    for (var symptom in widget.symptoms.values) {
+      if (symptom != null) answeredSymptoms++;
+    }
+
+    final double uploadProgress = uploadedCount / widget.uploadedImages.length;
+    final double symptomsProgress = widget.symptoms.isNotEmpty
+        ? answeredSymptoms / widget.symptoms.length
+        : 0.0;
+    final double totalProgress = (uploadProgress + symptomsProgress) / 2;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: ArgieSizes.paddingDefault,
+        vertical: ArgieSizes.spaceBtwWidgets,
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: _buildProgressIndicator(
+                    label: 'Images',
+                    progress: uploadProgress,
+                    icon: Icons.photo_library,
+                    color: ArgieColors.primary,
+                    isDarkMode: isDarkMode,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildProgressIndicator(
+                    label: 'Symptoms',
+                    progress: symptomsProgress,
+                    icon: Icons.medical_services,
+                    color: Colors.orange,
+                    isDarkMode: isDarkMode,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: isComplete ? _scaleAnimation.value : 1.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: isComplete
+                        ? [
+                      BoxShadow(
+                        color: ArgieColors.primary
+                            .withValues(alpha: _glowAnimation.value),
+                        blurRadius: 12.0,
+                        spreadRadius: 2.0,
+                      ),
+                    ]
+                        : [],
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () => _showValidationDialog(context, missingMessage),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: ArgieSizes.paddingDefault,
+                        vertical: ArgieSizes.paddingDefault,
+                      ),
+                      backgroundColor: isComplete
+                          ? ArgieColors.primary
+                          : isDarkMode
+                          ? Colors.grey.shade700
+                          : Colors.grey.shade300,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          isComplete ? Icons.check_circle : Icons.hourglass_empty,
+                          color: isComplete
+                              ? Colors.white
+                              : isDarkMode
+                              ? Colors.white70
+                              : Colors.black54,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          isComplete
+                              ? 'Analyze Pig Health'
+                              : 'Complete All Steps',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: isComplete
+                                ? Colors.white
+                                : isDarkMode
+                                ? Colors.white70
+                                : Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
