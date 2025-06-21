@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:swine_care/data/model/Prediction.dart';
 import 'package:swine_care/feature/historypage/presentation/widgets/DiagnosisRecord.dart';
 
-class HistoryCard extends StatelessWidget {
+class HistoryCard extends StatefulWidget {
   final DiagnosisRecord record;
   final bool isDarkMode;
   final Function(String) onDelete;
@@ -16,170 +17,216 @@ class HistoryCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    // Determine colors based on diagnosis
-    final Color diagnosisBgColor;
-    final Color diagnosisBorderColor;
-    final Color diagnosisTextColor;
+  State<HistoryCard> createState() => _HistoryCardState();
+}
 
-    switch (record.diagnosis) {
-      case 'Highly Likely':
-        diagnosisBgColor = Colors.red.shade100;
-        diagnosisBorderColor = Colors.red.shade300;
-        diagnosisTextColor = Colors.red.shade700;
+class _HistoryCardState extends State<HistoryCard> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color cardColor;
+    final Color textColor;
+
+    switch (widget.record.diagnosis) {
+      case 'Highly Risk':
+        cardColor = widget.isDarkMode ? Colors.red.shade900.withValues(alpha: 0.5) : Colors.red.shade100;
+        textColor = widget.isDarkMode ? Colors.red.shade100 : Colors.red.shade800;
         break;
-      case 'Medium Likelihood':
-        diagnosisBgColor = Colors.orange.shade100;
-        diagnosisBorderColor = Colors.orange.shade300;
-        diagnosisTextColor = Colors.orange.shade700;
+      case 'Medium Risk':
+        cardColor = widget.isDarkMode ? Colors.orange.shade900.withValues(alpha: 0.5) : Colors.orange.shade100;
+        textColor = widget.isDarkMode ? Colors.orange.shade100 : Colors.orange.shade800;
         break;
       default: // Low Risk
-        diagnosisBgColor = Colors.green.shade100;
-        diagnosisBorderColor = Colors.green.shade300;
-        diagnosisTextColor = Colors.green.shade700;
+        cardColor = widget.isDarkMode ? Colors.green.shade900.withValues(alpha: 0.5) : Colors.green.shade100;
+        textColor = widget.isDarkMode ? Colors.green.shade100 : Colors.green.shade800;
     }
 
     return Card(
-      elevation: 3,
+      elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(
-          color: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade200,
-          width: 1,
+        side: BorderSide(color: cardColor, width: 1),
+      ),
+      color: widget.isDarkMode ? Colors.grey.shade800 : Colors.white,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Column(
+          children: [
+            _buildSummary(context, cardColor, textColor),
+            if (_isExpanded)
+              _buildDetails(context),
+          ],
         ),
       ),
-      color: isDarkMode ? Colors.grey.shade800 : Colors.white,
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+
+  Widget _buildSummary(BuildContext context, Color cardColor, Color textColor) {
+    return InkWell(
+      onTap: () => setState(() => _isExpanded = !_isExpanded),
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        color: cardColor.withValues(alpha: 0.3),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: record.status == 'Resolved'
-                            ? Colors.green.shade600
-                            : record.status == 'Under Observation'
-                            ? Colors.orange.shade600
-                            : Colors.blue.shade600,
-                        border: Border.all(
-                          color: isDarkMode ? Colors.grey.shade700 : Colors.white,
-                          width: 2,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'Pig ID: ${record.pigId}',
+                Expanded(
+                  child: Row(
+                    children: [
+                      Icon(Iconsax.health, color: textColor, size: 20),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Pig ID: ${widget.record.pigId}',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: isDarkMode ? Colors.white70 : Colors.black87,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: diagnosisBgColor,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: diagnosisBorderColor),
-                  ),
-                  child: Text(
-                    record.diagnosis,
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: diagnosisTextColor,
-                    ),
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    ],
                   ),
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(
-                      Iconsax.calendar,
-                      size: 16,
-                      color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
-                    ),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        record.date,
+                Icon(
+                  _isExpanded ? Iconsax.arrow_up_2 : Iconsax.arrow_down_2,
+                  color: textColor,
+                  size: 20,
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Diagnostic Result',
+                        style: GoogleFonts.poppins(fontSize: 12, color: textColor.withValues(alpha: 0.8)),
+                      ),
+                      Text(
+                        widget.record.diagnosis,
                         style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: record.status == 'Resolved'
-                        ? Colors.green.shade50
-                        : record.status == 'Under Observation'
-                        ? Colors.orange.shade50
-                        : Colors.blue.shade50,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: record.status == 'Resolved'
-                          ? Colors.green.shade200
-                          : record.status == 'Under Observation'
-                          ? Colors.orange.shade200
-                          : Colors.blue.shade200,
-                    ),
+                    ],
                   ),
-                  child: Text(
-                    record.status,
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: record.status == 'Resolved'
-                          ? Colors.green.shade800
-                          : record.status == 'Under Observation'
-                          ? Colors.orange.shade800
-                          : Colors.blue.shade800,
-                    ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Confidence Score',
+                        style: GoogleFonts.poppins(fontSize: 12, color: textColor.withValues(alpha: 0.8)),
+                      ),
+                      Text(
+                        '${widget.record.finalScore.toStringAsFixed(1)}%',
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-          Positioned(
-            top: 8,
-            right: 8,
-            child: IconButton(
-              icon: Icon(
-                Iconsax.trash,
-                color: Colors.red.shade600,
-                size: 20,
-              ),
-              onPressed: () {
-                onDelete(record.id);
-              },
-              tooltip: 'Delete Record',
-            ),
-          ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.record.date,
+                  style: GoogleFonts.poppins(fontSize: 12, color: textColor.withValues(alpha: 0.8)),
+                ),
+                IconButton(
+                  icon: Icon(Iconsax.trash, color: Colors.red.shade400, size: 20),
+                  onPressed: () => widget.onDelete(widget.record.id),
+                  tooltip: 'Delete Record',
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDetails(BuildContext context) {
+    Color detailsTextColor = widget.isDarkMode ? Colors.white70 : Colors.black87;
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader('Symptoms Checklist', Iconsax.clipboard_text, detailsTextColor),
+          ...widget.record.symptoms.entries.map((entry) => _buildDetailItem(entry.key, entry.value ? 'Yes' : 'No', detailsTextColor)),
+          const SizedBox(height: 16),
+          _buildSectionHeader('Image Analysis', Iconsax.camera, detailsTextColor),
+          _buildPredictionItem('Ears', widget.record.earsPredictions, detailsTextColor),
+          _buildPredictionItem('Skin', widget.record.skinPredictions, detailsTextColor),
+          const SizedBox(height: 16),
+          _buildSectionHeader('Recommendations', Iconsax.health, detailsTextColor),
+          ...widget.record.recommendations.map((rec) => _buildDetailItem(rec, null, detailsTextColor)),
         ],
       ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title, IconData icon, Color textColor) {
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: textColor),
+        const SizedBox(width: 8),
+        Text(title, style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold, color: textColor)),
+      ],
+    );
+  }
+
+  Widget _buildDetailItem(String title, String? value, Color textColor) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, top: 4.0, bottom: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: Text('• $title', style: GoogleFonts.poppins(fontSize: 14, color: textColor))),
+          if (value != null)
+            Text(value, style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: textColor)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPredictionItem(String partName, List<Prediction> predictions, Color textColor) {
+    if (predictions.isEmpty) {
+      return _buildDetailItem('$partName: No predictions found.', null, textColor);
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+          child: Text(
+            '$partName Predictions:',
+            style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold, color: textColor),
+          ),
+        ),
+        ...predictions.map((p) => _buildDetailItem(
+          p.prediction,
+          '${(p.confidence_score * 100).toStringAsFixed(1)}%',
+          textColor,
+        )),
+      ],
     );
   }
 }
