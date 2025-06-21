@@ -4,17 +4,16 @@ import 'package:swine_care/colors/ArgieColors.dart';
 
 class SymptomsChecker extends StatelessWidget {
   final Map<String, bool?> answers;
-  final Function(String, bool) onAnswerChanged;
+  final Function(String, bool) onChanged;
 
   const SymptomsChecker({
     super.key,
     required this.answers,
-    required this.onAnswerChanged,
+    required this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-
     final BuildContext localContext = context;
 
     return Column(
@@ -43,11 +42,11 @@ class SymptomsChecker extends StatelessWidget {
         ...answers.keys.map((question) {
           final bool? answer = answers[question];
           final Color yesBackgroundColor = answer == true
-              ? Theme.of(localContext).colorScheme.primary ?? ArgieColors.primary
-              : Theme.of(localContext).cardTheme.color ?? ArgieColors.ligth;
+              ? Theme.of(localContext).colorScheme.primary
+              : Theme.of(localContext).cardTheme.color ?? Colors.grey.shade200;
           final Color noBackgroundColor = answer == false
-              ? Theme.of(localContext).colorScheme.error ?? Colors.red
-              : Theme.of(localContext).cardTheme.color ?? ArgieColors.ligth;
+              ? Theme.of(localContext).colorScheme.error
+              : Theme.of(localContext).cardTheme.color ?? Colors.grey.shade200;
 
           final Color yesTextColor = _getContrastingColor(yesBackgroundColor);
           final Color noTextColor = _getContrastingColor(noBackgroundColor);
@@ -71,7 +70,8 @@ class SymptomsChecker extends StatelessWidget {
                           question,
                           style: GoogleFonts.poppins(
                             fontSize: 16,
-                            color: Theme.of(localContext).textTheme.bodyLarge!.color,
+                            color:
+                            Theme.of(localContext).textTheme.bodyLarge!.color,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -83,7 +83,8 @@ class SymptomsChecker extends StatelessWidget {
                           size: 18,
                         ),
                         onPressed: () {
-                          _showDescriptionDialog(localContext, _getTooltipForQuestion(question));
+                          _showDescriptionDialog(
+                              localContext, _getTooltipForQuestion(question));
                         },
                       ),
                     ],
@@ -92,9 +93,10 @@ class SymptomsChecker extends StatelessWidget {
                 Row(
                   children: [
                     GestureDetector(
-                      onTap: () => onAnswerChanged(question, true),
+                      onTap: () => onChanged(question, true),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
                           color: yesBackgroundColor,
                           borderRadius: BorderRadius.circular(12),
@@ -110,9 +112,10 @@ class SymptomsChecker extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     GestureDetector(
-                      onTap: () => onAnswerChanged(question, false),
+                      onTap: () => onChanged(question, false),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
                           color: noBackgroundColor,
                           borderRadius: BorderRadius.circular(12),
@@ -181,7 +184,7 @@ class SymptomsChecker extends StatelessWidget {
       case "Loss of appetite?":
         return Icons.restaurant_menu;
       case "Rapid breathing?":
-        return Icons.ramp_left;
+        return Icons.air;
       case "Unusual vocalization?":
         return Icons.record_voice_over;
       default:
@@ -208,6 +211,6 @@ class SymptomsChecker extends StatelessWidget {
 
   Color _getContrastingColor(Color backgroundColor) {
     final double luminance = backgroundColor.computeLuminance();
-    return luminance > 0.5 ? Colors.black : ArgieColors.textthird;
+    return luminance > 0.5 ? Colors.black : Colors.white;
   }
 }

@@ -107,7 +107,7 @@ class RouterConfiguration {
                     return ResultsPage(
                       uploadedImages: params['uploadedImages'] as Map<String, File?>? ?? {},
                       webImages: params['webImages'] as Map<String, Uint8List?>? ?? {},
-                      symptoms: params['symptoms'] as Map<String, bool?>? ?? {},
+                      symptoms: params['symptoms'] as Map<String, bool>? ?? {},
                       earsPredictions: params['earsPredictions'] as List<Prediction>?,
                       skinPredictions: params['skinPredictions'] as List<Prediction>?,
                     );

@@ -8,11 +8,12 @@ import 'package:lottie/lottie.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/colors/ArgieSizes.dart';
 import 'package:swine_care/data/model/Prediction.dart';
+import 'package:swine_care/data/repositories/HistoryRepository.dart';
 
 class ResultsPage extends StatefulWidget {
   final Map<String, File?> uploadedImages;
   final Map<String, Uint8List?> webImages;
-  final Map<String, bool?> symptoms;
+  final Map<String, bool> symptoms;
   final List<Prediction>? earsPredictions;
   final List<Prediction>? skinPredictions;
 
@@ -31,6 +32,7 @@ class ResultsPage extends StatefulWidget {
 
 class _ResultsPageState extends State<ResultsPage> {
   bool _showAnimation = true;
+  final HistoryRepository _historyRepository = HistoryRepository();
 
   @override
   void initState() {
@@ -605,33 +607,94 @@ class _ResultsPageState extends State<ResultsPage> {
                     ),
                   ),
                   const SizedBox(height: ArgieSizes.spaceBtwSections),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () => context.go('/homepage'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ArgieColors.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: ArgieSizes.paddingDefault,
-                          vertical: ArgieSizes.spaceBtwItems,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Save diagnostic result to history
+                            final (String likelihood, double finalScore) = analyzeASF();
+                            final List<String> recommendations = getRecommendations(likelihood);
+
+                            // Generate a pig ID (in a real app, this would come from user input)
+                            final String pigId = 'PIG-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}';
+
+                            final record = _historyRepository.createRecord(
+                              pigId: pigId,
+                              diagnosis: likelihood,
+                              finalScore: finalScore,
+                              symptoms: widget.symptoms,
+                              earsPredictions: widget.earsPredictions ?? [],
+                              skinPredictions: widget.skinPredictions ?? [],
+                              recommendations: recommendations,
+                            );
+
+                            _historyRepository.addRecord(record);
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Diagnostic result saved to history',
+                                  style: GoogleFonts.poppins(),
+                                ),
+                                backgroundColor: Colors.green.shade600,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                margin: const EdgeInsets.all(16),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green.shade600,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: ArgieSizes.paddingDefault,
+                              vertical: ArgieSizes.spaceBtwItems,
+                            ),
+                          ),
+                          child: Text(
+                            "Save to History",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
                       ),
-                      child: Text(
-                        "Back to Home",
-                        style: GoogleFonts.poppins(
-                          color: Colors.grey.shade300,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => context.go('/homepage'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ArgieColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: ArgieSizes.paddingDefault,
+                              vertical: ArgieSizes.spaceBtwItems,
+                            ),
+                          ),
+                          child: Text(
+                            "Back to Home",
+                            style: GoogleFonts.poppins(
+                              color: Colors.grey.shade300,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                 ],
               ),
-
             ),
           ),
         ],

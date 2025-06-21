@@ -407,10 +407,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 const SizedBox(height: 16),
                                 SymptomsChecker(
                                   answers: _answers,
-                                  onAnswerChanged: (question, answer) {
-                                    debugPrint('Symptom updated: $question = $answer');
+                                  onChanged: (question, value) {
                                     setState(() {
-                                      _answers[question] = answer;
+                                      _answers[question] = value;
                                     });
                                   },
                                 ),
@@ -423,9 +422,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
                         // Save button
                         SaveButton(
-                          uploadedImages: selectedImages,
-                          webImages: webImages,
                           symptoms: _answers,
+                          uploadedImages: {
+                            'Ears': selectedImageEars,
+                            'Skin': selectedImageSkin,
+                          },
+                          webImages: {
+                            'Ears': webImageEars,
+                            'Skin': webImageSkin,
+                          },
                           earsPredictions: _earsPredictions,
                           skinPredictions: _skinPredictions,
                         ),
