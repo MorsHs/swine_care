@@ -21,7 +21,7 @@ class _GuidePageState extends State<GuidePage> {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDarkMode ? ArgieColors.dark : ArgieColors.ligth,
+      backgroundColor: isDarkMode ? ArgieColors.dark : Colors.white,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
