@@ -13,7 +13,14 @@ class GetStarted extends StatelessWidget {
         child: login_signup_theme(
           child: FilledButton(
             onPressed: () {
-              context.go('/login');
+              if (context.mounted) {
+                // Delay navigation to avoid race condition
+                Future.delayed(const Duration(milliseconds: 100), () {
+                  if (context.mounted) {
+                    context.go('/login');
+                  }
+                });
+              }
             },
             child:  Text("Get Started",
             style: GoogleFonts.rubik(
