@@ -114,6 +114,7 @@ class _ResultsPageState extends State<ResultsPage> {
     // Risk thresholds
     String likelihood;
     if (finalScore >= 80) {
+      //TODO Theory rani diria ibutang ang analyze
       likelihood = "Highly Risk";
     } else if (finalScore >= 55) {
       likelihood = "Medium Risk";
