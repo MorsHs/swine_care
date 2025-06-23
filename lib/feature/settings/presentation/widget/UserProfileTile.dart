@@ -92,9 +92,9 @@ class _UserProfileTileState extends State<UserProfileTile> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(50),
           child: Image.asset(
-            'assets/images/happy-pig.png',
-            width: 55,
-            height: 55,
+            'assets/images/finalprofileicon.png',
+            width: 50,
+            height: 50,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               return Container(

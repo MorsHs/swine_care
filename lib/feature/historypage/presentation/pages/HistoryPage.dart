@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/data/repositories/HistoryRepository.dart';
 import 'package:swine_care/feature/historypage/presentation/widgets/DeleteRecordDialog.dart';
@@ -30,16 +31,29 @@ class _HistoryPageState extends State<HistoryPage> {
     });
   }
 
-  // Method to delete a record
+  Future<void> _refreshRecords() async {
+    await Future.delayed(const Duration(milliseconds: 500)); // Simulate network delay
+    _loadRecords();
+  }
+
   void _deleteRecord(String id) {
     showDialog(
       context: context,
       builder: (context) => DeleteRecordDialog(
         onConfirm: () async {
-          // Delete from repository
           await _historyRepository.deleteRecord(id);
-          // Reload records to update UI
           _loadRecords();
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Record deleted successfully'),
+                backgroundColor: Colors.red.shade600,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                margin: const EdgeInsets.all(16),
+              ),
+            );
+          }
         },
       ),
     );
@@ -51,32 +65,40 @@ class _HistoryPageState extends State<HistoryPage> {
 
     return Scaffold(
       backgroundColor: isDarkMode ? ArgieColors.dark : Colors.white,
-      body: SafeArea(
+      body: RefreshIndicator(
+        onRefresh: _refreshRecords,
+        color: ArgieColors.primary,
+        backgroundColor: isDarkMode ? Colors.grey.shade800 : Colors.white,
         child: CustomScrollView(
           slivers: [
-            // History Header text
             HistoryTextLabel1(isDarkMode: isDarkMode),
-
-            // Records Section
             FutureBuilder<List<DiagnosisRecord>>(
               future: _recordsFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const SliverToBoxAdapter(
-                    child: Center(child: CircularProgressIndicator()),
+                  return SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator(color: ArgieColors.primary)),
                   );
                 }
 
                 if (snapshot.hasError) {
                   return SliverToBoxAdapter(
-                    child: Center(child: Text('Error: ${snapshot.error}')),
+                    child: Center(
+                      child: Text(
+                        'Error: ${snapshot.error}',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: isDarkMode ? Colors.white70 : Colors.black87,
+                        ),
+                      ),
+                    ),
                   );
                 }
 
                 final records = snapshot.data;
 
                 if (records == null || records.isEmpty) {
-                  return SliverToBoxAdapter(child: _buildEmptyState(isDarkMode));
+                  return SliverToBoxAdapter(child: HistoryEmptyState(isDarkMode: isDarkMode));
                 }
 
                 return SliverPadding(
@@ -93,10 +115,5 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
       ),
     );
-  }
-
-  // Empty State
-  Widget _buildEmptyState(bool isDarkMode) {
-    return const HistoryEmptyState();
   }
 }

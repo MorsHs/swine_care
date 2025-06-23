@@ -1027,7 +1027,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
           bottom: 25,
           child: ElevatedButton(
             onPressed: () => _launchURL(
-                "https://philjournalsci.dost.gov.ph/images/pdf/pjs_pdf/vol151no5/genetic_diversity_of_Phil_native_pig_from_Quezon_and_Marinduque_.pdf"),
+                "https://philjournalsci.dost.gov.ph/"),
             style: ElevatedButton.styleFrom(
               backgroundColor: ArgieColors.secondary,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),

@@ -103,7 +103,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> wit
           }
 
           return SizedBox(
-            height: kBottomNavigationBarHeight + 20,
+            height: kBottomNavigationBarHeight + 18,
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
               child: BackdropFilter(
@@ -120,13 +120,6 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> wit
                         width: 1,
                       ),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: ArgieColors.shadow.withValues(alpha: 0.15),
-                        blurRadius: 12,
-                        offset: const Offset(0, -2),
-                      ),
-                    ],
                   ),
                   child: SafeArea(
                     top: false,
@@ -171,7 +164,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> wit
                                       child: Text(
                                         item['label'] as String,
                                         style: TextStyle(
-                                          fontSize: 11,
+                                          fontSize: 10,
                                           fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                                           color: isSelected
                                               ? ArgieColors.primary

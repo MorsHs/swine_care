@@ -27,7 +27,6 @@ class DiagnosisRecord {
     required this.userId,
   });
 
-  // Convert DiagnosisRecord object to a Map for Firestore
   Map<String, dynamic> toFirestore() {
     return {
       'id': id,
@@ -44,7 +43,6 @@ class DiagnosisRecord {
     };
   }
 
-  // Create a DiagnosisRecord object from a Firestore document
   factory DiagnosisRecord.fromFirestore(Map<String, dynamic> firestore) {
     return DiagnosisRecord(
       id: firestore['id'] as String,
