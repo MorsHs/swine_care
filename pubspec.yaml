@@ -55,6 +55,7 @@ dependencies:
   http: ^1.2.2
   path_provider: ^2.1.1
   retry: ^3.1.2
+  flutter_launcher_icons: ^0.14.4
 
 
 dev_dependencies:
@@ -72,6 +73,12 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "assets/Logo/SwineCareIcon1.png"
+
 flutter:
 
   # The following line ensures that the Material Icons font is
