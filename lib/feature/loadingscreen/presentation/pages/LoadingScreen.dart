@@ -47,7 +47,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
               ),
               child: Stack(
                 children: [
-                  // Decorative circles
                   Positioned(
                     right: -50,
                     top: -20,
@@ -93,6 +92,18 @@ class _LoadingScreenState extends State<LoadingScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: ArgieColors.primary.withValues(alpha: 0.3),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: -15,
+                    top: 220,
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: ArgieColors.primary.withValues(alpha: 0.2),
                       ),
                     ),
                   ),

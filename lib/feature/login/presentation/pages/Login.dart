@@ -94,67 +94,138 @@ class _LoginState extends State<Login> {
     return Scaffold(
       backgroundColor: isDarkMode ? ArgieColors.dark : Colors.white,
       body: SafeArea(
-        child: login_signup_theme(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  LoginHeader(isDarkMode: isDarkMode),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const LoginOrCreateLabel(label: "Login"),
-                        Textfieldcontainer(
-                          controller: emailController,
-                          isHidden: false,
-                          label: "Email",
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
-                            }
-                            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
-                        ),
-                        Textfieldcontainer(
-                          controller: passwordController,
-                          isHidden: true,
-                          label: "Password",
-                          showVisibilityToggle: true,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
-                            }
-                            return null;
-                          },
-                        ),
-
-                        ForgotPasswordWidget(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const ForgotPassword()),
-                            );
-                          },
-                        ),
-                        LoginButton(onPressed: signUserIn),
-                        const RedirectToSignup(),
-                        const SizedBox(height: ArgieSizes.spaceBtwSections),
-                      ],
+        child: Stack(
+          children: [
+            Stack(
+              children: [
+                // Decorative circles
+                Positioned(
+                  right: -50,
+                  top: -20,
+                  child: Container(
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ArgieColors.primary.withValues(alpha: 0.1),
                     ),
                   ),
-                ],
+                ),
+                Positioned(
+                  right: 40,
+                  top: -60,
+                  child: Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ArgieColors.primary.withValues(alpha: 0.1),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: -30,
+                  bottom: -40,
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ArgieColors.secondary.withValues(alpha: 0.1),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 40,
+                  top: 20,
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ArgieColors.primary.withValues(alpha: 0.3),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: -20,
+                  top: 200,
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ArgieColors.primary.withValues(alpha: 0.2),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            login_signup_theme(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      LoginHeader(isDarkMode: isDarkMode),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const LoginOrCreateLabel(label: "Login"),
+                            Textfieldcontainer(
+                              controller: emailController,
+                              isHidden: false,
+                              label: "Email",
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your email';
+                                }
+                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                                  return 'Please enter a valid email';
+                                }
+                                return null;
+                              },
+                            ),
+                            Textfieldcontainer(
+                              controller: passwordController,
+                              isHidden: true,
+                              label: "Password",
+                              showVisibilityToggle: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                if (value.length < 6) {
+                                  return 'Password must be at least 6 characters';
+                                }
+                                return null;
+                              },
+                            ),
+
+                            ForgotPasswordWidget(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ForgotPassword()),
+                                );
+                              },
+                            ),
+                            LoginButton(onPressed: signUserIn),
+                            const RedirectToSignup(),
+                            const SizedBox(height: ArgieSizes.spaceBtwSections),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
+
         ),
       ),
     );
