@@ -18,16 +18,11 @@ class HistoryListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-            (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: HistoryCard(
-              record: records[index],
-              isDarkMode: isDarkMode,
-              onDelete: onDelete,
-            ),
-          );
-        },
+            (context, index) => HistoryCard(
+          record: records[index],
+          isDarkMode: isDarkMode,
+          onDelete: onDelete,
+        ),
         childCount: records.length,
       ),
     );

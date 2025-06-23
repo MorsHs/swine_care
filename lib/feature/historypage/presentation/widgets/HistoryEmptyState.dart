@@ -1,44 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:swine_care/colors/ArgieColors.dart';
 
 class HistoryEmptyState extends StatelessWidget {
-  const HistoryEmptyState({super.key});
+  final bool isDarkMode;
+
+  const HistoryEmptyState({super.key, required this.isDarkMode});
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
     return Container(
-      height: MediaQuery.of(context).size.height * 0.5,
+      height: MediaQuery.of(context).size.height * 0.6,
       alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Iconsax.archive_book,
-            size: 120,
-            color: isDarkMode ? Colors.grey.shade600 : Colors.grey.shade300,
+          Image.asset(
+            'assets/images/sleepingpig.png',
+            width: 200,
+            height: 200,
+            fit: BoxFit.contain,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           Text(
-            'No History Available',
+            'No Diagnosis History',
             style: GoogleFonts.poppins(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white70 : Colors.grey.shade800,
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: isDarkMode ? ArgieColors.textthird : ArgieColors.textBold,
             ),
           ),
-          const SizedBox(height: 12),
-          Text(
-            'Your pig diagnosis history will appear here.',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+          const SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Text(
+              'Your past ASF assessments will appear here once you perform a diagnosis.',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: isDarkMode ? ArgieColors.textthird.withValues(alpha: 0.7)  : ArgieColors.textSemiBlack,
+              ),
             ),
           ),
-          const SizedBox(height: 20),
         ],
       ),
     );
