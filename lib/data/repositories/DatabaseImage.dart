@@ -32,6 +32,7 @@ class DatabaseImageSender {
         'skin' : base64Skin,
         'lat' : currentPosition.latitude,
         'long' : currentPosition.longitude
+        //TODO PAKI ADD SA DATE AND ETC NA NEEDED SA ADMIN
       });
     }
     else{

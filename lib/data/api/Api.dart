@@ -35,7 +35,7 @@ class Api {
 
     // Select workflow URL
     if (part == 1) {
-      workflowUrl = "https://serverless.roboflow.com/infer/workflows/morshs-bfrdz/small-object-detection-sahi-6";
+      workflowUrl = "https://serverless.roboflow.com/infer/workflows/morshs-bfrdz/small-object-detection-sahi-7";
     } else {
       workflowUrl = "https://serverless.roboflow.com/infer/workflows/morshs-bfrdz/small-object-detection-sahi-4";
     }
