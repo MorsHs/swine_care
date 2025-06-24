@@ -9,6 +9,7 @@ import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/colors/ArgieSizes.dart';
 import 'package:swine_care/data/model/Prediction.dart';
 import 'package:swine_care/data/repositories/HistoryRepository.dart';
+import 'package:swine_care/data/repositories/DatabaseImage.dart';
 
 class ResultsPage extends StatefulWidget {
   final Map<String, File?> uploadedImages;
@@ -33,6 +34,7 @@ class ResultsPage extends StatefulWidget {
 class _ResultsPageState extends State<ResultsPage> {
   bool _showAnimation = true;
   final HistoryRepository _historyRepository = HistoryRepository();
+  final DatabaseImageSender _databaseImageSender = DatabaseImageSender();
 
   @override
   void initState() {
@@ -60,9 +62,75 @@ class _ResultsPageState extends State<ResultsPage> {
       debugPrint('No Skin Predictions Available');
     }
 
+    // Automatically save diagnostic data to database after a short delay to ensure widget is fully initialized
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        debugPrint('Starting automatic database save...');
+        _saveDiagnosticToDatabase();
+      }
+    });
+
     Future.delayed(const Duration(seconds: 5), () {
       if (mounted) setState(() => _showAnimation = false);
     });
+  }
+
+  // Method to automatically save diagnostic data to database
+  Future<void> _saveDiagnosticToDatabase() async {
+    try {
+      debugPrint('=== Starting Database Save Process ===');
+
+      // Get diagnostic analysis
+      final (String likelihood, double finalScore) = analyzeASF();
+      final List<String> recommendations = getRecommendations(likelihood);
+
+      debugPrint('Analysis completed - Diagnosis: $likelihood, Score: $finalScore');
+
+      // Generate a pig ID
+      final String pigId = 'PIG-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}';
+      debugPrint('Generated Pig ID: $pigId');
+
+      // Get images
+      final File? earsImage = widget.uploadedImages['Ears'];
+      final File? skinImage = widget.uploadedImages['Skin'];
+
+      debugPrint('Images status - Ears: ${earsImage != null ? 'Available' : 'Missing'}, Skin: ${skinImage != null ? 'Available' : 'Missing'}');
+      debugPrint('Ears predictions count: ${widget.earsPredictions?.length ?? 0}');
+      debugPrint('Skin predictions count: ${widget.skinPredictions?.length ?? 0}');
+
+      // Save simplified diagnostic data to database (for admin/analysis)
+      await _databaseImageSender.saveDiagnosticData(
+        earsImage: widget.uploadedImages['Ears'],
+        skinImage: widget.uploadedImages['Skin'],
+        webEarsImage: widget.webImages['Ears'],
+        webSkinImage: widget.webImages['Skin'],
+        earsPredictions: widget.earsPredictions,
+        skinPredictions: widget.skinPredictions,
+        diagnosis: likelihood,
+        finalScore: finalScore,
+        pigId: pigId,
+      );
+
+      // Also save to history collection (for user's history page)
+      final record = _historyRepository.createRecord(
+        pigId: pigId,
+        diagnosis: likelihood,
+        finalScore: finalScore,
+        symptoms: widget.symptoms,
+        earsPredictions: widget.earsPredictions ?? [],
+        skinPredictions: widget.skinPredictions ?? [],
+        recommendations: recommendations,
+      );
+
+      await _historyRepository.addRecord(record);
+
+      debugPrint('✅ Diagnostic data saved to both database and history successfully');
+      debugPrint('=== Database Save Process Completed ===');
+    } catch (e) {
+      debugPrint('❌ Error saving diagnostic data to database: $e');
+      debugPrint('Error details: ${e.toString()}');
+      // Don't show error to user as this is automatic background save
+    }
   }
 
   (String likelihood, double finalScore) analyzeASF() {
@@ -114,7 +182,7 @@ class _ResultsPageState extends State<ResultsPage> {
     // Risk thresholds
     String likelihood;
     if (finalScore >= 80) {
-      //TODO Theory rani diria ibutang ang analyze
+      //TODO Theory rani diria ibutang ang analyze ----- tapos ang pangtubos hahahahhahaha
       likelihood = "Highly Risk";
     } else if (finalScore >= 55) {
       likelihood = "Medium Risk";
@@ -136,7 +204,7 @@ class _ResultsPageState extends State<ResultsPage> {
 
   List<String> getRecommendations(String likelihood) {
     switch (likelihood) {
-      case "Highly Likely":
+      case "Highly Risk":
         return [
           "Immediately isolate the affected pig(s)",
           "Contact a veterinarian urgently",
@@ -144,7 +212,7 @@ class _ResultsPageState extends State<ResultsPage> {
           "Monitor other pigs for similar symptoms",
           "Document all symptoms and changes"
         ];
-      case "Medium Likelihood":
+      case "Medium Risk":
         return [
           "Monitor the pig for 24-48 hours",
           "Maintain strict hygiene protocols",
@@ -490,16 +558,16 @@ class _ResultsPageState extends State<ResultsPage> {
                             width: double.infinity,
                             padding: const EdgeInsets.all(ArgieSizes.spaceBtwItems),
                             decoration: BoxDecoration(
-                              color: likelihood == "Highly Likely"
+                              color: likelihood == "Highly Risk"
                                   ? Colors.red.shade100
-                                  : likelihood == "Medium Likelihood"
+                                  : likelihood == "Medium Risk"
                                   ? Colors.orange.shade100
                                   : Colors.green.shade100,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: likelihood == "Highly Likely"
+                                color: likelihood == "Highly Risk"
                                     ? Colors.red.shade300
-                                    : likelihood == "Medium Likelihood"
+                                    : likelihood == "Medium Risk"
                                     ? Colors.orange.shade300
                                     : Colors.green.shade300,
                               ),
@@ -512,9 +580,9 @@ class _ResultsPageState extends State<ResultsPage> {
                                   style: GoogleFonts.poppins(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
-                                    color: likelihood == "Highly Likely"
+                                    color: likelihood == "Highly Risk"
                                         ? Colors.red.shade700
-                                        : likelihood == "Medium Likelihood"
+                                        : likelihood == "Medium Risk"
                                         ? Colors.orange.shade700
                                         : Colors.green.shade700,
                                   ),
@@ -608,90 +676,29 @@ class _ResultsPageState extends State<ResultsPage> {
                     ),
                   ),
                   const SizedBox(height: ArgieSizes.spaceBtwSections),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Save diagnostic result to history
-                            final (String likelihood, double finalScore) = analyzeASF();
-                            final List<String> recommendations = getRecommendations(likelihood);
-
-                            // Generate a pig ID (in a real app, this would come from user input)
-                            final String pigId = 'PIG-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}';
-
-                            final record = _historyRepository.createRecord(
-                              pigId: pigId,
-                              diagnosis: likelihood,
-                              finalScore: finalScore,
-                              symptoms: widget.symptoms,
-                              earsPredictions: widget.earsPredictions ?? [],
-                              skinPredictions: widget.skinPredictions ?? [],
-                              recommendations: recommendations,
-                            );
-
-                            _historyRepository.addRecord(record);
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Diagnostic result saved to history',
-                                  style: GoogleFonts.poppins(),
-                                ),
-                                backgroundColor: Colors.green.shade600,
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                margin: const EdgeInsets.all(16),
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green.shade600,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: ArgieSizes.paddingDefault,
-                              vertical: ArgieSizes.spaceBtwItems,
-                            ),
-                          ),
-                          child: Text(
-                            "Save to History",
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => context.go('/homepage'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ArgieColors.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: ArgieSizes.paddingDefault,
+                          vertical: ArgieSizes.spaceBtwItems,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => context.go('/homepage'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: ArgieColors.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: ArgieSizes.paddingDefault,
-                              vertical: ArgieSizes.spaceBtwItems,
-                            ),
-                          ),
-                          child: Text(
-                            "Back to Home",
-                            style: GoogleFonts.poppins(
-                              color: Colors.grey.shade300,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
+                      child: Text(
+                        "Back to Home",
+                        style: GoogleFonts.poppins(
+                          color: Colors.grey.shade300,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
                       ),
-                    ],
+                    ),
                   ),
                   const SizedBox(height: 20),
                 ],
