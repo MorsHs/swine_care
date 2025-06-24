@@ -94,19 +94,16 @@ class HistoryRepository {
 
   // Get records by status
   List<DiagnosisRecord> getRecordsByStatus(String status) {
-    // Implementation needed
     throw UnimplementedError();
   }
 
   // Get records by diagnosis
   List<DiagnosisRecord> getRecordsByDiagnosis(String diagnosis) {
-    // Implementation needed
     throw UnimplementedError();
   }
 
   // Clear all records (for testing)
   void clearAllRecords() {
-    // Implementation needed
     throw UnimplementedError();
   }
 }
