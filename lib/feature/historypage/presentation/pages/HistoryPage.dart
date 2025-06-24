@@ -17,47 +17,6 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   final HistoryRepository _historyRepository = HistoryRepository();
-  late Future<List<DiagnosisRecord>> _recordsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadRecords();
-  }
-
-  void _loadRecords() {
-    setState(() {
-      _recordsFuture = _historyRepository.getAllRecords();
-    });
-  }
-
-  Future<void> _refreshRecords() async {
-    await Future.delayed(const Duration(milliseconds: 500)); // Simulate network delay
-    _loadRecords();
-  }
-
-  void _deleteRecord(String id) {
-    showDialog(
-      context: context,
-      builder: (context) => DeleteRecordDialog(
-        onConfirm: () async {
-          await _historyRepository.deleteRecord(id);
-          _loadRecords();
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Record deleted successfully'),
-                backgroundColor: Colors.red.shade600,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                margin: const EdgeInsets.all(16),
-              ),
-            );
-          }
-        },
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +25,17 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       backgroundColor: isDarkMode ? ArgieColors.dark : Colors.white,
       body: RefreshIndicator(
-        onRefresh: _refreshRecords,
+        onRefresh: () async {
+          // Stream will automatically update, but we can still provide refresh feedback
+          await Future.delayed(const Duration(milliseconds: 500));
+        },
         color: ArgieColors.primary,
         backgroundColor: isDarkMode ? Colors.grey.shade800 : Colors.white,
         child: CustomScrollView(
           slivers: [
             HistoryTextLabel1(isDarkMode: isDarkMode),
-            FutureBuilder<List<DiagnosisRecord>>(
-              future: _recordsFuture,
+            StreamBuilder<List<DiagnosisRecord>>(
+              stream: _historyRepository.getRecordsStream(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return SliverToBoxAdapter(
@@ -113,6 +75,29 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _deleteRecord(String id) {
+    showDialog(
+      context: context,
+      builder: (context) => DeleteRecordDialog(
+        onConfirm: () async {
+          await _historyRepository.deleteRecord(id);
+          // No need to refresh manually - stream will automatically update
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Record deleted successfully'),
+                backgroundColor: Colors.red.shade600,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                margin: const EdgeInsets.all(16),
+              ),
+            );
+          }
+        },
       ),
     );
   }
