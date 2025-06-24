@@ -23,15 +23,16 @@ class Prediction {
 
   factory Prediction.fromJSON(Map<String, dynamic> prediction) {
     return Prediction(
-        width: prediction['width'],
-        height: prediction['height'],
-        x: prediction['x'],
-        y: prediction['y'],
-        confidence_score: prediction['confidence'],
-        class_id: prediction['class_id'],
-        prediction: prediction['class'],
-        detection_id: prediction['detection_id'],
-        parent_id: prediction['parent_id']);
+      width: (prediction['width'] as num).toDouble(),
+      height: (prediction['height'] as num).toDouble(),
+      x: (prediction['x'] as num).toDouble(),
+      y: (prediction['y'] as num).toDouble(),
+      confidence_score: (prediction['confidence'] as num).toDouble(),
+      class_id: (prediction['class_id'] as num).toDouble(),
+      prediction: prediction['class'] as String,
+      detection_id: prediction['detection_id'] as String,
+      parent_id: prediction['parent_id'] as String,
+    );
   }
   // Convert Prediction object to a Map for Firestore
   Map<String, dynamic> toFirestore() {
