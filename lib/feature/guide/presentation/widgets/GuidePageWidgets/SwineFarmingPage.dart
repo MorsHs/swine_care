@@ -153,12 +153,6 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
     }
   }
 
-  void _shareContent(String content) {
-    Share.share(
-      'Check out this swine farming tip: $content\n\nFrom: SwineGuide App',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -1340,38 +1334,6 @@ class GuideDetailPage extends StatelessWidget {
                       ],
                     ),
                   ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: isDarkMode ? Colors.grey[800] : Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              OutlinedButton.icon(
-                onPressed: () {
-                  // Would navigate to related guides
-                },
-                icon: const Icon(Icons.menu_book),
-                label: const Text("Related Guides"),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: const Color(0xFFEC7C86),
-                ),
-              ),
-              ElevatedButton.icon(
-                onPressed: () {
-                  // Would launch emergency helpline or vet contacts
-                },
-                icon: const Icon(Icons.support_agent),
-                label: const Text("Ask Expert"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFEC7C86),
-                  foregroundColor: Colors.white,
                 ),
               ),
             ],
