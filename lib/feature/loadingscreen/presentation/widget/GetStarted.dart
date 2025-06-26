@@ -24,6 +24,7 @@ class GetStarted extends StatelessWidget {
             },
             child:  Text("Get Started",
             style: GoogleFonts.rubik(
+                 fontSize: 16,
                 fontWeight: FontWeight.w400
             ),
           ),

@@ -36,7 +36,7 @@ class IntroPage3 extends StatelessWidget {
             child: Text(
               "Expert Guidance",
               style: GoogleFonts.poppins(
-                fontSize: 26,
+                fontSize: 22,
                 fontWeight: FontWeight.w600,
                 color: ArgieColors.textBold,
                 letterSpacing: 0.5,
@@ -54,7 +54,7 @@ class IntroPage3 extends StatelessWidget {
                 "Real-time alerts and AI support to prevent ASF and protect your farm.",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.w300,
                   color: ArgieColors.textSemiBlack.withValues(alpha: 0.9),
                 ),

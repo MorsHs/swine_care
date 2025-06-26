@@ -12,18 +12,17 @@ class PageIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 20),
+      padding: const EdgeInsets.only(bottom: 24),
       alignment: const Alignment(0, 0.75),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // SmoothPageIndicator for the page view
           SmoothPageIndicator(
             controller: controller,
             count: 3,
             effect: ExpandingDotsEffect(
-              dotWidth: 10,
-              dotHeight: 10,
+              dotWidth: 6,
+              dotHeight: 6,
               activeDotColor: Colors.blueAccent,
               dotColor: Colors.black54,
               spacing: 10,
