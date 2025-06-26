@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +13,6 @@ import 'package:swine_care/feature/guide/presentation/widgets/PreventingAfricanS
 import 'package:swine_care/feature/historypage/presentation/pages/HistoryPage.dart';
 import 'package:swine_care/feature/homepage/presentation/pages/HomePage.dart';
 import 'package:swine_care/feature/homepage/presentation/pages/ResultsPage.dart';
-import 'package:swine_care/feature/intro/presentation/pages/IntroPage.dart';
 import 'package:swine_care/feature/loadingscreen/presentation/pages/LoadingScreen.dart';
 import 'package:swine_care/feature/login/presentation/pages/Login.dart';
 import 'package:swine_care/feature/register/presentation/pages/Register.dart';
@@ -29,12 +27,12 @@ import '../data/model/Prediction.dart';
 
 class RouterConfiguration {
   GoRouter routes() {
+    final user = FirebaseAuth.instance.currentUser;
     return GoRouter(
-      initialLocation: '/loading-screen',
+      initialLocation: user == null ? '/loading-screen' : '/homepage',
       redirect: (context, state) {
-        final user = FirebaseAuth.instance.currentUser;
         final currentLocation = state.fullPath;
-
+        final user = FirebaseAuth.instance.currentUser;
         // If user is not authenticated, redirect to login
         if (user == null) {
           if (!currentLocation!.startsWith('/login') &&
@@ -54,12 +52,6 @@ class RouterConfiguration {
         return null;
       },
       routes: [
-        GoRoute(
-          path: '/intro',
-          builder: (context, state) {
-            return const IntroPage();
-          },
-        ),
         GoRoute(
           path: '/loading-screen',
           builder: (context, state) {

@@ -57,6 +57,7 @@ dependencies:
   retry: ^3.1.2
   flutter_launcher_icons: ^0.14.4
   geolocator: ^12.0.0
+  flutter_native_splash: ^2.4.4
 
 
 dev_dependencies:
@@ -78,7 +79,15 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: false
-  image_path: "assets/Logo/SwineCareIcon1.png"
+  image_path: "assets/Logo/swinecare_appicon.png"
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/Logo/swinecare_resized.png"
+  android_12:
+    image: "assets/Logo/swinecare_resized.png"
+    icon_background_color: "#FFFFFF"
+
 
 flutter:
 

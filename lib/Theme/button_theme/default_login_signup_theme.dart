@@ -19,7 +19,7 @@ class login_signup_theme extends StatelessWidget {
         textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 18)),
         elevation: WidgetStatePropertyAll(7),
         shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)))),
+            borderRadius: BorderRadius.all(Radius.circular(20)))),
         minimumSize: WidgetStatePropertyAll(Size(300, 43)),
         backgroundColor: WidgetStatePropertyAll(Color.fromRGBO(44, 95, 190, 1)),
       ),

@@ -36,7 +36,7 @@ class IntroPage2 extends StatelessWidget {
             child: Text(
               "How SwineCare Works",
               style: GoogleFonts.poppins(
-                fontSize: 26,
+                fontSize: 22,
                 fontWeight: FontWeight.w600,
                 color: ArgieColors.textBold,
                 letterSpacing: 0.5,
@@ -54,7 +54,7 @@ class IntroPage2 extends StatelessWidget {
                 "AI-driven insights detect diseases early, optimize nutrition, and boost farm productivity.",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.w300,
                   color: ArgieColors.textSemiBlack.withValues(alpha: 0.9),
                 ),

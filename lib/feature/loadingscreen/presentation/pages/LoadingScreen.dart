@@ -130,14 +130,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
             ),
             // Get Started Button
             const Positioned(
-              bottom: 40,
+              bottom: 60,
               left: 0,
               right: 0,
               child: Center(
                 child: GetStarted(),
               ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 60),
           ],
         ),
       ),
