@@ -380,7 +380,20 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                   const Padding(
                                     padding: EdgeInsets.all(16.0),
                                     child: Center(
-                                      child: CircularProgressIndicator(),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CircularProgressIndicator(),
+                                          Text('It takes 4 to 8 seconds to diagnose these images.',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.grey
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                               ],
