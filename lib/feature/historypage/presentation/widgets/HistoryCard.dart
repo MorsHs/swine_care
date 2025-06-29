@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/data/model/Prediction.dart';
-import 'package:swine_care/feature/historypage/presentation/widgets/DiagnosisRecord.dart';
+import 'package:swine_care/data/model/DiagnosisRecord.dart';
 
 class HistoryCard extends StatefulWidget {
   final DiagnosisRecord record;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:swine_care/feature/historypage/presentation/widgets/DiagnosisRecord.dart';
+import 'package:swine_care/data/model/DiagnosisRecord.dart';
 import 'package:swine_care/feature/historypage/presentation/widgets/HistoryCard.dart';
 
 class HistoryListView extends StatelessWidget {
