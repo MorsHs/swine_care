@@ -26,7 +26,6 @@ class _HistoryPageState extends State<HistoryPage> {
       backgroundColor: isDarkMode ? ArgieColors.dark : Colors.white,
       body: RefreshIndicator(
         onRefresh: () async {
-          // Stream will automatically update, but we can still provide refresh feedback
           await Future.delayed(const Duration(milliseconds: 500));
         },
         color: ArgieColors.primary,
@@ -79,26 +78,24 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
-  void _deleteRecord(String id) {
-    showDialog(
+  Future<void> _deleteRecord(String id) async {
+    final result = await showDialog<bool>(
       context: context,
       builder: (context) => DeleteRecordDialog(
-        onConfirm: () async {
-          await _historyRepository.deleteRecord(id);
-          // No need to refresh manually - stream will automatically update
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Record deleted successfully'),
-                backgroundColor: Colors.red.shade600,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                margin: const EdgeInsets.all(16),
-              ),
-            );
-          }
-        },
+        onConfirm: () => _historyRepository.deleteRecord(id),
       ),
     );
+
+    if (result == true && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Record deleted successfully'),
+          backgroundColor: Colors.red.shade400,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          margin: const EdgeInsets.all(16),
+        ),
+      );
+    }
   }
 }

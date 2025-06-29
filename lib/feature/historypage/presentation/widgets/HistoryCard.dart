@@ -80,7 +80,7 @@ class _HistoryCardState extends State<HistoryCard> with SingleTickerProviderStat
   Widget _buildSummary(BuildContext context) {
     final Color diagnosisColor;
     switch (widget.record.diagnosis.toLowerCase()) {
-      case 'highly risk':
+      case 'high risk':
         diagnosisColor = Colors.red.shade400.withValues(alpha: 0.8);
         break;
       case 'medium risk':

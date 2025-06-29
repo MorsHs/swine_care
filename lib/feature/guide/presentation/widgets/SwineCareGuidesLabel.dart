@@ -8,12 +8,15 @@ class SwineCareGuidesLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return Text(
-      "SwineCare Health & Farm Insights",
-      style: GoogleFonts.poppins(
-        fontSize: 28,
-        fontWeight: FontWeight.bold,
-        color: isDarkMode ? Colors.white : ArgieColors.primary,
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Text(
+        "SwineCare Health & Farm Insights",
+        style: GoogleFonts.poppins(
+          fontSize: 28,
+          fontWeight: FontWeight.bold,
+          color: isDarkMode ? Colors.white : ArgieColors.primary,
+        ),
       ),
     );
   }
