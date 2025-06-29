@@ -134,14 +134,13 @@ class _ResultsPageState extends State<ResultsPage> {
   }
 
   (String likelihood, double finalScore) analyzeASF() {
-    // Helper to get the highest-risk prediction for a part
     double getPartScore(List<Prediction>? predictions) {
       if (predictions == null || predictions.isEmpty) return 0.0;
       // Prioritize 'asf', then 'unhealthy', then 'infected', else healthy
       Prediction? highestRisk;
       for (var label in ['asf', 'unhealthy', 'infected']) {
         highestRisk = predictions
-            .where((p) => p.prediction.toLowerCase().contains(label))
+            .where((p) => p.prediction.toLowerCase() == label)
             .fold<Prediction?>(null, (prev, p) =>
         (prev == null || p.confidence_score > prev.confidence_score) ? p : prev);
         if (highestRisk != null) break;
@@ -153,9 +152,9 @@ class _ResultsPageState extends State<ResultsPage> {
       }
       // Only risky labels contribute to risk score
       if (highestRisk != null &&
-          (highestRisk.prediction.toLowerCase().contains('asf') ||
-              highestRisk.prediction.toLowerCase().contains('unhealthy') ||
-              highestRisk.prediction.toLowerCase().contains('infected'))) {
+          (highestRisk.prediction.toLowerCase() == 'asf' ||
+              highestRisk.prediction.toLowerCase() == 'unhealthy' ||
+              highestRisk.prediction.toLowerCase() == 'infected')) {
         return highestRisk.confidence_score;
       }
       return 0.0;
@@ -182,8 +181,7 @@ class _ResultsPageState extends State<ResultsPage> {
     // Risk thresholds
     String likelihood;
     if (finalScore >= 80) {
-      //TODO Theory rani diria ibutang ang analyze ----- tapos ang pangtubos hahahahhahaha
-      likelihood = "Highly Risk";
+      likelihood = "High Risk";
     } else if (finalScore >= 55) {
       likelihood = "Medium Risk";
     } else {
@@ -204,7 +202,7 @@ class _ResultsPageState extends State<ResultsPage> {
 
   List<String> getRecommendations(String likelihood) {
     switch (likelihood) {
-      case "Highly Risk":
+      case "High Risk":
         return [
           "Immediately isolate the affected pig(s)",
           "Contact a veterinarian urgently",
@@ -249,7 +247,7 @@ class _ResultsPageState extends State<ResultsPage> {
               const SizedBox(width: ArgieSizes.spaceBtwWidgets),
               Expanded(
                 child: Text(
-                  "No $title predictions available. Please ensure images clearly show symptoms or check API configuration.",
+                  "No $title predictions available. Please ensure images clearly show symptoms.",
                   style: GoogleFonts.poppins(
                     fontSize: 15,
                     color: isDarkMode ? Colors.white70 : Colors.black87,
@@ -261,18 +259,37 @@ class _ResultsPageState extends State<ResultsPage> {
         ),
       );
     }
-    // Find the most relevant prediction
+
+    // Priority: infected > unhealthy > healthy
     Prediction? displayPrediction;
-    for (var label in ['asf', 'unhealthy', 'infected']) {
+    String displayLabel = '';
+    for (var label in ['infected', 'asf', 'unhealthy', 'healthy']) {
       displayPrediction = predictions
-          .where((p) => p.prediction.toLowerCase().contains(label))
+          .where((p) => p.prediction.toLowerCase() == label)
           .fold<Prediction?>(null, (prev, p) =>
       (prev == null || p.confidence_score > prev.confidence_score) ? p : prev);
-      if (displayPrediction != null) break;
+      if (displayPrediction != null) {
+        if (label == 'infected' || label == 'asf') {
+          displayLabel = 'Infected';
+        } else if (label == 'unhealthy') {
+          displayLabel = 'Unhealthy';
+        } else if (label == 'healthy') {
+          displayLabel = 'Healthy';
+        }
+        break;
+      }
     }
-    // If all healthy, show the highest-confidence healthy
-    displayPrediction ??= predictions.fold<Prediction?>(null, (prev, p) =>
-    (prev == null || p.confidence_score > prev.confidence_score) ? p : prev);
+
+    if (displayPrediction == null) {
+      // fallback: show highest-confidence prediction
+      displayPrediction = predictions.fold<Prediction?>(null, (prev, p) =>
+      (prev == null || p.confidence_score > prev.confidence_score) ? p : prev);
+      if (displayPrediction?.prediction.toLowerCase() == 'not infected') {
+        displayLabel = 'Healthy';
+      } else {
+        displayLabel = displayPrediction?.prediction ?? '';
+      }
+    }
 
     return Card(
       elevation: 4,
@@ -290,7 +307,7 @@ class _ResultsPageState extends State<ResultsPage> {
             const SizedBox(width: ArgieSizes.spaceBtwWidgets),
             Expanded(
               child: Text(
-                "${displayPrediction!.prediction}, Confidence: ${(displayPrediction.confidence_score * 100).toStringAsFixed(1)}%",
+                '$displayLabel, Confidence: ${(displayPrediction!.confidence_score * 100).toStringAsFixed(1)}%',
                 style: GoogleFonts.poppins(
                   fontSize: 15,
                   color: isDarkMode ? Colors.white : Colors.black87,
@@ -452,7 +469,7 @@ class _ResultsPageState extends State<ResultsPage> {
             ),
             const SizedBox(height: ArgieSizes.spaceBtwSections),
             Text(
-              'Analyzing Your Data... Please Wait',
+              'Analyzing your data, please wait..',
               style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
@@ -466,7 +483,7 @@ class _ResultsPageState extends State<ResultsPage> {
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(ArgieSizes.paddingDefault),
+              padding: const EdgeInsets.only(top: 20, left: 16, right: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -478,13 +495,11 @@ class _ResultsPageState extends State<ResultsPage> {
                       color: isDarkMode ? Colors.white : ArgieColors.primary,
                     ),
                   ),
-                  const SizedBox(height: ArgieSizes.spaceBtwSections),
-
-                  // Image Previews
+                  const SizedBox(height: 8),
                   Text(
                     "Uploaded Images",
                     style: GoogleFonts.poppins(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: isDarkMode ? Colors.white70 : Colors.black87,
                     ),
@@ -558,14 +573,14 @@ class _ResultsPageState extends State<ResultsPage> {
                             width: double.infinity,
                             padding: const EdgeInsets.all(ArgieSizes.spaceBtwItems),
                             decoration: BoxDecoration(
-                              color: likelihood == "Highly Risk"
+                              color: likelihood == "High Risk"
                                   ? Colors.red.shade100
                                   : likelihood == "Medium Risk"
                                   ? Colors.orange.shade100
                                   : Colors.green.shade100,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: likelihood == "Highly Risk"
+                                color: likelihood == "High Risk"
                                     ? Colors.red.shade300
                                     : likelihood == "Medium Risk"
                                     ? Colors.orange.shade300
@@ -580,7 +595,7 @@ class _ResultsPageState extends State<ResultsPage> {
                                   style: GoogleFonts.poppins(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
-                                    color: likelihood == "Highly Risk"
+                                    color: likelihood == "High Risk"
                                         ? Colors.red.shade700
                                         : likelihood == "Medium Risk"
                                         ? Colors.orange.shade700
