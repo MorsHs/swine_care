@@ -71,7 +71,7 @@ class _SaveButtonState extends State<SaveButton>
     } else if (!symptomsComplete) {
       return (false, 'Symptoms checklist incomplete');
     }
-    return (true, 'Ready to Analyze!');
+    return (true, 'Ready to analyze!');
   }
 
   void _showValidationDialog(BuildContext context, String message) {
@@ -320,7 +320,6 @@ class _SaveButtonState extends State<SaveButton>
     final double symptomsProgress = widget.symptoms.isNotEmpty
         ? answeredSymptoms / widget.symptoms.length
         : 0.0;
-    final double totalProgress = (uploadProgress + symptomsProgress) / 2;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
