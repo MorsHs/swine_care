@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
 import 'package:swine_care/data/repositories/HistoryRepository.dart';
 import 'package:swine_care/feature/historypage/presentation/widgets/DeleteRecordDialog.dart';
-import 'package:swine_care/feature/historypage/presentation/widgets/DiagnosisRecord.dart';
+import 'package:swine_care/data/model/DiagnosisRecord.dart';
 import 'package:swine_care/feature/historypage/presentation/widgets/HistoryEmptyState.dart';
 import 'package:swine_care/feature/historypage/presentation/widgets/HistoryListView.dart';
 import 'package:swine_care/feature/historypage/presentation/widgets/HistoryTextLabel1.dart';

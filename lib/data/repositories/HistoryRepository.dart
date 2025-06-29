@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:swine_care/data/model/Prediction.dart';
-import 'package:swine_care/feature/historypage/presentation/widgets/DiagnosisRecord.dart';
+import 'package:swine_care/data/model/DiagnosisRecord.dart';
 
 class HistoryRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -59,7 +59,9 @@ class HistoryRepository {
   }) {
     final String id = DateTime.now().millisecondsSinceEpoch.toString();
     final String date = DateTime.now().toIso8601String().split('T')[0];
-    final String status = diagnosis == 'Low Risk' ? 'Resolved' : 'Under Observation';
+    final String status = diagnosis == 'Low Risk' ? 'Resolved'
+        : diagnosis == 'Medium Risk' ? 'Under Surveillance'
+        : 'Under Observation';
     final String? userId = _firebaseAuth.currentUser?.uid;
 
     if (userId == null) {
