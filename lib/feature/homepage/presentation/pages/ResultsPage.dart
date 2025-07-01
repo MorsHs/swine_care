@@ -247,7 +247,7 @@ class _ResultsPageState extends State<ResultsPage> {
               const SizedBox(width: ArgieSizes.spaceBtwWidgets),
               Expanded(
                 child: Text(
-                  "No $title predictions available. Please ensure images clearly show symptoms.",
+                  "$title not detected (upload clear images to have accurate diagnosis.",
                   style: GoogleFonts.poppins(
                     fontSize: 15,
                     color: isDarkMode ? Colors.white70 : Colors.black87,
