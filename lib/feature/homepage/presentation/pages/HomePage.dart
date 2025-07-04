@@ -385,12 +385,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                         children: [
                                           CircularProgressIndicator(),
                                           Text('It takes 4 to 8 seconds to diagnose these images.',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.grey
-                                          ),
-                                          textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.grey
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
                                         ],
                                       ),

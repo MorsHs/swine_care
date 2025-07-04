@@ -10,6 +10,7 @@ import 'package:swine_care/colors/ArgieSizes.dart';
 import 'package:swine_care/data/model/Prediction.dart';
 import 'package:swine_care/data/repositories/HistoryRepository.dart';
 import 'package:swine_care/data/repositories/DatabaseImage.dart';
+import 'package:swine_care/feature/homepage/controller/image-loc-controller.dart';
 
 class ResultsPage extends StatefulWidget {
   final Map<String, File?> uploadedImages;
@@ -39,6 +40,7 @@ class _ResultsPageState extends State<ResultsPage> {
   @override
   void initState() {
     super.initState();
+    _requestLocationPermission();
 
     // Debugggggggggggggg rani ya
     debugPrint('--- Results Page Loaded ---');
@@ -73,6 +75,18 @@ class _ResultsPageState extends State<ResultsPage> {
     Future.delayed(const Duration(seconds: 5), () {
       if (mounted) setState(() => _showAnimation = false);
     });
+  }
+
+  void _requestLocationPermission() async {
+    try {
+      await ImageLocController().determinePosition();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Location permission is required for ASF tracking. Please enable it in settings.')),
+        );
+      }
+    }
   }
 
   // Method to automatically save diagnostic data to database

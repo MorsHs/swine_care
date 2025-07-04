@@ -83,9 +83,9 @@ flutter_icons:
 
 flutter_native_splash:
   color: "#FFFFFF"
-  image: "assets/Logo/swinecare_resized.png"
+  image: "assets/Logo/sflashscreen_swinecare.png"
   android_12:
-    image: "assets/Logo/swinecare_resized.png"
+    image: "assets/Logo/sflashscreen_swinecare.png"
     icon_background_color: "#FFFFFF"
 
 
