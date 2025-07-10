@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   final ImagePickerUseCase _imagePickerUseCase = ImagePickerUseCase();
   final Api _api = Api();
 
+
   // Image state variables
   File? selectedImageEars;
   File? selectedImageSkin;
@@ -40,11 +41,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   // Symptom answers
   final Map<String, bool?> _answers = {
-    "High temperature?": null,
-    "Clumsy movement?": null,
+    "High fever?": null,
+    "Milder fever?": null,
+    "Slight fever?": null,
+    "Extreme tiredness?": null,
     "Loss of appetite?": null,
-    "Rapid breathing?": null,
-    "Unusual vocalization?": null,
+    "Difficulty of breathing?": null,
+    "Difficulty on walking?": null,
+    "Bloody feces?": null,
   };
 
   // UI state
@@ -446,6 +450,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           },
                           earsPredictions: _earsPredictions,
                           skinPredictions: _skinPredictions,
+                          enabled: !_isAnalyzing,
                         ),
                       ],
                     ),

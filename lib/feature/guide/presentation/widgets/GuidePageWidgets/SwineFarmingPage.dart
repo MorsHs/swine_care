@@ -526,7 +526,7 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
               Text(
                 "Common Problems & Solutions",
                 style: GoogleFonts.poppins(
-                  fontSize: 17,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: isDarkMode ? Colors.white : Colors.black87,
                 ),
@@ -630,13 +630,13 @@ class _SwineFarmingPageState extends State<SwineFarmingPage> {
         children: [
           Row(
             children: [
-              Icon(Icons.report_problem, size: 18, color: Colors.amber[800]),
+              Icon(Icons.report_problem, size: 15, color: Colors.amber[800]),
               const SizedBox(width: 8),
               Text(
                 problem,
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 14,
                   color: isDarkMode ? Colors.white : Colors.black,
                 ),
               ),
