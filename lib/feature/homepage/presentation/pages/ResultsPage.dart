@@ -10,6 +10,7 @@ import 'package:swine_care/colors/ArgieSizes.dart';
 import 'package:swine_care/data/model/Prediction.dart';
 import 'package:swine_care/data/repositories/HistoryRepository.dart';
 import 'package:swine_care/data/repositories/DatabaseImage.dart';
+import 'package:swine_care/data/repositories/AdminSettingsService.dart';
 import 'package:swine_care/feature/homepage/controller/image-loc-controller.dart';
 
 class ResultsPage extends StatefulWidget {
@@ -36,6 +37,13 @@ class _ResultsPageState extends State<ResultsPage> {
   bool _showAnimation = true;
   final HistoryRepository _historyRepository = HistoryRepository();
   final DatabaseImageSender _databaseImageSender = DatabaseImageSender();
+  final AdminSettingsService _adminSettingsService = AdminSettingsService();
+  
+  // Analysis results
+  String _likelihood = "Loading...";
+  double _finalScore = 0.0;
+  List<String> _recommendations = [];
+  bool _analysisComplete = false;
 
   @override
   void initState() {
@@ -73,7 +81,10 @@ class _ResultsPageState extends State<ResultsPage> {
     });
 
     Future.delayed(const Duration(seconds: 5), () {
-      if (mounted) setState(() => _showAnimation = false);
+      if (mounted) {
+        setState(() => _showAnimation = false);
+        _performAnalysis();
+      }
     });
   }
 
@@ -89,13 +100,38 @@ class _ResultsPageState extends State<ResultsPage> {
     }
   }
 
+  Future<void> _performAnalysis() async {
+    try {
+      final (String likelihood, double finalScore) = await analyzeASF();
+      final List<String> recommendations = getRecommendations(likelihood);
+      
+      if (mounted) {
+        setState(() {
+          _likelihood = likelihood;
+          _finalScore = finalScore;
+          _recommendations = recommendations;
+          _analysisComplete = true;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _likelihood = "Error";
+          _finalScore = 0.0;
+          _recommendations = ["Failed to analyze data"];
+          _analysisComplete = true;
+        });
+      }
+    }
+  }
+
   // Method to automatically save diagnostic data to database
   Future<void> _saveDiagnosticToDatabase() async {
     try {
       debugPrint('=== Starting Database Save Process ===');
 
       // Get diagnostic analysis
-      final (String likelihood, double finalScore) = analyzeASF();
+      final (String likelihood, double finalScore) = await analyzeASF();
       final List<String> recommendations = getRecommendations(likelihood);
 
       debugPrint('Analysis completed - Diagnosis: $likelihood, Score: $finalScore');
@@ -147,7 +183,10 @@ class _ResultsPageState extends State<ResultsPage> {
     }
   }
 
-  (String likelihood, double finalScore) analyzeASF() {
+  Future<(String likelihood, double finalScore)> analyzeASF() async {
+    // Get admin settings for weights and thresholds
+    final (earsWeight, skinWeight, symptomsWeight) = await _adminSettingsService.getWeights();
+    
     double getPartScore(List<Prediction>? predictions) {
       if (predictions == null || predictions.isEmpty) return 0.0;
       // Prioritize 'asf', then 'unhealthy', then 'infected', else healthy
@@ -174,33 +213,26 @@ class _ResultsPageState extends State<ResultsPage> {
       return 0.0;
     }
 
-    // Ears (30%)
-    double earsScore = getPartScore(widget.earsPredictions) * 30;
-    // Skin (30%)
-    double skinScore = getPartScore(widget.skinPredictions) * 30;
-    // Image total (60%)
+    // Ears (configurable weight)
+    double earsScore = getPartScore(widget.earsPredictions) * earsWeight;
+    // Skin (configurable weight)
+    double skinScore = getPartScore(widget.skinPredictions) * skinWeight;
+    // Image total
     double imageScore = earsScore + skinScore;
 
-    // Symptoms (40%)
+    // Symptoms (configurable weight)
     int symptomScore = 0;
     int totalSymptoms = widget.symptoms.length;
     widget.symptoms.forEach((_, answer) {
       if (answer == true) symptomScore += 1;
     });
-    double symptomPercentage = totalSymptoms > 0 ? (symptomScore / totalSymptoms) * 40 : 0;
+    double symptomPercentage = totalSymptoms > 0 ? (symptomScore / totalSymptoms) * symptomsWeight : 0;
 
     // Final weighted score
     double finalScore = imageScore + symptomPercentage;
 
-    // Risk thresholds
-    String likelihood;
-    if (finalScore >= 80) {
-      likelihood = "High Risk";
-    } else if (finalScore >= 55) {
-      likelihood = "Medium Risk";
-    } else {
-      likelihood = "Low Risk";
-    }
+    // Get risk level using admin settings
+    String likelihood = await _adminSettingsService.getRiskLevel(finalScore);
 
     // Debug output
     debugPrint('Ears Score: $earsScore/30');
@@ -286,9 +318,9 @@ class _ResultsPageState extends State<ResultsPage> {
         if (label == 'infected' || label == 'asf') {
           displayLabel = 'Infected';
         } else if (label == 'unhealthy') {
-          displayLabel = 'Unhealthy';
+          displayLabel = 'Infected';
         } else if (label == 'healthy') {
-          displayLabel = 'Healthy';
+          displayLabel = 'Non-Infected';
         }
         break;
       }
@@ -299,7 +331,7 @@ class _ResultsPageState extends State<ResultsPage> {
       displayPrediction = predictions.fold<Prediction?>(null, (prev, p) =>
       (prev == null || p.confidence_score > prev.confidence_score) ? p : prev);
       if (displayPrediction?.prediction.toLowerCase() == 'not infected') {
-        displayLabel = 'Healthy';
+        displayLabel = 'Non-Infected';
       } else {
         displayLabel = displayPrediction?.prediction ?? '';
       }
@@ -465,8 +497,6 @@ class _ResultsPageState extends State<ResultsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final (String likelihood, double finalScore) = analyzeASF();
-    final List<String> recommendations = getRecommendations(likelihood);
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -483,7 +513,7 @@ class _ResultsPageState extends State<ResultsPage> {
             ),
             const SizedBox(height: ArgieSizes.spaceBtwSections),
             Text(
-              'Analyzing your data, please wait..',
+              'Please wait....',
               style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
@@ -587,38 +617,38 @@ class _ResultsPageState extends State<ResultsPage> {
                             width: double.infinity,
                             padding: const EdgeInsets.all(ArgieSizes.spaceBtwItems),
                             decoration: BoxDecoration(
-                              color: likelihood == "High Risk"
+                              color: _likelihood == "High Risk"
                                   ? Colors.red.shade100
-                                  : likelihood == "Medium Risk"
+                                  : _likelihood == "Medium Risk"
                                   ? Colors.orange.shade100
                                   : Colors.green.shade100,
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: likelihood == "High Risk"
-                                    ? Colors.red.shade300
-                                    : likelihood == "Medium Risk"
-                                    ? Colors.orange.shade300
-                                    : Colors.green.shade300,
-                              ),
+                                                              border: Border.all(
+                                  color: _likelihood == "High Risk"
+                                      ? Colors.red.shade300
+                                      : _likelihood == "Medium Risk"
+                                      ? Colors.orange.shade300
+                                      : Colors.green.shade300,
+                                ),
                             ),
                             child: Column(
                               children: [
                                 Text(
-                                  likelihood,
+                                  _likelihood,
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.poppins(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
-                                    color: likelihood == "High Risk"
+                                    color: _likelihood == "High Risk"
                                         ? Colors.red.shade700
-                                        : likelihood == "Medium Risk"
+                                        : _likelihood == "Medium Risk"
                                         ? Colors.orange.shade700
                                         : Colors.green.shade700,
                                   ),
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'Final Weighted Score: ${finalScore.toStringAsFixed(1)}%',
+                                  'Final Weighted Score: ${_finalScore.toStringAsFixed(1)}%',
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.poppins(
                                     fontSize: 16,
@@ -676,7 +706,7 @@ class _ResultsPageState extends State<ResultsPage> {
                             ],
                           ),
                           const SizedBox(height: ArgieSizes.spaceBtwItems),
-                          ...recommendations.map((rec) => Padding(
+                          ..._recommendations.map((rec) => Padding(
                             padding: const EdgeInsets.only(bottom: ArgieSizes.spaceBtwWidgets / 2),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,

@@ -14,6 +14,7 @@ class SaveButton extends StatefulWidget {
   final Map<String, bool?> symptoms;
   final List<Prediction>? earsPredictions;
   final List<Prediction>? skinPredictions;
+  final bool enabled;
 
   const SaveButton({
     super.key,
@@ -22,6 +23,7 @@ class SaveButton extends StatefulWidget {
     required this.symptoms,
     this.earsPredictions,
     this.skinPredictions,
+    this.enabled = true,
   });
 
   @override
@@ -33,6 +35,7 @@ class _SaveButtonState extends State<SaveButton>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _glowAnimation;
+
 
   @override
   void initState() {
@@ -71,7 +74,7 @@ class _SaveButtonState extends State<SaveButton>
     } else if (!symptomsComplete) {
       return (false, 'Symptoms checklist incomplete');
     }
-    return (true, 'Ready to analyze!');
+    return (true, 'Ready to see the results!');
   }
 
   void _showValidationDialog(BuildContext context, String message) {
@@ -374,7 +377,7 @@ class _SaveButtonState extends State<SaveButton>
                         : [],
                   ),
                   child: ElevatedButton(
-                    onPressed: () => _showValidationDialog(context, missingMessage),
+                    onPressed: widget.enabled ? () => _showValidationDialog(context, missingMessage) : null,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: ArgieSizes.paddingDefault,
@@ -403,7 +406,7 @@ class _SaveButtonState extends State<SaveButton>
                         const SizedBox(width: 12),
                         Text(
                           isComplete
-                              ? 'Analyze Pig Health'
+                              ? 'See the results'
                               : 'Complete All Steps',
                           style: GoogleFonts.poppins(
                             fontSize: 16,

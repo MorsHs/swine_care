@@ -4,6 +4,7 @@ import 'package:swine_care/colors/ArgieColors.dart';
 
 class SymptomsChecker extends StatelessWidget {
   final Map<String, bool?> answers;
+
   final Function(String, bool) onChanged;
 
   const SymptomsChecker({
@@ -39,7 +40,13 @@ class SymptomsChecker extends StatelessWidget {
             ),
           ),
         ),
-        ...answers.keys.map((question) {
+        ...[
+          "High fever?",
+          "Slight fever?",
+          ...answers.keys.where((q) =>
+          q != "High fever?" &&
+              q != "Slight fever?")
+        ].map((question) {
           final bool? answer = answers[question];
           final Color yesBackgroundColor = answer == true
               ? Theme.of(localContext).colorScheme.primary
@@ -177,16 +184,22 @@ class SymptomsChecker extends StatelessWidget {
 
   IconData _getIconForQuestion(String question) {
     switch (question) {
-      case "High temperature?":
+      case "High fever?":
         return Icons.thermostat;
-      case "Clumsy movement?":
+      case "Milder fever?":
+        return Icons.thermostat;
+      case "Slight fever?":
+        return Icons.thermostat;
+      case "Extreme tiredness?":
         return Icons.directions_walk;
       case "Loss of appetite?":
         return Icons.restaurant_menu;
-      case "Rapid breathing?":
+      case "Difficulty of breathing?":
         return Icons.air;
-      case "Unusual vocalization?":
-        return Icons.record_voice_over;
+      case "Difficulty on walking?":
+        return Icons.square_foot;
+      case "Bloody feces?":
+        return Icons.ac_unit;
       default:
         return Icons.help_outline;
     }
@@ -194,16 +207,30 @@ class SymptomsChecker extends StatelessWidget {
 
   String _getTooltipForQuestion(String question) {
     switch (question) {
-      case "High temperature?":
-        return "A pig with a high temperature may feel warm to the touch and appear lethargic.";
-      case "Clumsy movement?":
-        return "Clumsy movement could indicate weakness or neurological issues.";
+      case "High fever?":
+        return "The pig has a high fever, with a body temperature ranging from 40°C to 42°C, which may indicate a severe infection or systemic illness.";
+
+      case "Milder fever?":
+        return "The pig is experiencing a fluctuating mild fever, where the temperature rises and falls, potentially signaling an early or infection.";
+
+      case "Slight fever?":
+        return "The pig has a slight fever, with body temperatures ranging between 37.5°C and 39°C, which could be a sign of a mild infection or stress response.";
+
+      case "Extreme tiredness?":
+        return "The pig shows signs of extreme fatigue, which could be associated with systemic weakness.";
+
       case "Loss of appetite?":
-        return "A pig refusing to eat may be a sign of illness or discomfort.";
-      case "Rapid breathing?":
-        return "Rapid breathing may indicate respiratory distress or fever.";
-      case "Unusual vocalization?":
-        return "Unusual sounds such as grunting or squealing may signal pain or distress.";
+        return "The pig is refusing to eat, a common symptom that may indicate pain, illness, or digestive discomfort.";
+
+      case "Difficulty of breathing?":
+        return "The pig is having trouble breathing, which may suggest respiratory tract infections, lung issues, or high fever.";
+
+      case "Difficulty on walking?":
+        return "The pig has difficulty walking, which may result from joint pain, muscle weakness, neurological problems, or respiratory distress.";
+
+      case "Bloody feces?":
+        return "The presence of blood in the pig's feces is a serious symptom that may point to internal bleeding, intestinal infections, or parasitic infestations.";
+
       default:
         return "This symptom may indicate a potential health issue.";
     }

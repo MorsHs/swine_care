@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:swine_care/admin/presentation/pages/ControlPanel.dart';
 import 'package:swine_care/feature/bottomnavigationbar/presentation/ScaffoldWithBottomNavBar.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/BestPracticesPage.dart';
 import 'package:swine_care/feature/guide/presentation/widgets/GuidePageWidgets/EmergencyMeasuresPage.dart';
@@ -39,7 +40,8 @@ class RouterConfiguration {
               !currentLocation.startsWith('/signup') &&
               !currentLocation.startsWith('/forgot-password') &&
               !currentLocation.startsWith('/intro') &&
-              !currentLocation.startsWith('/loading-screen')) {
+              !currentLocation.startsWith('/loading-screen')&&
+              !currentLocation.startsWith('/admin/control-panel')) {
             return '/login';
           }
         } else {
@@ -68,6 +70,12 @@ class RouterConfiguration {
           path: '/signup',
           builder: (context, state) {
             return const Register();
+          },
+        ),
+        GoRoute(
+          path: '/admin/control-panel',
+          builder: (context, state) {
+            return const ControlPanel();
           },
         ),
 
