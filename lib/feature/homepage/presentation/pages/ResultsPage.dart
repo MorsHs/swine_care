@@ -73,18 +73,22 @@ class _ResultsPageState extends State<ResultsPage> {
     }
 
     // Automatically save diagnostic data to database after a short delay to ensure widget is fully initialized
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        debugPrint('Starting automatic database save...');
-        _saveDiagnosticToDatabase();
-      }
-    });
+    // Add this line to always get the latest settings:
+    _adminSettingsService.refreshSettings().then((_) {
+      // Now you can safely call _performAnalysis or other logic that needs up-to-date settings
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          debugPrint('Starting automatic database save...');
+          _saveDiagnosticToDatabase();
+        }
+      });
 
-    Future.delayed(const Duration(seconds: 5), () {
-      if (mounted) {
-        setState(() => _showAnimation = false);
-        _performAnalysis();
-      }
+      Future.delayed(const Duration(seconds: 5), () {
+        if (mounted) {
+          setState(() => _showAnimation = false);
+          _performAnalysis();
+        }
+      });
     });
   }
 
@@ -656,16 +660,16 @@ class _ResultsPageState extends State<ResultsPage> {
                                     color: isDarkMode ? Colors.white70 : Colors.black87,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  '(60% Image Detection, 40% Symptoms)',
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
-                                  ),
-                                ),
+                                const SizedBox(height: 2),
+                                // Text(
+                                //   '(60% Image Detection, 40% Symptoms)',
+                                //   textAlign: TextAlign.center,
+                                //   style: GoogleFonts.poppins(
+                                //     fontSize: 12,
+                                //     fontWeight: FontWeight.w400,
+                                //     color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
