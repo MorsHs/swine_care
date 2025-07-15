@@ -35,6 +35,32 @@ class AdminSettingsRepository {
   }
 
   Future<void> updateAdminSettings({
+    List<RiskLabel>? riskLabels,
+    List<RiskThreshold>? riskThresholds,
+    double? earsWeight,
+    double? skinWeight,
+    double? symptomsWeight,
+    List<SymptomChecklist>? symptomsChecklist,
+  }) async {
+    try {
+      final currentSettings = await getAdminSettings();
+      final updatedSettings = currentSettings.copyWith(
+        riskLabels: riskLabels,
+        riskThresholds: riskThresholds,
+        earsWeight: earsWeight,
+        skinWeight: skinWeight,
+        symptomsWeight: symptomsWeight,
+        symptomsChecklist: symptomsChecklist,
+      );
+      await saveAdminSettings(updatedSettings);
+    } catch (e) {
+      print('Error updating admin settings: $e');
+      throw Exception('Failed to update admin settings: $e');
+    }
+  }
+
+  // Backward compatibility method
+  Future<void> updateAdminSettingsLegacy({
     double? highRiskThreshold,
     double? mediumRiskThreshold,
     double? lowRiskThreshold,
@@ -47,13 +73,52 @@ class AdminSettingsRepository {
   }) async {
     try {
       final currentSettings = await getAdminSettings();
+      
+      // Update risk labels if provided
+      List<RiskLabel> updatedRiskLabels = List.from(currentSettings.riskLabels);
+      if (highRiskLabel != null) {
+        final index = updatedRiskLabels.indexWhere((l) => l.label.toLowerCase().contains('high'));
+        if (index != -1) {
+          updatedRiskLabels[index] = RiskLabel(label: highRiskLabel);
+        }
+      }
+      if (mediumRiskLabel != null) {
+        final index = updatedRiskLabels.indexWhere((l) => l.label.toLowerCase().contains('medium'));
+        if (index != -1) {
+          updatedRiskLabels[index] = RiskLabel(label: mediumRiskLabel);
+        }
+      }
+      if (lowRiskLabel != null) {
+        final index = updatedRiskLabels.indexWhere((l) => l.label.toLowerCase().contains('low'));
+        if (index != -1) {
+          updatedRiskLabels[index] = RiskLabel(label: lowRiskLabel);
+        }
+      }
+
+      // Update risk thresholds if provided
+      List<RiskThreshold> updatedRiskThresholds = List.from(currentSettings.riskThresholds);
+      if (highRiskThreshold != null) {
+        final index = updatedRiskThresholds.indexWhere((t) => t.label.toLowerCase().contains('high'));
+        if (index != -1) {
+          updatedRiskThresholds[index] = RiskThreshold(label: updatedRiskThresholds[index].label, value: highRiskThreshold);
+        }
+      }
+      if (mediumRiskThreshold != null) {
+        final index = updatedRiskThresholds.indexWhere((t) => t.label.toLowerCase().contains('medium'));
+        if (index != -1) {
+          updatedRiskThresholds[index] = RiskThreshold(label: updatedRiskThresholds[index].label, value: mediumRiskThreshold);
+        }
+      }
+      if (lowRiskThreshold != null) {
+        final index = updatedRiskThresholds.indexWhere((t) => t.label.toLowerCase().contains('low'));
+        if (index != -1) {
+          updatedRiskThresholds[index] = RiskThreshold(label: updatedRiskThresholds[index].label, value: lowRiskThreshold);
+        }
+      }
+
       final updatedSettings = currentSettings.copyWith(
-        highRiskThreshold: highRiskThreshold,
-        mediumRiskThreshold: mediumRiskThreshold,
-        lowRiskThreshold: lowRiskThreshold,
-        highRiskLabel: highRiskLabel,
-        mediumRiskLabel: mediumRiskLabel,
-        lowRiskLabel: lowRiskLabel,
+        riskLabels: updatedRiskLabels,
+        riskThresholds: updatedRiskThresholds,
         earsWeight: earsWeight,
         skinWeight: skinWeight,
         symptomsWeight: symptomsWeight,

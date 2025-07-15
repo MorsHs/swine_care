@@ -251,31 +251,44 @@ class _ResultsPageState extends State<ResultsPage> {
   }
 
   List<String> getRecommendations(String likelihood) {
-    switch (likelihood) {
-      case "High Risk":
-        return [
-          "Immediately isolate the affected pig(s)",
-          "Contact a veterinarian urgently",
-          "Implement strict biosecurity measures",
-          "Monitor other pigs for similar symptoms",
-          "Document all symptoms and changes"
-        ];
-      case "Medium Risk":
-        return [
-          "Monitor the pig for 24-48 hours",
-          "Maintain strict hygiene protocols",
-          "Consult a veterinarian for assessment",
-          "Prepare isolation facilities",
-          "Document any changes in symptoms"
-        ];
-      default:
-        return [
-          "Continue regular health monitoring",
-          "Maintain standard hygiene practices",
-          "Record any changes in behavior or appearance",
-          "Schedule routine veterinary check-up",
-          "Keep detailed health records"
-        ];
+    // Get recommendations based on the dynamic risk label
+    if (likelihood.toLowerCase().contains('high') || likelihood.toLowerCase().contains('critical') || likelihood.toLowerCase().contains('severe')) {
+      return [
+        "Immediately isolate the affected pig(s)",
+        "Contact a veterinarian urgently",
+        "Implement strict biosecurity measures",
+        "Monitor other pigs for similar symptoms",
+        "Document all symptoms and changes"
+      ];
+    } else if (likelihood.toLowerCase().contains('medium') || likelihood.toLowerCase().contains('moderate') || likelihood.toLowerCase().contains('warning')) {
+      return [
+        "Monitor the pig for 24-48 hours",
+        "Maintain strict hygiene protocols",
+        "Consult a veterinarian for assessment",
+        "Prepare isolation facilities",
+        "Document any changes in symptoms"
+      ];
+    } else {
+      return [
+        "Continue regular health monitoring",
+        "Maintain standard hygiene practices",
+        "Record any changes in behavior or appearance",
+        "Schedule routine veterinary check-up",
+        "Keep detailed health records"
+      ];
+    }
+  }
+
+  Color _getRiskColor(String riskLabel) {
+    final label = riskLabel.toLowerCase();
+    if (label.contains('high') || label.contains('critical') || label.contains('severe') || label.contains('danger')) {
+      return Colors.red;
+    } else if (label.contains('medium') || label.contains('moderate') || label.contains('warning') || label.contains('caution')) {
+      return Colors.orange;
+    } else if (label.contains('low') || label.contains('minimal') || label.contains('safe')) {
+      return Colors.green;
+    } else {
+      return Colors.grey;
     }
   }
 
@@ -621,19 +634,11 @@ class _ResultsPageState extends State<ResultsPage> {
                             width: double.infinity,
                             padding: const EdgeInsets.all(ArgieSizes.spaceBtwItems),
                             decoration: BoxDecoration(
-                              color: _likelihood == "High Risk"
-                                  ? Colors.red.shade100
-                                  : _likelihood == "Medium Risk"
-                                  ? Colors.orange.shade100
-                                  : Colors.green.shade100,
+                              color: _getRiskColor(_likelihood).withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
-                                                              border: Border.all(
-                                  color: _likelihood == "High Risk"
-                                      ? Colors.red.shade300
-                                      : _likelihood == "Medium Risk"
-                                      ? Colors.orange.shade300
-                                      : Colors.green.shade300,
-                                ),
+                              border: Border.all(
+                                color: _getRiskColor(_likelihood).withOpacity(0.3),
+                              ),
                             ),
                             child: Column(
                               children: [
@@ -643,11 +648,7 @@ class _ResultsPageState extends State<ResultsPage> {
                                   style: GoogleFonts.poppins(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
-                                    color: _likelihood == "High Risk"
-                                        ? Colors.red.shade700
-                                        : _likelihood == "Medium Risk"
-                                        ? Colors.orange.shade700
-                                        : Colors.green.shade700,
+                                    color: _getRiskColor(_likelihood),
                                   ),
                                 ),
                                 const SizedBox(height: 8),

@@ -42,6 +42,31 @@ class AdminSettingsService {
   }
 
   Future<void> updateSettings({
+    List<RiskLabel>? riskLabels,
+    List<RiskThreshold>? riskThresholds,
+    double? earsWeight,
+    double? skinWeight,
+    double? symptomsWeight,
+    List<SymptomChecklist>? symptomsChecklist,
+  }) async {
+    try {
+      await _repository.updateAdminSettings(
+        riskLabels: riskLabels,
+        riskThresholds: riskThresholds,
+        earsWeight: earsWeight,
+        skinWeight: skinWeight,
+        symptomsWeight: symptomsWeight,
+        symptomsChecklist: symptomsChecklist,
+      );
+      await refreshSettings();
+    } catch (e) {
+      print('Error updating admin settings: $e');
+      throw e;
+    }
+  }
+
+  // Backward compatibility method
+  Future<void> updateSettingsLegacy({
     double? highRiskThreshold,
     double? mediumRiskThreshold,
     double? lowRiskThreshold,
@@ -53,18 +78,57 @@ class AdminSettingsService {
     double? symptomsWeight,
   }) async {
     try {
-      await _repository.updateAdminSettings(
-        highRiskThreshold: highRiskThreshold,
-        mediumRiskThreshold: mediumRiskThreshold,
-        lowRiskThreshold: lowRiskThreshold,
-        highRiskLabel: highRiskLabel,
-        mediumRiskLabel: mediumRiskLabel,
-        lowRiskLabel: lowRiskLabel,
+      final currentSettings = await getCurrentSettings();
+      
+      // Update risk labels if provided
+      List<RiskLabel> updatedRiskLabels = List.from(currentSettings.riskLabels);
+      if (highRiskLabel != null) {
+        final index = updatedRiskLabels.indexWhere((l) => l.label.toLowerCase().contains('high'));
+        if (index != -1) {
+          updatedRiskLabels[index] = RiskLabel(label: highRiskLabel);
+        }
+      }
+      if (mediumRiskLabel != null) {
+        final index = updatedRiskLabels.indexWhere((l) => l.label.toLowerCase().contains('medium'));
+        if (index != -1) {
+          updatedRiskLabels[index] = RiskLabel(label: mediumRiskLabel);
+        }
+      }
+      if (lowRiskLabel != null) {
+        final index = updatedRiskLabels.indexWhere((l) => l.label.toLowerCase().contains('low'));
+        if (index != -1) {
+          updatedRiskLabels[index] = RiskLabel(label: lowRiskLabel);
+        }
+      }
+
+      // Update risk thresholds if provided
+      List<RiskThreshold> updatedRiskThresholds = List.from(currentSettings.riskThresholds);
+      if (highRiskThreshold != null) {
+        final index = updatedRiskThresholds.indexWhere((t) => t.label.toLowerCase().contains('high'));
+        if (index != -1) {
+          updatedRiskThresholds[index] = RiskThreshold(label: updatedRiskThresholds[index].label, value: highRiskThreshold);
+        }
+      }
+      if (mediumRiskThreshold != null) {
+        final index = updatedRiskThresholds.indexWhere((t) => t.label.toLowerCase().contains('medium'));
+        if (index != -1) {
+          updatedRiskThresholds[index] = RiskThreshold(label: updatedRiskThresholds[index].label, value: mediumRiskThreshold);
+        }
+      }
+      if (lowRiskThreshold != null) {
+        final index = updatedRiskThresholds.indexWhere((t) => t.label.toLowerCase().contains('low'));
+        if (index != -1) {
+          updatedRiskThresholds[index] = RiskThreshold(label: updatedRiskThresholds[index].label, value: lowRiskThreshold);
+        }
+      }
+
+      await updateSettings(
+        riskLabels: updatedRiskLabels,
+        riskThresholds: updatedRiskThresholds,
         earsWeight: earsWeight,
         skinWeight: skinWeight,
         symptomsWeight: symptomsWeight,
       );
-      await refreshSettings();
     } catch (e) {
       print('Error updating admin settings: $e');
       throw e;
@@ -81,6 +145,23 @@ class AdminSettingsService {
     return (settings.earsWeight, settings.skinWeight, settings.symptomsWeight);
   }
 
+  // New methods for dynamic risk labels and thresholds
+  Future<List<RiskLabel>> getRiskLabels() async {
+    final settings = await getCurrentSettings();
+    return settings.riskLabels;
+  }
+
+  Future<List<RiskThreshold>> getRiskThresholds() async {
+    final settings = await getCurrentSettings();
+    return settings.riskThresholds;
+  }
+
+  Future<List<SymptomChecklist>> getSymptomsChecklist() async {
+    final settings = await getCurrentSettings();
+    return settings.symptomsChecklist;
+  }
+
+  // Backward compatibility methods
   Future<(double highRisk, double mediumRisk, double lowRisk)> getThresholds() async {
     final settings = await getCurrentSettings();
     return (settings.highRiskThreshold, settings.mediumRiskThreshold, settings.lowRiskThreshold);
