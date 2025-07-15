@@ -15,6 +15,7 @@ import 'package:swine_care/feature/homepage/presentation/widget/TakeClearPhotosT
 import 'package:swine_care/feature/homepage/presentation/widget/UploadPigImagesTextLabel.dart';
 import 'package:swine_care/data/api/Api.dart';
 import 'package:swine_care/data/model/Prediction.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,16 +41,53 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   bool _isAnalyzing = false;
 
   // Symptom answers
-  final Map<String, bool?> _answers = {
-    "High fever?": null,
-    "Milder fever?": null,
-    "Slight fever?": null,
-    "Extreme tiredness?": null,
-    "Loss of appetite?": null,
-    "Difficulty of breathing?": null,
-    "Difficulty on walking?": null,
-    "Bloody feces?": null,
-  };
+  List<Map<String, String>> _symptomsChecklist = [];
+  Map<String, bool?> _answers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchSymptomsChecklist();
+  }
+
+  Future<void> _fetchSymptomsChecklist() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('admin_settings')
+          .doc('current')
+          .get();
+      final data = doc.data();
+      if (data != null && data['symptomsChecklist'] != null && (data['symptomsChecklist'] as List).isNotEmpty) {
+        final List<dynamic> checklist = data['symptomsChecklist'];
+        setState(() {
+          _symptomsChecklist = checklist
+              .map<Map<String, String>>((item) => {
+                    'question': item['question'] as String,
+                    'description': item['description'] as String,
+                  })
+              .toList();
+          _answers = { for (var s in _symptomsChecklist) s['question']!: null };
+        });
+      } else {
+        // No checklist in Firestore, use default and write it to Firestore
+        await FirebaseFirestore.instance
+            .collection('admin_settings')
+            .doc('current')
+            .set({'symptomsChecklist': defaultSymptomsChecklist}, SetOptions(merge: true));
+        setState(() {
+          _symptomsChecklist = List<Map<String, String>>.from(defaultSymptomsChecklist);
+          _answers = { for (var s in _symptomsChecklist) s['question']!: null };
+        });
+      }
+    } catch (e) {
+      print('Failed to fetch symptoms checklist: $e');
+      // Fallback to default if error
+      setState(() {
+        _symptomsChecklist = List<Map<String, String>>.from(defaultSymptomsChecklist);
+        _answers = { for (var s in _symptomsChecklist) s['question']!: null };
+      });
+    }
+  }
 
   // UI state
   bool _isGridView = false;
@@ -328,6 +366,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       'Skin': webImageSkin,
     };
 
+    if (_symptomsChecklist.isEmpty) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       backgroundColor: isDarkMode ? ArgieColors.dark : const Color(0xFFF8F9FA),
       body: Stack(
@@ -423,6 +465,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 const AnswerAllQuestionsTextLabel(),
                                 const SizedBox(height: 16),
                                 SymptomsChecker(
+                                  questionsWithDescriptions: _symptomsChecklist,
                                   answers: _answers,
                                   onChanged: (question, value) {
                                     setState(() {
@@ -464,3 +507,38 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     );
   }
 }
+
+const List<Map<String, String>> defaultSymptomsChecklist = [
+  {
+    "question": "High fever?",
+    "description": "The pig has a high fever, with a body temperature ranging from 40°C to 42°C, which may indicate a severe infection or systemic illness."
+  },
+  {
+    "question": "Milder fever?",
+    "description": "The pig is experiencing a fluctuating mild fever, where the temperature rises and falls, potentially signaling an early or infection."
+  },
+  {
+    "question": "Slight fever?",
+    "description": "The pig has a slight fever, with body temperatures ranging between 37.5°C and 39°C, which could be a sign of a mild infection or stress response."
+  },
+  {
+    "question": "Extreme tiredness?",
+    "description": "The pig shows signs of extreme fatigue, which could be associated with systemic weakness."
+  },
+  {
+    "question": "Loss of appetite?",
+    "description": "The pig is refusing to eat, a common symptom that may indicate pain, illness, or digestive discomfort."
+  },
+  {
+    "question": "Difficulty of breathing?",
+    "description": "The pig is having trouble breathing, which may suggest respiratory tract infections, lung issues, or high fever."
+  },
+  {
+    "question": "Difficulty on walking?",
+    "description": "The pig has difficulty walking, which may result from joint pain, muscle weakness, neurological problems, or respiratory distress."
+  },
+  {
+    "question": "Bloody feces?",
+    "description": "The presence of blood in the pig's feces is a serious symptom that may point to internal bleeding, intestinal infections, or parasitic infestations."
+  },
+];

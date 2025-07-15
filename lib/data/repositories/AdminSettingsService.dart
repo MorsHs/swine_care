@@ -1,5 +1,6 @@
 import 'package:swine_care/data/model/AdminSettings.dart';
 import 'package:swine_care/data/repositories/AdminSettingsRepository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AdminSettingsService {
   static final AdminSettingsService _instance = AdminSettingsService._internal();

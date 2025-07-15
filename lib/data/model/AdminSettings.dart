@@ -57,7 +57,7 @@ class AdminSettings {
   factory AdminSettings.fromMap(Map<String, dynamic> map) {
     return AdminSettings(
       highRiskThreshold: (map['highRiskThreshold'] ?? 80.0).toDouble(),
-      mediumRiskThreshold: (map['mediumRiskThreshold'] ?? 55.0).toDouble(),
+      mediumRiskThreshold: (map['mediumRiskThreshold'] ?? 30.0).toDouble(),
       lowRiskThreshold: (map['lowRiskThreshold'] ?? 0.0).toDouble(),
       highRiskLabel: map['highRiskLabel'] ?? "High Risk",
       mediumRiskLabel: map['mediumRiskLabel'] ?? "Medium Risk",
