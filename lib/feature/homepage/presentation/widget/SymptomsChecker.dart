@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SymptomsChecker extends StatelessWidget {
+  final List<Map<String, String>> questionsWithDescriptions;
   final Map<String, bool?> answers;
 
   final Function(String, bool) onChanged;
 
   const SymptomsChecker({
     super.key,
+    required this.questionsWithDescriptions,
     required this.answers,
     required this.onChanged,
   });
@@ -40,13 +43,9 @@ class SymptomsChecker extends StatelessWidget {
             ),
           ),
         ),
-        ...[
-          "High fever?",
-          "Slight fever?",
-          ...answers.keys.where((q) =>
-          q != "High fever?" &&
-              q != "Slight fever?")
-        ].map((question) {
+        ...questionsWithDescriptions.map((item) {
+          final question = item['question']!;
+          final description = item['description']!;
           final bool? answer = answers[question];
           final Color yesBackgroundColor = answer == true
               ? Theme.of(localContext).colorScheme.primary
@@ -91,7 +90,7 @@ class SymptomsChecker extends StatelessWidget {
                         ),
                         onPressed: () {
                           _showDescriptionDialog(
-                              localContext, _getTooltipForQuestion(question));
+                              localContext, description);
                         },
                       ),
                     ],
