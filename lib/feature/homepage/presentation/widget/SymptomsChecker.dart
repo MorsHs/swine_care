@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swine_care/colors/ArgieColors.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SymptomsChecker extends StatelessWidget {
   final List<Map<String, String>> questionsWithDescriptions;
@@ -65,11 +64,11 @@ class SymptomsChecker extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      Icon(
-                        _getIconForQuestion(question),
-                        color: Theme.of(localContext).colorScheme.secondary,
-                        size: 20,
-                      ),
+                      // Icon(
+                      //   _getIconForQuestion(question),
+                      //   color: Theme.of(localContext).colorScheme.secondary,
+                      //   size: 20,
+                      // ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -181,28 +180,28 @@ class SymptomsChecker extends StatelessWidget {
     );
   }
 
-  IconData _getIconForQuestion(String question) {
-    switch (question) {
-      case "High fever?":
-        return Icons.thermostat;
-      case "Milder fever?":
-        return Icons.thermostat;
-      case "Slight fever?":
-        return Icons.thermostat;
-      case "Extreme tiredness?":
-        return Icons.directions_walk;
-      case "Loss of appetite?":
-        return Icons.restaurant_menu;
-      case "Difficulty of breathing?":
-        return Icons.air;
-      case "Difficulty on walking?":
-        return Icons.square_foot;
-      case "Bloody feces?":
-        return Icons.ac_unit;
-      default:
-        return Icons.help_outline;
-    }
-  }
+  // IconData _getIconForQuestion(String question) {
+  //   switch (question) {
+  //     case "High fever?":
+  //       return Icons.thermostat;
+  //     case "Milder fever?":
+  //       return Icons.thermostat;
+  //     case "Slight fever?":
+  //       return Icons.thermostat;
+  //     case "Extreme tiredness?":
+  //       return Icons.directions_walk;
+  //     case "Loss of appetite?":
+  //       return Icons.restaurant_menu;
+  //     case "Difficulty of breathing?":
+  //       return Icons.air;
+  //     case "Difficulty on walking?":
+  //       return Icons.square_foot;
+  //     case "Bloody feces?":
+  //       return Icons.ac_unit;
+  //     default:
+  //       return Icons.help_outline;
+  //   }
+  // }
 
   String _getTooltipForQuestion(String question) {
     switch (question) {
