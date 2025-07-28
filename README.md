@@ -1,16 +1,17 @@
-# swine_care
+# Swine Care 🐖💉
 
-A new Flutter project.
+Swine Care is a mobile application developed using **Flutter** that assists pig farmers in monitoring, diagnosing, and preventing African Swine Fever (ASF). It uses image processing and educational resources to help users recognize symptoms and take preventive actions.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- **Image Upload** for diagnosing potential ASF symptoms in pigs.
+- **Guides and Resources** on swine care and ASF prevention.
+- Uses **Machine Learning** for image-based analysis.
+- **Authentication** for secure user access.
+- **Firebase** integration for database and storage.
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Frontend**: Flutter (Dart)
+- **Backend**: Firebase (Firestore, Auth, Storage)
+- **Architecture**: Clean Architecture (Separation of UI, Logic, and Data layers)
