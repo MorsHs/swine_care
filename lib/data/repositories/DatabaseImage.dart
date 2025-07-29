@@ -97,15 +97,23 @@ class DatabaseImageSender {
   }
 
   String _getRiskLevel(String diagnosis) {
-    switch (diagnosis.toLowerCase()) {
-      case 'highly risk':
-        return 'HIGH';
-      case 'medium risk':
-        return 'MEDIUM';
-      case 'low risk':
-        return 'LOW';
-      default:
-        return 'UNKNOWN';
+    final label = diagnosis.toLowerCase();
+    
+    // Check for high risk variations
+    if (label.contains('high') || label.contains('critical') || label.contains('severe') || label.contains('danger')) {
+      return 'HIGH';
+    }
+    // Check for medium risk variations
+    else if (label.contains('medium') || label.contains('moderate') || label.contains('warning') || label.contains('caution')) {
+      return 'MEDIUM';
+    }
+    // Check for low risk variations
+    else if (label.contains('low') || label.contains('minimal') || label.contains('safe')) {
+      return 'LOW';
+    }
+    // Fallback for unknown labels
+    else {
+      return 'UNKNOWN';
     }
   }
 

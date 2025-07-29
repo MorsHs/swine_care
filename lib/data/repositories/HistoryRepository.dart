@@ -59,7 +59,7 @@ class HistoryRepository {
   }) {
     final String id = DateTime.now().millisecondsSinceEpoch.toString();
     final String date = DateTime.now().toIso8601String().split('T')[0];
-    final String status = diagnosis == 'Low Risk' ? 'Resolved'
+    final String status = diagnosis == 'Low Risk' ? 'Under Surveillance'
         : diagnosis == 'Medium Risk' ? 'Under Surveillance'
         : 'Under Observation';
     final String? userId = _firebaseAuth.currentUser?.uid;
